@@ -15,7 +15,7 @@ We’ve all seen harrowing images: ducks entangled in plastic, turtles mistaking
 and large fish like tuna found with plastic in their stomachs. A staggering study revealed that in 2010, 
 an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now, fourteen years later?
  Have we made progress, or has the problem worsened?
-![alt text](/assets/lib/duck.png)
+![alt text](/images/duck.png)
 
 
 
@@ -36,4 +36,4 @@ in turn, sustaining larger marine life.
 2.Dataset 
 
 Let’s look at the datasets we used 
-![alt text](/assets/lib/datasets.png)
+![alt text](/images/datasets.png)
