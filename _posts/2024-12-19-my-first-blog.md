@@ -16,6 +16,7 @@ and large fish like tuna found with plastic in their stomachs. A staggering stud
 an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now, fourteen years later?
  Have we made progress, or has the problem worsened?
 ![alt text](/images/duck.png)
+<img src="images\duck.png" alt="Kitten" title="A cute kitten" width="150" height="100" /> 
 
 
 

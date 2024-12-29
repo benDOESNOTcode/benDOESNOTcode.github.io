@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toxic Tides: Impact of Microplastic on the Plankton Population</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #333; /* Darker background color */
+        color: #f0f0f0; /* Light text for contrast */
+    }
+    .container {
+        max-width: 1200px; /* Increased width for less vertical appearance */
+        margin: 20px auto;
+        padding: 20px;
+        background: #444; /* Match sidebar's darker tone */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark theme */
+        border-radius: 8px;
+    }
+    h1 {
+        color: #00bfff; /* Bright blue for headings */
+        text-align: center;
+    }
+    h2 {
+        color: #00a3cc;
+        margin-top: 20px;
+    }
+    p {
+        margin: 10px 0;
+    }
+    .intro {
+        font-size: 1.0em;
+        font-style: italic;
+        margin-bottom: 20px;
+    }
+    img {
+        width: 600px; /* Set a fixed width */
+        height: auto;
+        display: block;
+        margin: 20px auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    blockquote {
+        font-style: italic;
+        color: #aaa;
+        border-left: 4px solid #555;
+        margin: 20px 0;
+        padding-left: 16px;
+    }
+    .conclusion {
+        font-weight: bold;
+        margin-top: 20px;
+    }
+    .image-container {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+
+    .image-title {
+    font-size: 1.0em;
+    color: #00bfff; /* Title color */
+    margin-bottom: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Toxic Tides: Impact of Microplastic on the Plankton Population</h1>
+
+        <p class="intro">
+            We’ve all seen harrowing images: ducks entangled in plastic, turtles mistaking plastic bags for jellyfish, and large fish like tuna found with plastic in their stomachs. A staggering study revealed that in 2010, an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now, fourteen years later? Have we made progress, or has the problem worsened?
+        </p>
+
+        <div class="duck-container">
+            <h3 class="image-title">Duck: Microplastic Impact</h3>
+            <img src="images/duck.png" alt="Duck" title="Duck with microplastic">
+        </div>
+
+
+        <h2>Our Study</h2>
+        <p>
+            Our study explores two critical aspects of this crisis: the impact of microplastics on phytoplankton and whether fishing vessels have altered their routes in response to pollution hotspots.
+        </p>
+
+        <h2>Why Plankton?</h2>
+        <p>
+            Why focus on phytoplankton, these tiny, often-overlooked ocean organisms? Their role in the ecosystem is far more significant than their size suggests.
+        </p>
+
+        <p>
+            Phytoplankton are among the primary producers of oxygen in our oceans, playing a pivotal role in maintaining the Earth's oxygen supply. They also act as natural carbon sinks, sequestering carbon dioxide and mitigating the effects of climate change.
+        </p>
+
+        <blockquote>
+            "Give me half a tanker of iron, and I will give you an ice age." – John Martin, Oceanographer
+        </blockquote>
+
+        <p>
+            This famous statement emphasizes the critical role of phytoplankton in regulating the Earth's climate. Additionally, these colorful, microscopic organisms are the foundation of marine food webs, providing nourishment for small schooling fish and, in turn, sustaining larger marine life.
+        </p>
+
+        <h2>2. Dataset</h2>
+        <p>
+            Let’s look at the datasets we used.
+        </p>
+        <img src="images/datasets.png" alt="Datasets">
+
+        <p>
+            Our datasets were obtained from three sources:
+        </p>
+        <ul>
+            <li>Plastic dataset: From the NCEI website.</li>
+            <li>Plankton dataset: From PANGAEA.</li>
+            <li>Vessel dataset: From Global Fishing Watch.</li>
+        </ul>
+
+        <h3>Data Cleaning</h3>
+        <p>
+            Our datasets were relatively clean, with only a few missing values that were easily addressed. During preprocessing, we performed the following steps:
+        </p>
+        <ul>
+            <li>Removed unnecessary columns, such as DOI and reference links, that were irrelevant to our analysis.</li>
+            <li>Applied mode imputation to handle missing values when merging datasets.</li>
+            <li>To enhance compatibility during merging, we standardized the latitude and longitude values.</li>
+        </ul>
+
+        <h2>Visualizations</h2>
+        <p>
+            The first question we sought to answer was whether sea surface temperature had any effect on the plankton. From this paper, plankton does a vertical migration to avoid the harsh sunlight and come back south when the temperature is warmer. From this paper, we observe that the earth has been getting warmer.
+        </p>
+        <img src="images/sstplankton.png" alt="SST and Plankton">
+
+        <p>
+            From the bar graph plotting average SST vs year, we observe that sea temperatures for the past 40 years have remained relatively stable. In this line plot, we plot the SST vs year vs chlorophyll content (plankton content mg/m²), showing that there is no clear correlation between these two features.
+        </p>
+
+        <h3>Distribution of Plastic</h3>
+        <p>
+            Let’s look at how plastic and plankton are distributed over the years. We split the plastic dataset into three parts: 1972–2000, 2001–2010, 2011–2022. The first graph shows the plastic distribution from 1972–2000, illustrating how most of the plastic was concentrated in the Gulf of Mexico with 110 pieces per m³. From 2001, plastic spread across the Atlantic Ocean and to the Pacific with around 890 pieces per m³. By 2011, plastic had spread across the entire eastern hemisphere, with record numbers of 2.3 million pieces per m³.
+        </p>
+        <img src="images/pl_1972.png" alt="Plastic 1972">
+        <img src="images/pl_2001.png" alt="Plastic 2001">
+        <img src="images/pl_2011.png" alt="Plastic 2011">
+        <img src="images/pl_logbar.png" alt="Plastic Log Bar">
+
+        <h3>Distribution of Plankton</h3>
+        <p>
+            Like plastic, we split the dataset into three parts: 1958–2000, 2001–2010, 2010–2017. During the mid-20th century, tremendous populations of plankton were observed along the Indian and American coasts, with about 1 million mg of plankton per m².
+        </p>
+        <img src="images/kl_1958.png" alt="Plankton 1958">
+        <img src="images/kl_2001.png" alt="Plankton 2001">
+        <img src="images/kl_2011.png" alt="Plankton 2011">
+        <img src="images/kl_bar.png" alt="Plankton Bar">
+
+        <p>
+            By 2000, plankton populations shifted, with only certain US coasts hosting about 369k plankton per m². By 2011, plankton populations were primarily concentrated near the California coast, with only about 90k plankton per m². So what happened? Are we causing a global extinction of the entire marine ecosystem?
+        </p>
+
+        <h2>Did Increase in Microplastic Affect Plankton?</h2>
+        <img src="images/kl_pl_line.png" alt="Plankton and Plastic Line Plot">
+        <img src="images/kl_pl_table.png" alt="Plankton and Plastic Table">
+
+        <h3>P-Test to Determine Relation</h3>
+        <p>
+            Numbers tell the truth, and though we see there’s a relation between microplastic increase and plankton decrease, do the numbers support it? We perform three separate tests to measure if there’s a statistical significance between these two variables.
+        </p>
+        <ul>
+            <li>Spearman Correlation: -0.1344, p-value: 0.5312</li>
+            <li>Pearson Correlation: -0.1261, p-value: 0.5572</li>
+            <li>Chi-Square Statistic: 0.4364, p-value: 0.8040</li>
+        </ul>
+    </div>
+</body>
+</html>
