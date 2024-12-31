@@ -18,7 +18,8 @@
         margin: 20px auto;
         padding: 20px;
         background: #444; /* Match sidebar's darker tone */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark theme */
+        box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2); /* Light shadow for a dark theme */
+
         border-radius: 8px;
     }
     h1 {
@@ -38,6 +39,7 @@
         margin-bottom: 20px;
     }
     img {
+        background-color: transparent;
         width: 600px; /* Set a fixed width */
         height: auto;
         display: block;
@@ -45,7 +47,8 @@
         max-width: 100%;
         height: auto;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2); /* Light shadow for a dark theme */
+
     }
     blockquote {
         font-style: italic;
@@ -58,12 +61,30 @@
         font-weight: bold;
         margin-top: 20px;
     }
-    .image-container {
+    .duck-container {
     text-align: center;
     margin-bottom: 20px;
     }
 
-    .image-title {
+    .duck-title {
+    font-size: 1.0em;
+    color: #00bfff; /* Title color */
+    margin-bottom: 10px;
+    }
+    .dataset-container {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+    .dataset-title {
+    font-size: 1.0em;
+    color: #00bfff; /* Title color */
+    margin-bottom: 10px;
+    }
+    .vis-container {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+    .vis-title {
     font-size: 1.0em;
     color: #00bfff; /* Title color */
     margin-bottom: 10px;
@@ -76,13 +97,14 @@
         <h1>Toxic Tides: Impact of Microplastic on the Plankton Population</h1>
 
         <p class="intro">
-            We’ve all seen harrowing images: ducks entangled in plastic, turtles mistaking plastic bags for jellyfish, and large fish like tuna found with plastic in their stomachs. A staggering study revealed that in 2010, an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now, fourteen years later? Have we made progress, or has the problem worsened?
+            We’ve all seen harrowing images: ducks entangled in plastic, turtles mistaking plastic bags for jellyfish, and large fish like tuna found with plastic in their stomachs. A staggering study revealed that in 2010, an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now  a decade later? Have we made progress, or has the problem worsened?
         </p>
 
         <div class="duck-container">
-            <h3 class="image-title">Duck: Microplastic Impact</h3>
             <img src="images/duck.png" alt="Duck" title="Duck with microplastic">
+            <p class="image-caption">Figure 1: Duck showing microplastic impact on its habitat.</p>
         </div>
+
 
 
         <h2>Our Study</h2>
@@ -107,12 +129,14 @@
             This famous statement emphasizes the critical role of phytoplankton in regulating the Earth's climate. Additionally, these colorful, microscopic organisms are the foundation of marine food webs, providing nourishment for small schooling fish and, in turn, sustaining larger marine life.
         </p>
 
-        <h2>2. Dataset</h2>
+        <h2>Dataset</h2>
         <p>
             Let’s look at the datasets we used.
         </p>
-        <img src="images/datasets.png" alt="Datasets">
-
+        <div class="dataset-container">
+            <img src="images/datasets.png" alt="Dataset">
+            <p class="image-caption">Figure 2: Datasets.</p>
+        </div>
         <p>
             Our datasets were obtained from three sources:
         </p>
@@ -136,31 +160,73 @@
         <p>
             The first question we sought to answer was whether sea surface temperature had any effect on the plankton. From this paper, plankton does a vertical migration to avoid the harsh sunlight and come back south when the temperature is warmer. From this paper, we observe that the earth has been getting warmer.
         </p>
-        <img src="images/sstplankton.png" alt="SST and Plankton">
+
+        </p>
+        
+        <div class="vis-container">
+            <img src="images/sstplankton.png">
+            <p class="vis-caption">Figure 3: SST vs Plankton Growth.</p>
+        </div>
 
         <p>
             From the bar graph plotting average SST vs year, we observe that sea temperatures for the past 40 years have remained relatively stable. In this line plot, we plot the SST vs year vs chlorophyll content (plankton content mg/m²), showing that there is no clear correlation between these two features.
         </p>
 
-        <h3>Distribution of Plastic</h3>
+        <h2>Distribution of Plastic</h2>
         <p>
             Let’s look at how plastic and plankton are distributed over the years. We split the plastic dataset into three parts: 1972–2000, 2001–2010, 2011–2022. The first graph shows the plastic distribution from 1972–2000, illustrating how most of the plastic was concentrated in the Gulf of Mexico with 110 pieces per m³. From 2001, plastic spread across the Atlantic Ocean and to the Pacific with around 890 pieces per m³. By 2011, plastic had spread across the entire eastern hemisphere, with record numbers of 2.3 million pieces per m³.
-        </p>
-        <img src="images/pl_1972.png" alt="Plastic 1972">
-        <img src="images/pl_2001.png" alt="Plastic 2001">
-        <img src="images/pl_2011.png" alt="Plastic 2011">
-        <img src="images/pl_logbar.png" alt="Plastic Log Bar">
 
-        <h3>Distribution of Plankton</h3>
+        <p>
+        <div class="pl_2011-container">
+            <img src="images/pl_2011.png">
+            <p class="pl_1972-caption">Figure 4: Datasets.</p>
+        </div>
+
+        <div class="pl_2011-container">
+            <img src="images/pl_2011.png">
+            <p class="pl_1972-caption">Figure 4: Datasets.</p>
+        </div>
+
+        <div class="pl_2011-container">
+            <img src="images/pl_2011.png">
+            <p class="pl_1972-caption">Figure 4: Datasets.</p>
+        </div>
+
+        <div class="pl_logbar-container">
+            <img src="images/pl_logbar.png">
+            <p class="pl_logbar-caption">Figure 4: Datasets.</p>
+        </div>
+
+        </p>
+
+
+        <h2>Distribution of Plankton</h2>
         <p>
             Like plastic, we split the dataset into three parts: 1958–2000, 2001–2010, 2010–2017. During the mid-20th century, tremendous populations of plankton were observed along the Indian and American coasts, with about 1 million mg of plankton per m².
-        </p>
-        <img src="images/kl_1958.png" alt="Plankton 1958">
-        <img src="images/kl_2001.png" alt="Plankton 2001">
-        <img src="images/kl_2011.png" alt="Plankton 2011">
-        <img src="images/kl_bar.png" alt="Plankton Bar">
+        
+         <div class="kl_1958-container">
+            <img src="images/kl_1958.png">
+            <p class="kl_1958-caption">Figure 4: Datasets.</p>
+        </div>
+        
+        <div class="kl_2001-container">
+            <img src="images/kl_2001.png">
+            <p class="kl_2001-caption">Figure 5: Datasets.</p>
+        </div>
 
+        <div class="kl_2011-container">
+            <img src="images/kl_2011.png">
+            <p class="kl_2011-caption">Figure 4: Datasets.</p>
+        </div>
+
+        <div class="kl_bar-container">
+            <img src="images/kl_bar.png">
+            <p class="kl_bar-caption">Figure 4: Datasets.</p>
+        </div>
+
+        
         <p>
+
             By 2000, plankton populations shifted, with only certain US coasts hosting about 369k plankton per m². By 2011, plankton populations were primarily concentrated near the California coast, with only about 90k plankton per m². So what happened? Are we causing a global extinction of the entire marine ecosystem?
         </p>
 
