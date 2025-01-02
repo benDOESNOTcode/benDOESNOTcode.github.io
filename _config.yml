@@ -9,14 +9,14 @@ theme: jekyll-theme-chirpy
 lang: en
 
 # Change to your timezone › https://kevinnovak.github.io/Time-Zone-Picker
-timezone:
+timezone: America/Los_Angeles
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
 title: Beniel Immanuel # the main title
 
-tagline: idk what im doing  # it will display as the subtitle
+tagline: "idk what im doing"  # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   something just like this
@@ -26,52 +26,53 @@ description: >- # used by seo meta and the atom feed
 url: "https://benDOESNOTcode.github.io"
 
 github:
-  username: github_username # change to your GitHub username
+  username: benDOESNOTcode # change to your GitHub username
 
 twitter:
-  username: twitter_username # change to your Twitter username
+  username: BootlegBenny27 # change to your Twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: your_full_name
-  email: example@domain.com # change to your email address
+  name: Beniel Immanuel
+  email: beniels2713@gmaail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your Twitter homepage
-    - https://github.com/username # change to your GitHub homepage
+    - https://x.com/BootlegBenny27 # change to your Twitter homepage
+    - https://www.linkedin.com/in/beniel-immanuel/ # change to your GitHub homepage
+    - https://github.com/benDOESNOTcode
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
 
 # Site Verification Settings
-webmaster_verifications:
-  google: # fill in your Google verification code
-  bing: # fill in your Bing verification code
-  alexa: # fill in your Alexa verification code
-  yandex: # fill in your Yandex verification code
-  baidu: # fill in your Baidu verification code
-  facebook: # fill in your Facebook verification code
+#webmaster_verifications:
+#  google: # fill in your Google verification code
+ # bing: # fill in your Bing verification code
+  #alexa: # fill in your Alexa verification code
+  #yandex: # fill in your Yandex verification code
+  #baidu: # fill in your Baidu verification code
+  #facebook: # fill in your Facebook verification code
 
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
 
 # Web Analytics Settings
-analytics:
-  google:
-    id: # fill in your Google Analytics ID
-  goatcounter:
-    id: # fill in your GoatCounter ID
-  umami:
-    id: # fill in your Umami ID
-    domain: # fill in your Umami domain
-  matomo:
-    id: # fill in your Matomo ID
-    domain: # fill in your Matomo domain
-  cloudflare:
-    id: # fill in your Cloudflare Web Analytics token
-  fathom:
-    id: # fill in your Fathom Site ID
+#analytics:
+#  google:
+ #   id: # fill in your Google Analytics ID
+#  goatcounter:
+#    id: # fill in your GoatCounter ID
+ # umami:
+  #  id: # fill in your Umami ID
+  #  domain: # fill in your Umami domain
+  #matomo:
+   # id: # fill in your Matomo ID
+   # domain: # fill in your Matomo domain
+  #cloudflare:
+  #  id: # fill in your Cloudflare Web Analytics token
+  #fathom:
+   # id: # fill in your Fathom Site ID
 
 # Page views settings
 pageviews:
@@ -95,11 +96,10 @@ theme_mode: # [light | dark]
 # will be added to all media resources (site avatar, posts' images, audio and video files) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-cdn:
+#cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://media.licdn.com/dms/image/v2/D5635AQGCzLUsTxbCCg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1725292737516?e=1735200000&v=beta&t=oMJwt1wCYH0eN0FA5rnKueJb_Ua9oiQlxVbQ2JGhcsQ
-
+avatar: https://media.licdn.com/dms/image/v2/D5635AQErt5wqUKQzHQ/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1735628134726?e=1736233200&v=beta&t=TtRLublNkHN8HfhsTaDFQ7CgS6upfC_pLoByyhHifoY
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
 social_preview_image: # string, local or CORS resources
