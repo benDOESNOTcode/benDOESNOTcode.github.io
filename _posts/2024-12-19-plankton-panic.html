@@ -65,7 +65,7 @@
         <h1>Toxic Tides: Impact of Microplastic on the Plankton Population</h1>
 
         <p class="intro">
-            We’ve all seen harrowing images: ducks entangled in plastic, turtles mistaking plastic bags for jellyfish, and large fish like tuna found with plastic in their stomachs. A staggering study revealed that in 2010, an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now, a decade later? Have we made progress, or has the problem worsened?
+            We’ve all seen harrowing images: ducks entangled in plastic, turtles mistaking plastic bags for jellyfish, and large fish like tuna found with plastic in their stomachs. A staggering study revealed that in 2010, an estimated 4.8 to 12.7 million metric tons of plastic entered the oceans. But what about now, a decade and a half later? Have we made progress, or has the problem worsened?
         </p>
 
         <!-- Duck Image -->
@@ -76,7 +76,7 @@
 
         <h2>Our Study</h2>
         <p>
-            Our study explores two critical aspects of this crisis: the impact of microplastics on phytoplankton and whether fishing vessels have altered their routes in response to pollution hotspots.
+            Our study delves into a critical aspect of this crisis: the impact of microplastics on phytoplankton. We aim to uncover whether a significant relationship exists between the two and to what extent this issue has escalated.
         </p>
         
 
@@ -91,7 +91,8 @@
         <!-- Visualizations -->
         <h2>Visualizations</h2>
         <p>
-            We explored the relationship between sea surface temperature (SST) and plankton growth over the years.
+            The first question we sought to address was whether sea surface temperature (SST) affects phytoplankton populations. Research indicates that plankton undertake vertical migrations to avoid harsh sunlight, returning closer to the surface during warmer temperatures. Furthermore, studies suggest that Earth's overall temperature has been increasing.
+            However, from the bar graph plotting average SST versus year, we observe that sea surface temperatures have remained relatively stable over the past 40 years. Additionally, a line plot of SST against year and chlorophyll content (a proxy for plankton concentration in mg/m²) reveals no clear correlation between these two variables.
         </p>
         <div class="image-container">
             <img src="images/sstplankton.png" alt="SST vs Plankton" title="SST vs Plankton Growth">
@@ -99,21 +100,39 @@
         </div>
 
         <h2>Distribution of Plastic</h2>
-        <p>Plastic distribution over the years.</p>
+
+        <p>
+        Next, we examined how plastic pollution has evolved over the years. To do this, we divided the plastic dataset into three time periods: 1972–2000, 2001–2010, and 2011–2022.
+        The first graph, representing data from 1972–2000, reveals that most plastic pollution was concentrated in the Gulf of Mexico, with densities reaching 110 pieces per m³.
+        </p>
 
         <!-- Plastic Distribution Images -->
         <div class="image-container">
             <img src="images/pl_1972.png" alt="Plastic Distribution 1972-2000" title="Plastic Distribution 1972-2000">
             <p class="image-title">Figure 4: Plastic Distribution (1972–2000).</p>
         </div>
+        <p>
+         From 2001 to 2010, plastic pollution expanded significantly, spreading across the Atlantic Ocean and into the Pacific Ocean, with densities rising to approximately 890 pieces per m³.
+        </p>
+
         <div class="image-container">
             <img src="images/pl_2001.png" alt="Plastic Distribution 2001-2010" title="Plastic Distribution 2001-2010">
             <p class="image-title">Figure 5: Plastic Distribution (2001–2010).</p>
         </div>
+
+        <p>
+        In the period from 2011 onwards, the data shows a dramatic increase, with plastic pollution spreading across the entire Eastern Hemisphere. During this time, record densities of up to 2.3 million pieces per m³ were observed.
+        </p>
+
         <div class="image-container">
             <img src="images/pl_2011.png" alt="Plastic Distribution 2011-2022" title="Plastic Distribution 2011-2022">
             <p class="image-title">Figure 6: Plastic Distribution (2011–2022).</p>
         </div>
+
+        <p>
+        Here we can see a log bar of plastic distribution over the years and how in the recent years it has exploded in size.
+        </p>
+
         <div class="image-container">
             <img src="images/pl_logbar.png" alt="Plastic Distribution" title="Plastic Distribution">
             <p class="image-title">Figure 6: Plastic Distribution using logBar.</p>
@@ -121,33 +140,74 @@
 
         <!-- Plankton Distribution Images -->
         <h2>Distribution of Plankton</h2>
+
+        <p>
+        Similar to the plastic dataset, we divided the phytoplankton dataset into three time periods: 1958–2000, 2001–2010, and 2011–2017.
+        During the latter half of the 20th century, phytoplankton populations were thriving along the Indian coast and the American coast, with densities reaching approximately 1 million mg per m².
+        </p>
+
         <div class="image-container">
             <img src="images/kl_1958.png" alt="Plankton Distribution 1958-2000" title="Plankton Distribution 1958-2000">
             <p class="image-title">Figure 7: Plankton Distribution (1958–2000).</p>
         </div>
+
+        <p>
+        However, by the early 2000s, this abundance had diminished significantly, with only certain coastal regions in the U.S. showing plankton populations of around 369,000 mg per m².
+        </p>
+    
         <div class="image-container">
             <img src="images/kl_2001.png" alt="Plankton Distribution 2001-2010" title="Plankton Distribution 2001-2010">
             <p class="image-title">Figure 8: Plankton Distribution (2001–2010).</p>
         </div>
+
+        <p>
+        The period from 2011 onward marked a dramatic decline. Phytoplankton populations became largely confined to the coast of California, with densities plummeting to just 90,000 mg per m².
+        </p>
+
         <div class="image-container">
             <img src="images/kl_2011.png" alt="Plankton Distribution 2010-2017" title="Plankton Distribution 2010-2017">
             <p class="image-title">Figure 9: Plankton Distribution (2010–2017).</p>
         </div>
-        <div class="image-container">
-            <img src="images/kl_pl_table.png" alt="Plankton Distribution" title="Plankton Distribution">
-            <p class="image-title">Figure 9: Plankton Distribution.</p>
-        </div>
+
+        <p>
+        Here you can observe bar plot of planktn decline.This raises an urgent question: what has caused such a catastrophic decline? Are we witnessing the beginning of a global extinction of the marine ecosystem?
+        </p>
 
         <!-- Correlation and Statistical Tests -->
         <h2>Statistical Analysis</h2>
+
+        <p>
+        The graph shows a sharp increase in microplastic levels starting from 2011, while plankton densities exhibit a continuous decline over the same timeframe. This contrasting trend suggests an inverse relationship, with rising microplastic pollution potentially contributing to the depletion of plankton populations.
+        But is this really true? Thats why we used three seperate test to cofiirm our results.
+        <p/>
         <div class="image-container">
             <img src="images/kl_pl_line.png" alt="Microplastic vs Plankton Line Plot" title="Microplastic vs Plankton Line Plot">
             <p class="image-title">Figure 10: Microplastic vs Plankton Line Plot.</p>
         </div>
-        <div class="image-container">
-            <img src="images/kl_pl_table.png" alt="Statistical Table" title="Statistical Analysis Table">
-            <p class="image-title">Figure 11: Statistical Analysis Table.</p>
-        </div>
+
+        <p>
+        To understand the relationship between microplastic pollution and plankton populations, we employed three statistical techniques: <strong>Spearman Correlation</strong>, <strong>Pearson Correlation</strong>, and the <strong>Chi-Square Test</strong>. Each method offers unique insights into the nature of the relationship between these variables.
+        </p>
+        <ul>
+            <li>
+            <strong>Spearman Correlation:</strong> This non-parametric method assesses the strength and direction of the monotonic relationship between two variables. It is particularly useful when the data may not follow a normal distribution. In our analysis, the Spearman correlation coefficient was <strong>-0.13</strong> (rounded), with a p-value of <strong>0.53</strong>. This weak negative correlation suggests that as microplastic levels increase, plankton densities tend to decrease, but the relationship is not statistically significant.
+            </li>
+            <li>
+            <strong>Pearson Correlation:</strong> The Pearson correlation measures the linear relationship between two variables. It assumes that the data is normally distributed and quantifies how closely the variables vary together. Our Pearson correlation coefficient was <strong>-0.13</strong> (rounded), with a p-value of <strong>0.56</strong>, indicating a weak negative linear relationship. However, like the Spearman result, this correlation is not statistically significant.
+            </li>
+            <li>
+            <strong>Chi-Square Test:</strong> The Chi-Square test is used to determine whether there is a significant association between categorical variables. Although not designed for continuous data, it can provide additional context for the relationship. Our test statistic was <strong>0.44</strong> (rounded), with a p-value of <strong>0.80</strong>, suggesting no significant association between microplastic pollution and plankton populations.
+            </li>
+        </ul>
+
+        <!-- Final Thoughts -->
+        <h2>Final Thoughts and Conclusion</h2>
+
+        <p> These limitations underscore the challenges of relying on incomplete and regionally skewed datasets to understand the full scope of environmental damage. The cessation of direct data collection in 1994 and the reliance on satellite imagery limit the depth and accuracy of current analyses, potentially overlooking critical changes beneath the ocean’s surface. Moreover, the dataset’s focus on the United States after 2000 fails to capture the ecological impacts in other regions, such as the waters around India, which are home to diverse and vital marine ecosystems.
+        However, even with these gaps, the evidence of human impact on the oceans is undeniable. From skyrocketing plastic pollution to fish suffering from reproductive failure and respiratory issues, the signs of distress are clear. Addressing these challenges requires both better data and immediate action to reduce pollution and protect marine life. The urgency to act has never been greater, and the responsibility lies with all of us.
+        </p>
+
+        
     </div>
 </body>
 </html>
