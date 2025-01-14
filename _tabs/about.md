@@ -10,7 +10,8 @@ I graduated from The [VIT VELLORE, INDIA](https://vit.ac.in/), with a bachelor's
 
 In my free time, I play blackjack (Hitting at 17 works...trust me) & hit the gym no pun intended.
 
-![alt text](_tabs\ben.jpg){: w="700" h="400" }
-_Me wearing my Dhoti for Pongal [Mount Moses](https://en.wikipedia.org/wiki/Pongal_(festival))
+![alt text](images\ben.jpg){: w="600" h="350" }
+
+Me wearing my Dhoti for [Pongal](https://en.wikipedia.org/wiki/Pongal_(festival))
 
 I’m best reached through [LinkedIn](https://www.linkedin.com/in/beniel-immanuel/). I’m always open to interesting conversations and collaboration.
