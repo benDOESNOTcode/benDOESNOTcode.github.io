@@ -10,7 +10,7 @@ I graduated from The [VIT VELLORE, INDIA](https://vit.ac.in/), with a bachelor's
 
 In my free time, I play blackjack (Hitting at 17 works...trust me) & hit the gym no pun intended.
 
-![alt text](images\ben.jpg){: w="600" h="350" }
+![alt text](images/ben.jpg){: w="600" h="350" }
 
 Me wearing my Dhoti for [Pongal](https://en.wikipedia.org/wiki/Pongal_(festival))
 
