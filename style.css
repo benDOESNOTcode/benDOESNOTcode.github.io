@@ -1,0 +1,507 @@
+/* ============================================
+   8-BIT DINOSAUR PORTFOLIO - PIXEL THEME
+   ============================================ */
+
+/* COLOR PALETTE */
+:root {
+    --primary-green: #2d8659;      /* Jungle green */
+    --light-green: #52b788;        /* Lighter green accent */
+    --dark-green: #1b4332;         /* Dark forest green */
+    --brown: #6b4423;              /* Earthy brown */
+    --light-brown: #a88968;        /* Light brown accent */
+    --cream: #f1f1e0;              /* Off-white cream */
+    --dark-gray: #2a2a2a;          /* Near-black */
+    --gold: #ffd700;               /* Golden accent */
+    --red: #cc2222;                /* Accent red for buttons */
+    --text-primary: #000;          /* Black text */
+    --text-secondary: #333;        /* Dark gray text */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* GLOBAL STYLES */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'VT323', monospace;
+    background-color: #1a1a1a;
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Press Start 2P', monospace;
+    letter-spacing: 2px;
+}
+
+h1 {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+h2 {
+    font-size: clamp(1.2rem, 3vw, 2.5rem);
+}
+
+h3 {
+    font-size: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+p {
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   PIXEL BUTTON STYLES
+   ============================================ */
+
+.pixel-button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+    padding: 0.8rem 1.6rem;
+    background-color: var(--primary-green);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    
+    /* Pixel border using box-shadow */
+    box-shadow: 
+        4px 0 0 0 var(--dark-green),
+        0 4px 0 0 var(--dark-green),
+        4px 4px 0 0 var(--dark-green);
+    
+    transition: all 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pixel-button:hover {
+    background-color: var(--light-green);
+    box-shadow: 
+        6px 0 0 0 var(--primary-green),
+        0 6px 0 0 var(--primary-green),
+        6px 6px 0 0 var(--primary-green);
+    transform: translate(-2px, -2px);
+}
+
+.pixel-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 
+        2px 0 0 0 var(--dark-green),
+        0 2px 0 0 var(--dark-green),
+        2px 2px 0 0 var(--dark-green);
+}
+
+.pixel-button.small {
+    padding: 0.5rem 1rem;
+    font-size: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.pixel-button:disabled {
+    background-color: #999;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 50%, var(--brown) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 2;
+    animation: slideInDown 1s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dino-sprite {
+    font-size: clamp(4rem, 15vw, 12rem);
+    margin-bottom: 1rem;
+    animation: dinoIdle 1.5s ease-in-out infinite;
+    cursor: pointer;
+}
+
+@keyframes dinoIdle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes dinoJump {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-60px); }
+    50% { transform: translateY(-60px); }
+    100% { transform: translateY(0); }
+}
+
+.dino-sprite.jumping {
+    animation: dinoJump 0.6s ease-out;
+}
+
+.hero-title {
+    color: var(--cream);
+    margin-bottom: 1rem;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    color: var(--cream);
+    font-size: clamp(0.75rem, 1.8vw, 1.15rem);
+    margin-bottom: 2rem;
+    font-family: 'VT323', monospace;
+    line-height: 1.8;
+}
+
+/* ============================================
+   ABOUT ME SECTION - RPG DIALOGUE BOX
+   ============================================ */
+
+.about {
+    background-color: var(--dark-gray);
+    padding: 3rem 2rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialogue-box {
+    background-color: var(--cream);
+    width: 100%;
+    max-width: 800px;
+    border: 8px solid var(--dark-green);
+    box-shadow: 
+        -8px -8px 0 0 var(--brown),
+        -16px -16px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.dialogue-header {
+    background-color: var(--primary-green);
+    color: var(--cream);
+    padding: 1rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    border-bottom: 4px solid var(--dark-green);
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.dialogue-content {
+    padding: 2rem;
+    min-height: 200px;
+    display: flex;
+    align-items: flex-start;
+}
+
+#dialogue-text {
+    color: var(--text-primary);
+    font-size: clamp(0.75rem, 1.6vw, 1rem);
+    line-height: 1.8;
+    letter-spacing: 1px;
+}
+
+.dialogue-footer {
+    background-color: var(--light-green);
+    padding: 0.5rem 1rem;
+    border-top: 4px solid var(--dark-green);
+    text-align: right;
+}
+
+.cursor {
+    color: var(--primary-green);
+    animation: blink 1s infinite;
+    font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+}
+
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+/* ============================================
+   PROJECTS SECTION - ARCADE CABINETS
+   ============================================ */
+
+.projects {
+    background-color: var(--dark-gray);
+    padding: 3rem 2rem;
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            rgba(45, 134, 89, 0.05) 0,
+            rgba(45, 134, 89, 0.05) 1px,
+            transparent 1px,
+            transparent 20px
+        );
+}
+
+.section-title {
+    text-align: center;
+    color: var(--cream);
+    margin-bottom: 3rem;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ARCADE CABINET STYLING */
+.arcade-cabinet {
+    background: linear-gradient(135deg, var(--brown) 0%, var(--light-brown) 100%);
+    border: 6px solid var(--dark-green);
+    box-shadow: 
+        0 12px 0 0 #3d2817,
+        0 16px 20px rgba(0, 0, 0, 0.8);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.arcade-cabinet:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+        0 16px 0 0 #3d2817,
+        0 24px 30px rgba(0, 0, 0, 0.9);
+}
+
+.cabinet-screen {
+    background: linear-gradient(135deg, #1a3d1a 0%, #0d2608 100%);
+    border: 4px solid #0a1a08;
+    padding: 2rem;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.cabinet-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(45, 134, 89, 0.2);
+    border: 2px dashed var(--light-green);
+}
+
+.project-icon {
+    font-size: clamp(3rem, 8vw, 4rem);
+    filter: drop-shadow(0 0 8px rgba(82, 183, 136, 0.6));
+}
+
+.cabinet-body {
+    padding: 1.5rem;
+    background-color: var(--light-brown);
+    border-top: 4px solid var(--dark-green);
+}
+
+.cabinet-body h3 {
+    color: var(--dark-green);
+    margin-bottom: 0.75rem;
+    font-size: clamp(0.75rem, 1.8vw, 1.1rem);
+}
+
+.cabinet-body p {
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+    font-size: clamp(0.65rem, 1.4vw, 0.95rem);
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+    background: linear-gradient(135deg, var(--brown) 0%, var(--dark-green) 100%);
+    padding: 2rem;
+    border-top: 8px solid var(--light-green);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-title {
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.footer-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-btn {
+    text-decoration: none;
+    display: inline-block;
+    color: var(--cream) !important;
+}
+
+.footer-text {
+    color: var(--cream);
+    font-size: clamp(0.65rem, 1.2vw, 0.9rem);
+    margin-top: 2rem;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   ANIMATIONS & EFFECTS
+   ============================================ */
+
+@keyframes pixelFlash {
+    0%, 100% { text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5); }
+    50% { text-shadow: 4px 4px 0 #ffd700; }
+}
+
+.section-title {
+    animation: pixelFlash 3s ease-in-out infinite;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE FIRST
+   ============================================ */
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.7rem;
+    }
+
+    .pixel-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.65rem;
+    }
+
+    .dialogue-box {
+        border-width: 6px;
+        box-shadow: 
+            -6px -6px 0 0 var(--brown),
+            -12px -12px 0 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .projects {
+        padding: 2rem 1rem;
+    }
+
+    .projects-grid {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .pixel-button {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   IMAGE RENDERING FOR PIXEL ART
+   ============================================ */
+
+img {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* ============================================
+   UTILITY & ACCESSIBILITY
+   ============================================ */
+
+a {
+    color: var(--light-green);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--gold);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-green);
+    border: 2px solid var(--dark-green);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--light-green);
+}

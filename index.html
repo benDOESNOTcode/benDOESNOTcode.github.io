@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beniel - Computational Data Science Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="dino-sprite" id="dinosprite"></div>
+            <h1 class="hero-title">Hi, I'm Beniel.</h1>
+            <p class="hero-subtitle">Computational Data Science Master's Student<br>University of California, Riverside</p>
+            <button class="pixel-button" onclick="scrollToProjects()">View My Work</button>
+        </div>
+    </section>
+
+    <!-- ABOUT ME SECTION -->
+    <section id="about" class="about">
+        <div class="dialogue-box">
+            <div class="dialogue-header">
+                <span class="dialogue-title">╔═ ABOUT ME ═╗</span>
+            </div>
+            <div class="dialogue-content">
+                <p id="dialogue-text"></p>
+            </div>
+            <div class="dialogue-footer">
+                <span class="cursor">▮</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section id="projects" class="projects">
+        <h2 class="section-title">My Projects</h2>
+        <div class="projects-grid">
+            <!-- Dino Dex Card -->
+            <div class="arcade-cabinet">
+                <div class="cabinet-screen">
+                    <div class="cabinet-display">
+                        <div class="project-icon">🦕</div>
+                    </div>
+                </div>
+                <div class="cabinet-body">
+                    <h3>Dino Dex</h3>
+                    <p>An 8-bit encyclopedia of dinosaurs featuring custom pixel art, detailed species info, and interactive filtering.</p>
+                    <div class="button-group">
+                        <button class="pixel-button small">View</button>
+                        <button class="pixel-button small">Code</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blackjack Game Card -->
+            <div class="arcade-cabinet">
+                <div class="cabinet-screen">
+                    <div class="cabinet-display">
+                        <div class="project-icon">♠</div>
+                    </div>
+                </div>
+                <div class="cabinet-body">
+                    <h3>Blackjack Game</h3>
+                    <p>A fully functional card game with pixel-art UI, AI dealer logic, score tracking, and retro sound effects.</p>
+                    <div class="button-group">
+                        <button class="pixel-button small">Play</button>
+                        <button class="pixel-button small">Code</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Science Project Card -->
+            <div class="arcade-cabinet">
+                <div class="cabinet-screen">
+                    <div class="cabinet-display">
+                        <div class="project-icon">📊</div>
+                    </div>
+                </div>
+                <div class="cabinet-body">
+                    <h3>Data Science Project</h3>
+                    <p>Advanced machine learning model exploring [topic]. Features data preprocessing, model optimization, and visualization.</p>
+                    <div class="button-group">
+                        <button class="pixel-button small" disabled>Coming Soon</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="footer">
+        <div class="footer-content">
+            <h3 class="footer-title">Let's Connect</h3>
+            <div class="footer-buttons">
+                <a href="https://github.com/benDOESNOTcode" class="pixel-button footer-btn" target="_blank">GitHub</a>
+                <a href="https://linkedin.com" class="pixel-button footer-btn" target="_blank">LinkedIn</a>
+                <button class="pixel-button footer-btn" onclick="ContactEmail()">Press Start to Email</button>
+            </div>
+            <p class="footer-text">© 2026 Beniel | Made with ❤️ and 8-bit nostalgia</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
