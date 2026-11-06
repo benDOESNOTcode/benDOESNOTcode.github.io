@@ -1,107 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beniel - Computational Data Science Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beniel Immanuel — Data Science for the Living World</title>
+<meta name="description" content="Beniel Immanuel builds data systems and AI agents that make sense of the living world — from bird migrations to ocean health. Computational Data Science, UC Riverside.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5efe2; --paper-2:#fffdf8; --paper-3:#efe7d5;
+  --ink:#1f3529; --ink-soft:#495a4f; --muted:#7d8a7f;
+  --forest:#15362a; --forest-2:#1e4a39;
+  --teal:#0f6e56; --teal-soft:#e3f3ec;
+  --ocean:#185fa5; --ocean-soft:#e6f0fb;
+  --amber:#9b6711; --amber-soft:#f8eed9;
+  --moss:#3f6d16; --moss-soft:#ebf2df;
+  --clay:#b1512c; --clay-soft:#f7e8e0;
+  --line:#e0d8c6; --line-2:#d2c8b2;
+  --radius:14px;
+  --maxw:1080px;
+  --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:17px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit; text-decoration:none;}
+img{max-width:100%; display:block;}
+h1,h2,h3{font-family:var(--serif); font-weight:500; line-height:1.1; margin:0;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+.eyebrow{font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); font-weight:600; margin:0 0 14px;}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;}
+
+/* NAV */
+nav{position:fixed; top:0; left:0; right:0; z-index:50; transition:background .3s,box-shadow .3s,border-color .3s; border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(245,239,226,.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); box-shadow:0 1px 14px rgba(21,54,42,.05);}
+.nav-inner{max-width:var(--maxw); margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between;}
+.brand{font-family:var(--serif); font-size:20px; font-weight:600; color:var(--paper); transition:color .3s; letter-spacing:.01em;}
+nav.scrolled .brand{color:var(--ink);}
+.brand .dot{color:var(--teal);}
+.nav-links{display:flex; gap:28px; align-items:center;}
+.nav-links a{font-size:15px; font-weight:500; color:rgba(255,253,248,.82); transition:color .25s;}
+.nav-links a:hover{color:#fff;}
+nav.scrolled .nav-links a{color:var(--ink-soft);}
+nav.scrolled .nav-links a:hover{color:var(--teal);}
+.nav-cta{border:1.5px solid rgba(255,253,248,.4); border-radius:999px; padding:7px 16px !important; transition:all .25s;}
+.nav-cta:hover{background:rgba(255,253,248,.12); border-color:#fff;}
+nav.scrolled .nav-cta{border-color:var(--line-2);}
+nav.scrolled .nav-cta:hover{background:var(--teal); border-color:var(--teal); color:#fff !important;}
+
+/* HERO */
+.hero{position:relative; background:var(--forest); color:var(--paper); overflow:hidden; padding:168px 0 110px;}
+.hero-bg{position:absolute; inset:0; pointer-events:none;}
+.hero-bg svg{position:absolute;}
+.hero .wrap{position:relative; z-index:2;}
+.hero .eyebrow{color:#79d3b3;}
+.hero h1{font-size:clamp(44px,8vw,86px); font-weight:500; letter-spacing:-.01em; margin:0 0 22px; color:#fcf9f0;}
+.hero h1 em{font-style:italic; color:#8fe0c0;}
+.hero-sub{font-size:clamp(18px,2.4vw,23px); color:rgba(246,241,231,.82); max-width:620px; line-height:1.55; margin:0 0 38px; font-weight:400;}
+.hero-btns{display:flex; gap:14px; flex-wrap:wrap; align-items:center;}
+.btn{display:inline-flex; align-items:center; gap:9px; font-size:16px; font-weight:500; padding:13px 24px; border-radius:999px; transition:all .22s; cursor:pointer; border:1.5px solid transparent;}
+.btn-primary{background:#8fe0c0; color:#0d2b21;}
+.btn-primary:hover{background:#a7ecd0; transform:translateY(-2px);}
+.btn-ghost{border-color:rgba(246,241,231,.35); color:var(--paper);}
+.btn-ghost:hover{border-color:#fff; background:rgba(255,255,255,.08);}
+.scroll-hint{position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; color:rgba(246,241,231,.5); font-size:22px; animation:bob 2.4s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,8px);}}
+
+/* SECTION */
+section{padding:92px 0;}
+.sec-head{max-width:620px; margin:0 0 54px;}
+.sec-head h2{font-size:clamp(32px,4.6vw,46px); letter-spacing:-.01em; margin:0 0 14px;}
+.sec-head p{color:var(--ink-soft); font-size:18px; margin:0;}
+.band{background:var(--paper-3);}
+
+/* FEATURED */
+.feat-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:26px;}
+.feat-card{background:var(--paper-2); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; transition:transform .3s,box-shadow .3s,border-color .3s;}
+.feat-card:hover{transform:translateY(-5px); box-shadow:0 18px 42px rgba(21,54,42,.12); border-color:var(--line-2);}
+.feat-media{height:188px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;}
+.feat-media img{width:100%; height:100%; object-fit:cover;}
+.feat-media .glyph{font-size:62px; opacity:.9;}
+.feat-media.teal{background:linear-gradient(135deg,#12735a,#1aa37d);}
+.feat-media.moss{background:linear-gradient(135deg,#3f6d16,#6ba52a);}
+.feat-tag{position:absolute; top:14px; left:14px; z-index:3; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:5px 11px; border-radius:999px; background:rgba(255,253,248,.92); color:var(--ink);}
+.feat-body{padding:24px 26px 26px; display:flex; flex-direction:column; flex:1;}
+.feat-body h3{font-size:25px; margin:0 0 10px;}
+.feat-body p{color:var(--ink-soft); font-size:16px; margin:0 0 18px; line-height:1.6; flex:1;}
+.tags{display:flex; flex-wrap:wrap; gap:7px; margin:0 0 20px;}
+.tag{font-size:12.5px; font-weight:500; padding:4px 10px; border-radius:7px; background:var(--paper-3); color:var(--ink-soft);}
+.tag.teal{background:var(--teal-soft); color:#0a5340;}
+.tag.ocean{background:var(--ocean-soft); color:#114a82;}
+.tag.amber{background:var(--amber-soft); color:#7a4f0a;}
+.tag.moss{background:var(--moss-soft); color:#315711;}
+.tag.clay{background:var(--clay-soft); color:#8a3d21;}
+.card-links{display:flex; gap:18px; align-items:center; margin-top:auto;}
+.card-link{font-size:15px; font-weight:600; color:var(--teal); display:inline-flex; align-items:center; gap:6px; transition:gap .2s;}
+.card-link:hover{gap:10px;}
+.card-link.muted{color:var(--muted);}
+
+/* MORE PROJECTS */
+.group-label{font-size:14px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:46px 0 20px; display:flex; align-items:center; gap:12px;}
+.group-label:first-of-type{margin-top:0;}
+.group-label::after{content:""; flex:1; height:1px; background:var(--line);}
+.mini-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+.mini{background:var(--paper-2); border:1px solid var(--line); border-radius:var(--radius); padding:24px 22px; display:flex; flex-direction:column; transition:transform .25s,box-shadow .25s,border-color .25s;}
+.mini:hover{transform:translateY(-4px); box-shadow:0 14px 30px rgba(21,54,42,.1); border-color:var(--line-2);}
+.mini-icon{width:44px; height:44px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:23px; margin-bottom:16px;}
+.mini h3{font-size:20px; margin:0 0 9px;}
+.mini p{color:var(--ink-soft); font-size:15px; line-height:1.55; margin:0 0 16px; flex:1;}
+
+/* ABOUT */
+.about-grid{display:grid; grid-template-columns:300px 1fr; gap:52px; align-items:start;}
+.about-photo{border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); position:relative;}
+.about-photo img{width:100%; aspect-ratio:3/3.3; object-fit:cover;}
+.about-cap{font-size:13px; color:var(--muted); text-align:center; margin-top:12px; font-style:italic;}
+.about-text p{color:var(--ink-soft); margin:0 0 18px; font-size:17.5px;}
+.about-text p:first-child{font-size:21px; color:var(--ink); line-height:1.5;}
+.about-text a{color:var(--teal); font-weight:500; border-bottom:1px solid rgba(15,110,86,.3);}
+.facts{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;}
+.fact{display:inline-flex; align-items:center; gap:8px; font-size:14.5px; background:var(--paper-2); border:1px solid var(--line); border-radius:999px; padding:8px 15px; color:var(--ink-soft);}
+.fact i{color:var(--teal); font-size:16px;}
+
+/* SKILLS */
+.skill-cols{display:grid; grid-template-columns:repeat(4,1fr); gap:30px;}
+.skill-col h4{font-family:var(--sans); font-size:14px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--teal); margin:0 0 16px;}
+.skill-col ul{list-style:none; margin:0; padding:0;}
+.skill-col li{font-size:16px; color:var(--ink-soft); padding:7px 0; border-bottom:1px solid var(--line);}
+
+/* CONTACT */
+.contact{background:var(--forest); color:var(--paper); text-align:center; position:relative; overflow:hidden;}
+.contact .wrap{position:relative; z-index:2;}
+.contact .eyebrow{color:#79d3b3;}
+.contact h2{color:#fcf9f0; font-size:clamp(34px,5vw,54px); margin:0 0 18px;}
+.contact p{color:rgba(246,241,231,.82); font-size:19px; max-width:540px; margin:0 auto 38px;}
+.contact-btns{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+.contact-btns .btn-ghost{color:var(--paper);}
+footer{background:#102a20; color:rgba(246,241,231,.6); text-align:center; padding:30px 24px; font-size:14px;}
+footer a{color:rgba(246,241,231,.8);}
+footer a:hover{color:#8fe0c0;}
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(26px); transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1; transform:none;}
+
+@media(max-width:860px){
+  .feat-grid{grid-template-columns:1fr;}
+  .mini-grid{grid-template-columns:repeat(2,1fr);}
+  .about-grid{grid-template-columns:1fr; gap:34px;}
+  .about-photo{max-width:300px; margin:0 auto;}
+  .skill-cols{grid-template-columns:repeat(2,1fr); gap:24px;}
+  .nav-links{display:none;}
+  .nav-links.contact-only{display:flex;}
+}
+@media(max-width:540px){
+  .mini-grid{grid-template-columns:1fr;}
+  .skill-cols{grid-template-columns:1fr;}
+  section{padding:66px 0;}
+  .hero{padding:140px 0 90px;}
+}
+</style>
 </head>
 <body>
-    <!-- HERO SECTION -->
-    <section id="hero" class="hero">
-        <div class="hero-content">
-            <div class="dino-sprite" id="dinosprite"></div>
-            <h1 class="hero-title">Hi, I'm Beniel.</h1>
-            <p class="hero-subtitle">Computational Data Science Master's Student<br>University of California, Riverside</p>
-            <button class="pixel-button" onclick="scrollToProjects()">View My Work</button>
+<a class="sr-only" href="#work">Skip to projects</a>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">Beniel Immanuel<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="https://github.com/benDOESNOTcode" target="_blank" rel="noopener">GitHub</a>
+      <a href="#contact" class="nav-cta">Get in touch</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true">
+    <svg width="520" height="520" viewBox="0 0 520 520" style="right:-80px; top:-40px; opacity:.16;">
+      <g fill="none" stroke="#8fe0c0" stroke-width="2">
+        <path d="M260 40 C260 180 260 320 260 470"/>
+        <path d="M260 120 C210 95 170 100 150 70 C195 70 230 85 260 120 Z" fill="#8fe0c0" stroke="none" opacity=".6"/>
+        <path d="M260 120 C310 95 350 100 370 70 C325 70 290 85 260 120 Z" fill="#8fe0c0" stroke="none" opacity=".4"/>
+        <path d="M260 200 C205 172 160 178 138 144 C188 144 228 161 260 200 Z" fill="#8fe0c0" stroke="none" opacity=".6"/>
+        <path d="M260 200 C315 172 360 178 382 144 C332 144 292 161 260 200 Z" fill="#8fe0c0" stroke="none" opacity=".4"/>
+        <path d="M260 288 C200 258 150 265 126 228 C181 228 225 246 260 288 Z" fill="#8fe0c0" stroke="none" opacity=".55"/>
+        <path d="M260 288 C320 258 370 265 394 228 C339 228 295 246 260 288 Z" fill="#8fe0c0" stroke="none" opacity=".35"/>
+      </g>
+    </svg>
+    <svg width="220" height="150" viewBox="0 0 220 150" style="left:-10px; bottom:30px; opacity:.1;">
+      <path d="M10 90 Q60 20 110 70 Q130 90 150 60 Q140 95 110 100 Q70 110 40 100 Q20 96 10 90 Z" fill="#8fe0c0"/>
+      <path d="M150 60 Q180 40 210 46 Q185 58 162 72 Z" fill="#8fe0c0"/>
+      <circle cx="120" cy="66" r="3.5" fill="#15362a"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow">Data science · ecology · applied AI</p>
+    <h1>I build data systems that read&nbsp;the <em>living world</em>.</h1>
+    <p class="hero-sub">From bird migrations to ocean health, I turn messy, large-scale ecological and operational data into pipelines, models, and AI agents people can actually ask questions of.</p>
+    <div class="hero-btns">
+      <a href="#work" class="btn btn-primary"><i class="ti ti-binoculars"></i>View my work</a>
+      <a href="https://github.com/benDOESNOTcode" target="_blank" rel="noopener" class="btn btn-ghost"><i class="ti ti-brand-github"></i>GitHub</a>
+    </div>
+  </div>
+  <a href="#work" class="scroll-hint" aria-label="Scroll to work"><i class="ti ti-chevron-down"></i></a>
+</header>
+
+<main>
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Featured work</p>
+      <h2>Four projects I'm proud of</h2>
+      <p>Spanning agentic AI, large-scale geospatial analysis, and production data engineering.</p>
+    </div>
+
+    <div class="feat-grid">
+      <article class="feat-card reveal">
+        <div class="feat-media teal">
+          <span class="feat-tag">Agentic AI · birds</span>
+          <span class="glyph"><i class="ti ti-feather" style="color:#eafaf3;"></i></span>
         </div>
-    </section>
-
-    <!-- ABOUT ME SECTION -->
-    <section id="about" class="about">
-        <div class="dialogue-box">
-            <div class="dialogue-header">
-                <span class="dialogue-title">╔═ ABOUT ME ═╗</span>
-            </div>
-            <div class="dialogue-content">
-                <p id="dialogue-text"></p>
-            </div>
-            <div class="dialogue-footer">
-                <span class="cursor">▮</span>
-            </div>
+        <div class="feat-body">
+          <h3>Avian Climate Intelligence</h3>
+          <p>A serverless multi-agent system that answers plain-English questions about bird populations — routing each query to semantic search, text-to-SQL, forecasting, or a self-correcting chart engine, and rendering 20-year migration maps in WebGL.</p>
+          <div class="tags">
+            <span class="tag teal">LangGraph</span><span class="tag teal">RAG · Qdrant</span><span class="tag teal">DuckDB</span><span class="tag teal">Groq Llama-3.3</span><span class="tag teal">Pydeck</span>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://github.com/benDOESNOTcode/avian-climate-agent" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a>
+          </div>
         </div>
-    </section>
+      </article>
 
-    <!-- PROJECTS SECTION -->
-    <section id="projects" class="projects">
-        <h2 class="section-title">My Projects</h2>
-        <div class="projects-grid">
-            <!-- Dino Dex Card -->
-            <div class="arcade-cabinet">
-                <div class="cabinet-screen">
-                    <div class="cabinet-display">
-                        <div class="project-icon">🦕</div>
-                    </div>
-                </div>
-                <div class="cabinet-body">
-                    <h3>Dino Dex</h3>
-                    <p>An 8-bit encyclopedia of dinosaurs featuring custom pixel art, detailed species info, and interactive filtering.</p>
-                    <div class="button-group">
-                        <button class="pixel-button small">View</button>
-                        <button class="pixel-button small">Code</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Blackjack Game Card -->
-            <div class="arcade-cabinet">
-                <div class="cabinet-screen">
-                    <div class="cabinet-display">
-                        <div class="project-icon">♠</div>
-                    </div>
-                </div>
-                <div class="cabinet-body">
-                    <h3>Blackjack Game</h3>
-                    <p>A fully functional card game with pixel-art UI, AI dealer logic, score tracking, and retro sound effects.</p>
-                    <div class="button-group">
-                        <button class="pixel-button small">Play</button>
-                        <button class="pixel-button small">Code</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Science Project Card -->
-            <div class="arcade-cabinet">
-                <div class="cabinet-screen">
-                    <div class="cabinet-display">
-                        <div class="project-icon">📊</div>
-                    </div>
-                </div>
-                <div class="cabinet-body">
-                    <h3>Data Science Project</h3>
-                    <p>Advanced machine learning model exploring [topic]. Features data preprocessing, model optimization, and visualization.</p>
-                    <div class="button-group">
-                        <button class="pixel-button small" disabled>Coming Soon</button>
-                    </div>
-                </div>
-            </div>
+      <article class="feat-card reveal">
+        <div class="feat-media">
+          <span class="feat-tag">Geospatial · oceans</span>
+          <img src="images/sstplankton.png" alt="Map of sea-surface temperature and phytoplankton concentration across the global ocean">
         </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer id="footer" class="footer">
-        <div class="footer-content">
-            <h3 class="footer-title">Let's Connect</h3>
-            <div class="footer-buttons">
-                <a href="https://github.com/benDOESNOTcode" class="pixel-button footer-btn" target="_blank">GitHub</a>
-                <a href="https://linkedin.com" class="pixel-button footer-btn" target="_blank">LinkedIn</a>
-                <button class="pixel-button footer-btn" onclick="ContactEmail()">Press Start to Email</button>
-            </div>
-            <p class="footer-text">© 2026 Beniel | Made with ❤️ and 8-bit nostalgia</p>
+        <div class="feat-body">
+          <h3>Toxic Waters</h3>
+          <p>A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.</p>
+          <div class="tags">
+            <span class="tag ocean">GeoPandas</span><span class="tag ocean">Pandas</span><span class="tag ocean">56M rows</span><span class="tag ocean">NCEI · PANGAEA</span>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://github.com/benDOESNOTcode/Marine" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a>
+          </div>
         </div>
-    </footer>
+      </article>
 
-    <script src="script.js"></script>
+      <article class="feat-card reveal">
+        <div class="feat-media">
+          <span class="feat-tag">Data engineering</span>
+          <img src="images/agentic-bi-demo.gif" alt="Animated demo of the Agentic BI dashboard answering a natural-language analytics question">
+        </div>
+        <div class="feat-body">
+          <h3>Agentic BI Dashboard</h3>
+          <p>A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns questions into SQL.</p>
+          <div class="tags">
+            <span class="tag amber">Airflow</span><span class="tag amber">PySpark</span><span class="tag amber">PostgreSQL</span><span class="tag amber">Docker</span><span class="tag amber">FastAPI</span>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://github.com/benDOESNOTcode/Agentic-BI-Dashboard" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="feat-card reveal">
+        <div class="feat-media moss">
+          <span class="feat-tag">NL → SQL · maps</span>
+          <span class="glyph"><i class="ti ti-map-2" style="color:#f1f8e6;"></i></span>
+        </div>
+        <div class="feat-body">
+          <h3>Atlas Query</h3>
+          <p>Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.</p>
+          <div class="tags">
+            <span class="tag moss">FastAPI</span><span class="tag moss">PostGIS</span><span class="tag moss">React · TS</span><span class="tag moss">D3.js</span><span class="tag moss">Ollama</span>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://github.com/benDOESNOTcode/Atlas-Query" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="more" class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">More projects</p>
+      <h2>The rest of the field notebook</h2>
+      <p>Pipelines, models, and experiments across data engineering, machine learning, and a little play.</p>
+    </div>
+
+    <div class="reveal">
+      <p class="group-label">Data engineering &amp; analytics</p>
+      <div class="mini-grid">
+        <article class="mini">
+          <div class="mini-icon" style="background:var(--amber-soft); color:var(--amber);"><i class="ti ti-chess-knight"></i></div>
+          <h3>Chess Data Pipeline</h3>
+          <p>Pulls games from the Chess.com API into a medallion-style warehouse — DuckDB, dbt transformations, and a Streamlit + Plotly dashboard tracking rating over time.</p>
+          <div class="card-links"><a class="card-link" href="https://github.com/benDOESNOTcode/chess-data-pipeline" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a></div>
+        </article>
+        <article class="mini">
+          <div class="mini-icon" style="background:var(--amber-soft); color:var(--amber);"><i class="ti ti-building-skyscraper"></i></div>
+          <h3>Hotel Reservation Analytics</h3>
+          <p>An end-to-end PySpark ETL cleaning four years of hotel data into a normalized PostgreSQL schema, served through a Flask API and dashboard. Built for UC Riverside's CS 236.</p>
+          <div class="card-links"><a class="card-link" href="https://github.com/benDOESNOTcode/End-to-End-ETL-and-Data-Pipeline-Hotel-Data-" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a></div>
+        </article>
+        <article class="mini">
+          <div class="mini-icon" style="background:var(--amber-soft); color:var(--amber);"><i class="ti ti-chart-candle"></i></div>
+          <h3>Order Flow Imbalance</h3>
+          <p>Computes OFI features from high-frequency limit-order-book data — quantifying short-term buying vs. selling pressure, a core signal in market-microstructure models.</p>
+          <div class="card-links"><a class="card-link" href="https://github.com/benDOESNOTcode/Blockhouse_OFI" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p class="group-label">Machine learning &amp; simulation</p>
+      <div class="mini-grid">
+        <article class="mini">
+          <div class="mini-icon" style="background:var(--moss-soft); color:var(--moss);"><i class="ti ti-shield-lock"></i></div>
+          <h3>Intrusion Detection System</h3>
+          <p>A deep neural network that classifies network traffic on the ECU-IoHT healthcare dataset into five attack types — reproducing an IEEE Access paper and reaching ~99.9% accuracy across 111k packets.</p>
+          <div class="card-links"><a class="card-link" href="https://github.com/benDOESNOTcode/Intrusion_detection_system" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a></div>
+        </article>
+        <article class="mini">
+          <div class="mini-icon" style="background:var(--moss-soft); color:var(--moss);"><i class="ti ti-topology-ring"></i></div>
+          <h3>Darwinian Blobs</h3>
+          <p>An evolutionary simulation where agents compete at iterated rock-paper-scissors using six strategies — from biased heuristics to Q-learning, an MLP, and an LSTM built in PyTorch.</p>
+          <div class="card-links"><a class="card-link" href="https://github.com/benDOESNOTcode/darwinian_blobs" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a></div>
+        </article>
+        <article class="mini">
+          <div class="mini-icon" style="background:var(--clay-soft); color:var(--clay);"><i class="ti ti-cards"></i></div>
+          <h3>Blackjack</h3>
+          <p>A complete command-line blackjack engine — shuffling, betting, correct Ace handling, and a dealer that hits to 17. Made for the fun of it (and yes, hitting on soft 17 works).</p>
+          <div class="card-links"><a class="card-link" href="https://github.com/benDOESNOTcode/blackjack" target="_blank" rel="noopener">Code <i class="ti ti-arrow-right"></i></a></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo reveal">
+        <img src="images/ben.jpg" alt="Beniel Immanuel">
+        <p class="about-cap">Wearing my dhoti for Pongal.</p>
+      </div>
+      <div class="about-text reveal">
+        <p class="eyebrow">About</p>
+        <p>I'm a graduate student in Computational Data Science at UC Riverside, drawn to problems where data meets the natural world.</p>
+        <p>My focus is data visualization and environmental analysis, with a year of machine-learning research behind me. I work day to day in Python, SQL, and Java — building the pipelines, models, and agents you see above. Before Riverside, I earned a bachelor's in Electrical Engineering from <a href="https://vit.ac.in/" target="_blank" rel="noopener">VIT Vellore, India</a>.</p>
+        <p>When I'm not wrangling data, I'm at the gym or playing blackjack. I'm always open to interesting conversations and collaboration — the fastest way to reach me is <a href="https://www.linkedin.com/in/beniel-immanuel/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+        <div class="facts">
+          <span class="fact"><i class="ti ti-school"></i>M.S. Computational Data Science, UC Riverside</span>
+          <span class="fact"><i class="ti ti-map-pin"></i>Riverside, California</span>
+          <span class="fact"><i class="ti ti-bolt"></i>B.E. Electrical Engineering, VIT Vellore</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Toolkit</p>
+      <h2>What I build with</h2>
+    </div>
+    <div class="skill-cols reveal">
+      <div class="skill-col">
+        <h4>Languages</h4>
+        <ul><li>Python</li><li>SQL</li><li>Java</li><li>TypeScript</li></ul>
+      </div>
+      <div class="skill-col">
+        <h4>Data engineering</h4>
+        <ul><li>Apache Spark</li><li>Airflow</li><li>dbt</li><li>DuckDB</li><li>PostgreSQL · PostGIS</li><li>Docker</li></ul>
+      </div>
+      <div class="skill-col">
+        <h4>ML &amp; AI</h4>
+        <ul><li>TensorFlow · Keras</li><li>PyTorch</li><li>LangChain · LangGraph</li><li>RAG · Qdrant</li><li>scikit-learn</li></ul>
+      </div>
+      <div class="skill-col">
+        <h4>Analysis &amp; viz</h4>
+        <ul><li>Pandas · NumPy</li><li>GeoPandas</li><li>Plotly · D3.js</li><li>Streamlit</li><li>FastAPI · Flask</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="hero-bg" aria-hidden="true">
+    <svg width="300" height="200" viewBox="0 0 300 200" style="right:4%; top:20px; opacity:.12;">
+      <path d="M20 120 Q90 30 150 95 Q180 128 210 85 Q196 135 150 142 Q90 154 50 140 Q28 132 20 120 Z" fill="#8fe0c0"/>
+      <path d="M210 85 Q250 58 290 66 Q258 82 226 100 Z" fill="#8fe0c0"/>
+      <circle cx="165" cy="90" r="4" fill="#15362a"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow">Get in touch</p>
+    <h2>Let's build something.</h2>
+    <p>Open to data science and ML roles, research collaborations, and good conversations about the living world.</p>
+    <div class="contact-btns">
+      <a href="mailto:beniels2713@gmail.com" class="btn btn-primary"><i class="ti ti-mail"></i>Email me</a>
+      <a href="https://www.linkedin.com/in/beniel-immanuel/" target="_blank" rel="noopener" class="btn btn-ghost"><i class="ti ti-brand-linkedin"></i>LinkedIn</a>
+      <a href="https://github.com/benDOESNOTcode" target="_blank" rel="noopener" class="btn btn-ghost"><i class="ti ti-brand-github"></i>GitHub</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>© <span id="year"></span> Beniel Immanuel · built with curiosity &amp; caffeine · <a href="https://x.com/BootlegBenny27" target="_blank" rel="noopener">@BootlegBenny27</a></p>
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.26.0/tabler-icons.min.css">
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  function onScroll(){ if(window.scrollY>40){nav.classList.add('scrolled');}else{nav.classList.remove('scrolled');} }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+  var y=document.getElementById('year'); if(y){y.textContent=new Date().getFullYear();}
+})();
+</script>
 </body>
 </html>
