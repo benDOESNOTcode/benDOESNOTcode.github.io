@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beniel Immanuel — Dino Dex</title>
+<meta name="description" content="An explorable pixel-art prehistoric valley. Click a dinosaur to discover a project by Beniel Immanuel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b1230; --panel:#2b1d4a; --panel-2:#3a2a5e;
+  --line:#0e0820; --accent:#ffd24a; --accent-2:#ff8a3d;
+  --teal:#58e0b8; --cream:#f6e9c9; --sky-top:#2a1a4a; --sky-mid:#6b3a6e; --sky-low:#e8703a;
+  --px:4px;
+  --pixel:'Press Start 2P',monospace; --body:'VT323',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--line);font-family:var(--body);color:var(--cream);overflow:hidden;}
+img,canvas{image-rendering:pixelated;image-rendering:crisp-edges;}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit;}
+
+/* SCENE */
+#scene{position:relative;width:100%;height:100vh;overflow:hidden;
+  background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 46%,var(--sky-low) 72%,#f2a85a 100%);}
+.layer{position:absolute;left:0;right:0;pointer-events:none;}
+#stars{top:0;height:55%;opacity:.9;}
+#stars i{position:absolute;width:2px;height:2px;background:#fff;opacity:.8;}
+#sun{position:absolute;width:84px;height:84px;border-radius:0;background:var(--accent);
+  left:50%;top:16%;transform:translateX(-50%);box-shadow:0 0 0 6px rgba(255,210,74,.25),0 0 0 14px rgba(255,210,74,.12);}
+#mountains{bottom:22%;height:40%;}
+#mountains svg{position:absolute;bottom:0;width:100%;height:100%;}
+#ground{bottom:0;height:24%;background:
+  repeating-linear-gradient(90deg,#3d2a1c 0 var(--px),#48321f 0 calc(var(--px)*2));
+  border-top:var(--px) solid #674a2a;box-shadow:inset 0 8px 0 rgba(0,0,0,.18);}
+#ground::before{content:"";position:absolute;top:calc(var(--px)*-1);left:0;right:0;height:var(--px);background:#7a5a33;}
+
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
+  align-items:flex-start;padding:18px 20px;pointer-events:none;}
+#hud .title{font-family:var(--pixel);font-size:16px;color:var(--cream);text-shadow:3px 3px 0 var(--line);line-height:1.5;}
+#hud .title small{display:block;font-family:var(--pixel);font-size:8px;color:var(--accent);margin-top:8px;letter-spacing:1px;}
+#hud .menu{display:flex;gap:10px;pointer-events:auto;}
+.pbtn{font-family:var(--pixel);font-size:9px;padding:10px 12px;color:var(--cream);background:var(--panel);
+  border:var(--px) solid var(--line);box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),4px 4px 0 var(--line);transition:transform .07s;}
+.pbtn:hover{background:var(--panel-2);}
+.pbtn:active{transform:translate(2px,2px);box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),2px 2px 0 var(--line);}
+
+#hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:40;font-family:var(--pixel);
+  font-size:9px;color:var(--cream);background:rgba(14,8,32,.72);padding:10px 14px;border:var(--px) solid var(--accent);
+  text-shadow:2px 2px 0 var(--line);animation:blink 1.6s steps(2) infinite;}
+@keyframes blink{50%{opacity:.45;}}
+
+/* DINOS */
+#dinos{position:absolute;inset:0;z-index:20;}
+.dino{position:absolute;display:flex;flex-direction:column;align-items:center;transform-origin:bottom center;
+  animation:idle 2.4s ease-in-out infinite;}
+.dino canvas{display:block;filter:drop-shadow(0 6px 0 rgba(0,0,0,.18));transition:transform .1s;}
+.dino:hover canvas,.dino:focus-visible canvas{transform:translateY(-6px) scale(1.04);}
+.dino:focus-visible{outline:none;}
+.dino .label{font-family:var(--pixel);font-size:9px;white-space:nowrap;margin-bottom:10px;padding:7px 9px;
+  color:var(--line);background:var(--accent);border:3px solid var(--line);box-shadow:3px 3px 0 rgba(0,0,0,.4);
+  opacity:0;transform:translateY(6px);transition:opacity .12s,transform .12s;pointer-events:none;}
+.dino .label::after{content:"";position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--line);}
+.dino:hover .label,.dino:focus-visible .label{opacity:1;transform:translateY(0);}
+.dino .label{position:relative;}
+.sign .label{background:var(--teal);}
+@keyframes idle{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+
+/* MODAL */
+#overlay{position:fixed;inset:0;z-index:60;background:rgba(10,6,22,.82);display:none;
+  align-items:center;justify-content:center;padding:20px;}
+#overlay.open{display:flex;}
+.modal{width:min(560px,94vw);max-height:88vh;overflow:auto;background:var(--panel);
+  border:var(--px) solid var(--line);box-shadow:inset -6px -6px 0 rgba(0,0,0,.35),8px 8px 0 var(--line);
+  padding:0;transform:translateY(8px);}
+.modal-top{display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--panel-2);border-bottom:var(--px) solid var(--line);}
+.modal-top canvas{flex:none;}
+.modal-top .mt{flex:1;}
+.modal-top h2{font-family:var(--pixel);font-size:14px;color:var(--accent);line-height:1.5;}
+.modal-top .kind{font-family:var(--pixel);font-size:8px;color:var(--teal);margin-top:8px;letter-spacing:1px;}
+.modal .x{position:absolute;}
+#closeBtn{font-family:var(--pixel);font-size:11px;color:var(--cream);padding:8px 11px;background:var(--accent-2);
+  border:3px solid var(--line);box-shadow:3px 3px 0 var(--line);}
+#closeBtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);}
+.modal-body{padding:20px;font-size:21px;line-height:1.4;color:var(--cream);}
+.modal-body p{margin-bottom:16px;}
+.mtags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.mtag{font-family:var(--pixel);font-size:8px;padding:7px 9px;background:var(--line);color:var(--teal);}
+.mlinks{display:flex;flex-wrap:wrap;gap:12px;}
+.mlink{font-family:var(--pixel);font-size:10px;padding:12px 14px;color:var(--line);background:var(--accent);
+  border:3px solid var(--line);box-shadow:4px 4px 0 var(--line);display:inline-flex;align-items:center;gap:8px;}
+.mlink.alt{background:var(--teal);}
+.mlink:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line);}
+.skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:20px;}
+.skill-grid b{font-family:var(--pixel);font-size:9px;color:var(--accent);display:block;margin:10px 0 4px;grid-column:1/-1;}
+
+@media(max-width:720px){
+  #hud .title{font-size:12px;}
+  #hud .title small{font-size:7px;}
+  .pbtn{font-size:8px;padding:8px 9px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .dino,#hint{animation:none;}
+  .dino:hover canvas,.dino:focus-visible canvas{transform:none;}
+}
+</style>
+</head>
+<body>
+<div id="scene">
+  <div class="layer" id="stars"></div>
+  <div id="sun"></div>
+  <div class="layer" id="mountains">
+    <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
+      <polygon points="0,400 0,210 120,120 240,220 340,150 470,260 600,170 720,250 860,140 1000,230 1120,160 1200,250 1200,400" fill="#4a2b63"/>
+      <polygon points="700,400 760,150 800,90 840,150 870,130 900,180 960,400" fill="#7a3a4a"/>
+      <polygon points="790,120 800,90 812,120" fill="#ff8a3d"/>
+      <polygon points="0,400 0,300 180,240 360,300 540,250 760,310 980,250 1200,300 1200,400" fill="#3a2150"/>
+    </svg>
+  </div>
+  <div class="layer" id="ground"></div>
+  <div id="dinos"></div>
+</div>
+
+<div id="hud">
+  <div class="title">BENIEL IMMANUEL<small>DATA SCIENCE &middot; DINO DEX</small></div>
+  <div class="menu">
+    <button class="pbtn" data-open="about">ABOUT</button>
+    <button class="pbtn" data-open="skills">SKILLS</button>
+    <button class="pbtn" data-open="contact">CONTACT</button>
+  </div>
+</div>
+<div id="hint">&#9654; CLICK A DINO TO EXPLORE</div>
+
+<div id="overlay" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal">
+    <div class="modal-top">
+      <canvas id="mSprite" width="0" height="0"></canvas>
+      <div class="mt"><h2 id="mTitle"></h2><div class="kind" id="mKind"></div></div>
+      <button id="closeBtn" aria-label="Close">X</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- pixel sprite renderer ---------- */
+function draw(canvas, grid, pal, scale){
+  var rows=grid.length, cols=grid[0].length;
+  canvas.width=cols*scale; canvas.height=rows*scale;
+  var ctx=canvas.getContext('2d');
+  for(var y=0;y<rows;y++){
+    for(var x=0;x<cols;x++){
+      var c=grid[y][x]; if(c===' '||c==='.'||!pal[c]) continue;
+      ctx.fillStyle=pal[c];
+      ctx.fillRect(x*scale,y*scale,scale,scale);
+    }
+  }
+}
+
+/* ---------- sprites (. = empty) ---------- */
+var SPR={};
+/* T-REX */
+SPR.trex={pal:{X:'#5cab3e',o:'#8fd36a',D:'#24411a',W:'#ffffff',K:'#10210a',T:'#ffffff'},grid:[
+"................DDDDDD.",
+"...............DXXXXXD.",
+"...............DXXXXXDD",
+"...............DXXoWKD.",
+"...............DXXXXDD.",
+"...............DXXXXD..",
+"D..............DXXXXD..",
+"DD.............DXXXXD..",
+"DDD...........DXXXXXD..",
+"DXDD.........DDXXXXXD..",
+"DXXDDDDDDDDDDDXXXXXTD..",
+"DXXXXXXXXXXXXXXXXXXDD..",
+".DXXXXXXXXXXXXXXXXXD...",
+"..DXXXXXXXXXXXXXXXD....",
+"...DDXXXXXXXXXXXXD.....",
+".....DXXXXoooXXXD......",
+".....DXXXD..DXXXD......",
+".....DXXD....DXXD......",
+".....DXXD....DXXD......",
+".....DXDD....DXD.......",
+"....DDXD.....DXDD......",
+"....DXXD.....DXXD......"]};
+/* PTERANODON (flying) */
+SPR.ptero={pal:{X:'#d98a3c',o:'#f2c27a',D:'#5a3210',W:'#ffffff',K:'#20120a',C:'#c23b3b'},grid:[
+"...................DDD.",
+"..................DXXCD",
+".....D...........DXoWKD",
+"....DXD.........DXXXXDD",
+"...DXXDD.......DXXXDD..",
+"..DXXXXDDD...DDXXXDD...",
+".DXXoooXXDDDDXXXXDD....",
+"DXoooooooXXXXXXXDD.....",
+".DDXoooooooooXDD.......",
+"...DDXXoooXXDD.........",
+".....DDXXXDD..........",
+".......DDXD...........",
+".......DXXD...........",
+"......DDXDD...........",
+"......DXXD............",
+".....DDXD.............",
+".....DXD..............",
+"....DDD..............."]};
+/* PLESIOSAUR (water -> Toxic Waters) */
+SPR.aqua={pal:{X:'#2f8fb0',o:'#73c9dd',D:'#123944',W:'#ffffff',K:'#08181d'},grid:[
+".............DDDD.....",
+"............DXXXXD....",
+"...........DXoWKXD....",
+"...........DXXXXD.....",
+"...........DXXXDD.....",
+"...........DXXD.......",
+"...........DXXD.......",
+"D..........DXXD.......",
+"DD.........DXXD.......",
+"DXDD......DDXXD.......",
+"DXXDDDDDDDDXXXD.......",
+"DXXoooooooooXXD.......",
+".DXoooooooooXXD.......",
+"..DDXXXXXXXXXXDD......",
+"....DDDDDDDDDDXXD.....",
+"..............DDD....."]};
+/* TRICERATOPS (maps -> Atlas) */
+SPR.trike={pal:{X:'#8a63c9',o:'#c0a6ee',D:'#2e1b52',W:'#ffffff',K:'#140a28',H:'#efe6cf'},grid:[
+"......................",
+"...............HDH....",
+"..............HDXDH...",
+".............HDXXXDH..",
+"............DHXXoWKD...",
+"...........DDXXXXXDD..",
+"D.........DDXXXXXDD...",
+"DD.......DDXXXXXDD....",
+"DXDDDDDDDXXXXXXDD.....",
+"DXXXXXXXXXXXXXXD......",
+".DXXXXXXXXXXXXXD......",
+"..DXXXoooooXXXDD......",
+"..DXXXDDDDDXXXD.......",
+"..DXXD...DXXXD........",
+"..DXD.....DXXD........",
+".DDXD.....DXDD........",
+".DXXD.....DXXD........"]};
+/* STEGOSAURUS (for later / skills) */
+SPR.stego={pal:{X:'#c76b3a',o:'#edb27a',D:'#4a2410',P:'#ffd24a',K:'#1c0f08'},grid:[
+"..........P...P.......",
+".........PDP.PDP......",
+"...DD...PDXPPDXP..DD..",
+"..DXXDDPDXXPDXXPDDXD..",
+".DXXoXPDXXXDXXXPXoXD..",
+"DXoooXXXXXXXXXXXXooKD.",
+".DXXoooooooooooXXXXDD.",
+"..DDXXoooooooooXXXDD..",
+"....DDXXXXXXXXXXDD....",
+"....DXXDD...DDXXD.....",
+"....DXD.......DXD.....",
+"...DDXD.......DXDD...."]};
+
+/* ---------- content ---------- */
+var PROJECTS={
+  trex:{sprite:'trex',title:'AGENTIC BI DASHBOARD',kind:'DATA ENGINEERING',
+    body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
+    tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'],
+    code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard'},
+  ptero:{sprite:'ptero',title:'AVIAN CLIMATE INTEL',kind:'AGENTIC AI · BIRDS',
+    body:"A serverless multi-agent system that answers plain-English questions about bird populations — routing each query to semantic search, text-to-SQL, forecasting, or a self-correcting chart engine, and rendering 20-year migration maps in WebGL.",
+    tags:['LANGGRAPH','RAG','DUCKDB','GROQ','PYDECK'],
+    code:'https://github.com/benDOESNOTcode/avian-climate-agent'},
+  aqua:{sprite:'aqua',title:'TOXIC WATERS',kind:'GEOSPATIAL · OCEANS',
+    body:"A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.",
+    tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'],
+    code:'https://github.com/benDOESNOTcode/Marine'},
+  trike:{sprite:'trike',title:'ATLAS QUERY',kind:'NL → SQL · MAPS',
+    body:"Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.",
+    tags:['FASTAPI','POSTGIS','REACT','D3.JS','OLLAMA'],
+    code:'https://github.com/benDOESNOTcode/Atlas-Query'}
+};
+var PANELS={
+  about:{sprite:'stego',title:'ABOUT',kind:'PLAYER PROFILE',
+    body:"I'm Beniel Immanuel, a graduate student in Computational Data Science at UC Riverside, drawn to problems where data meets the natural world. I work in Python, SQL and Java — building the pipelines, models and agents in this valley. Before Riverside I earned a B.E. in Electrical Engineering from VIT Vellore, India. Off the clock: the gym and blackjack.",
+    links:[['LINKEDIN','https://www.linkedin.com/in/beniel-immanuel/','alt']]},
+  contact:{sprite:'ptero',title:'CONTACT',kind:'SEND A SIGNAL',
+    body:"Open to data science and ML roles, research collaborations, and good conversations about the living world.",
+    links:[['EMAIL','mailto:beniels2713@gmail.com',''],['LINKEDIN','https://www.linkedin.com/in/beniel-immanuel/','alt'],['GITHUB','https://github.com/benDOESNOTcode','alt']]},
+  skills:{sprite:'trike',title:'SKILLS',kind:'INVENTORY',skills:{
+    'LANGUAGES':['Python','SQL','Java','TypeScript'],
+    'DATA ENG':['Spark','Airflow','dbt','DuckDB','PostGIS','Docker'],
+    'ML & AI':['TensorFlow','PyTorch','LangGraph','RAG / Qdrant'],
+    'VIZ':['Pandas','GeoPandas','Plotly','D3.js','Streamlit']}}
+};
+
+/* ---------- place dinos ---------- */
+var PLACEMENTS=[
+  {key:'trex', x:'10%', y:'62%', scale:5},
+  {key:'aqua', x:'31%', y:'70%', scale:4},
+  {key:'trike',x:'54%', y:'64%', scale:5},
+  {key:'ptero',x:'76%', y:'30%', scale:4}
+];
+var dinoWrap=document.getElementById('dinos');
+PLACEMENTS.forEach(function(p){
+  var proj=PROJECTS[p.key];
+  var btn=document.createElement('button');
+  btn.className='dino'; btn.style.left=p.x; btn.style.top=p.y;
+  btn.setAttribute('aria-label',proj.title);
+  var label=document.createElement('span'); label.className='label'; label.textContent=proj.title;
+  var cv=document.createElement('canvas');
+  draw(cv,SPR[proj.sprite].grid,SPR[proj.sprite].pal,p.scale);
+  btn.appendChild(label); btn.appendChild(cv);
+  btn.addEventListener('click',function(){openProject(p.key);});
+  dinoWrap.appendChild(btn);
+});
+
+/* ---------- stars ---------- */
+(function(){var s=document.getElementById('stars');var h='';for(var i=0;i<70;i++){
+  h+='<i style="left:'+(Math.random()*100).toFixed(2)+'%;top:'+(Math.random()*100).toFixed(2)+'%;opacity:'+(0.3+Math.random()*0.6).toFixed(2)+'"></i>';}
+  s.innerHTML=h;})();
+
+/* ---------- modal ---------- */
+var overlay=document.getElementById('overlay'), mTitle=document.getElementById('mTitle'),
+    mKind=document.getElementById('mKind'), mBody=document.getElementById('mBody'),
+    mSprite=document.getElementById('mSprite'); var lastFocus=null;
+
+function spriteInto(canvas,key){var s=SPR[key]; if(!s){canvas.width=0;canvas.height=0;return;} draw(canvas,s.grid,s.pal,3);}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function openProject(key){
+  var p=PROJECTS[key];
+  mTitle.textContent=p.title; mKind.textContent=p.kind; spriteInto(mSprite,p.sprite);
+  var html='<p>'+esc(p.body)+'</p><div class="mtags">';
+  p.tags.forEach(function(t){html+='<span class="mtag">'+esc(t)+'</span>';});
+  html+='</div><div class="mlinks"><a class="mlink" href="'+p.code+'" target="_blank" rel="noopener">&#9654; VIEW CODE</a></div>';
+  mBody.innerHTML=html; show();
+}
+function openPanel(key){
+  var p=PANELS[key];
+  mTitle.textContent=p.title; mKind.textContent=p.kind; spriteInto(mSprite,p.sprite);
+  var html='';
+  if(p.skills){html+='<div class="skill-grid">';for(var k in p.skills){html+='<b>'+esc(k)+'</b>';p.skills[k].forEach(function(s){html+='<span>'+esc(s)+'</span>';});}html+='</div>';}
+  else{html+='<p>'+esc(p.body)+'</p>';}
+  if(p.links){html+='<div class="mlinks">';p.links.forEach(function(l){html+='<a class="mlink '+(l[2]||'')+'" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+'</a>';});html+='</div>';}
+  mBody.innerHTML=html; show();
+}
+function show(){lastFocus=document.activeElement;overlay.classList.add('open');document.getElementById('closeBtn').focus();}
+function close(){overlay.classList.remove('open');if(lastFocus)lastFocus.focus();}
+document.getElementById('closeBtn').addEventListener('click',close);
+overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))close();});
+document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){openPanel(b.getAttribute('data-open'));});});
+</script>
+</body>
+</html>
