@@ -4,123 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Beniel Immanuel — Fossil Hall</title>
-<meta name="description" content="Walk through a pixel-art fossil hall. Reach a dinosaur exhibit to open a project by Beniel Immanuel.">
+<meta name="description" content="Walk a pixel-art fossil hall. Reach a dinosaur skeleton to open a project by Beniel Immanuel.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
 :root{
-  --wall:#3a2a1e; --wall-2:#4a3526; --floor:#5a3d24; --floor-2:#6b4a2c; --trim:#8a5a2e;
-  --ink:#140d08; --panel:#2b1d12; --panel-2:#3d2a1a; --accent:#ffd24a; --accent-2:#ff8a3d;
-  --teal:#58e0b8; --bone:#ece0c4; --cream:#f6e9c9;
+  --wall-top:#100d10; --wall:#1d1a22; --wall-lo:#26201c;
+  --floor-far:#241c15; --floor-near:#0d0a07; --trim:#3a2a1a;
+  --ink:#0b0809; --panel:#241a2c; --panel-2:#33243f; --accent:#ffcf5a; --accent-2:#ff8a3d;
+  --teal:#5fe0b8; --bone:#efe4c8; --cream:#f4e8cc; --brass:#c8922e;
   --pixel:'Press Start 2P',monospace; --body:'VT323',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
-body{background:#0c0804;font-family:var(--body);color:var(--cream);overflow:hidden;touch-action:none;}
+body{background:#060405;font-family:var(--body);color:var(--cream);overflow:hidden;touch-action:none;}
 canvas{image-rendering:pixelated;image-rendering:crisp-edges;display:block;}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit;}
 
-#stage{position:relative;width:100%;height:100vh;overflow:hidden;
-  background:linear-gradient(180deg,#1a1109 0%,#2a1c10 70%,#1a1109 100%);}
-
-/* scrolling hall */
+#stage{position:relative;width:100%;height:100vh;overflow:hidden;background:#0b0810;}
 #hall{position:absolute;top:0;bottom:0;left:0;will-change:transform;}
-.ceiling{position:absolute;top:0;left:0;height:12%;width:100%;
-  background:repeating-linear-gradient(90deg,#241812 0 28px,#2d2016 28px 32px);border-bottom:6px solid var(--ink);}
-.wall{position:absolute;top:12%;left:0;height:58%;width:100%;
+.ceiling{position:absolute;top:0;left:0;height:8%;width:100%;background:linear-gradient(180deg,#000 0%,#15110f 100%);border-bottom:4px solid #000;}
+.wall{position:absolute;top:8%;left:0;height:52%;width:100%;
   background:
-   repeating-linear-gradient(90deg,transparent 0 92px,rgba(0,0,0,.22) 92px 100px),
-   repeating-linear-gradient(0deg,transparent 0 60px,rgba(0,0,0,.18) 60px 66px),
-   linear-gradient(180deg,var(--wall-2),var(--wall));}
-.floor{position:absolute;top:70%;bottom:0;left:0;width:100%;
-  background:repeating-linear-gradient(90deg,var(--floor) 0 54px,var(--floor-2) 54px 58px);
-  border-top:8px solid var(--trim);box-shadow:inset 0 10px 24px rgba(0,0,0,.4);}
-.rug{position:absolute;top:68%;height:5%;left:0;width:100%;background:
-  repeating-linear-gradient(90deg,#7a2f2f 0 20px,#8f3a3a 20px 40px);opacity:.5;}
+   repeating-linear-gradient(90deg,transparent 0 118px,rgba(0,0,0,.35) 118px 124px),
+   linear-gradient(180deg,var(--wall-top) 0%,var(--wall) 60%,var(--wall-lo) 100%);}
+.floor{position:absolute;top:60%;bottom:0;left:0;width:100%;
+  background:linear-gradient(180deg,var(--floor-far) 0%,#1a130d 42%,var(--floor-near) 100%);
+  border-top:3px solid var(--trim);box-shadow:inset 0 6px 16px rgba(0,0,0,.6);}
+.floor::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 76px,rgba(0,0,0,.25) 76px 80px);opacity:.5;}
 
-/* lamps + beams */
-.lamp{position:absolute;top:11.5%;width:26px;height:16px;background:#1a1109;border:3px solid #0a0704;
-  transform:translateX(-50%);}
-.lamp::after{content:"";position:absolute;left:50%;top:10px;width:14px;height:10px;transform:translateX(-50%);
-  background:var(--accent);box-shadow:0 0 14px 6px rgba(255,210,74,.5);}
-.beam{position:absolute;top:13%;height:58%;transform:translateX(-50%);pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,210,74,.26),rgba(255,210,74,0));
-  clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:.5;transition:opacity .25s;}
+.lamp{position:absolute;top:5%;width:30px;height:20px;transform:translateX(-50%);background:#0a0808;border:3px solid #000;border-radius:3px 3px 0 0;}
+.lamp::after{content:"";position:absolute;left:50%;bottom:3px;width:16px;height:9px;transform:translateX(-50%);background:var(--accent);box-shadow:0 0 16px 7px rgba(255,207,90,.6);}
+
+.exhibit{position:absolute;bottom:30%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;}
+.beam{position:absolute;left:50%;top:-340px;width:230px;height:430px;transform:translateX(-50%);pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,214,120,0) 0%,rgba(255,211,120,.10) 20%,rgba(255,201,105,.34) 100%);
+  clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);mix-blend-mode:screen;opacity:.4;transition:opacity .35s;}
 .exhibit.active .beam{opacity:1;}
-
-/* exhibits */
-.exhibit{position:absolute;bottom:25%;transform:translateX(-50%);display:flex;flex-direction:column;
-  align-items:center;text-align:center;}
-.case{position:relative;display:flex;align-items:flex-end;justify-content:center;padding:0 10px 6px;
-  border:4px solid rgba(255,255,255,.12);border-bottom:0;background:linear-gradient(180deg,rgba(120,200,255,.05),rgba(120,200,255,.0));}
-.fossil{filter:drop-shadow(0 4px 0 rgba(0,0,0,.4));transition:transform .2s;}
-.exhibit.active .fossil{transform:translateY(-6px);}
-.plinth{width:132px;height:30px;background:linear-gradient(180deg,#6a6258,#3e392f);
-  border:4px solid var(--ink);box-shadow:0 8px 0 rgba(0,0,0,.35);}
-.plaque{margin-top:12px;font-family:var(--pixel);font-size:9px;color:var(--ink);background:var(--trim);
-  border:3px solid var(--ink);padding:8px 10px;max-width:190px;line-height:1.5;box-shadow:3px 3px 0 rgba(0,0,0,.4);}
-.plaque small{display:block;color:#3a2410;font-size:7px;margin-top:6px;letter-spacing:1px;}
-.prompt{position:absolute;top:-46px;left:50%;transform:translateX(-50%);font-family:var(--pixel);font-size:8px;
-  color:var(--ink);background:var(--accent);border:3px solid var(--ink);padding:7px 9px;white-space:nowrap;
-  opacity:0;transition:opacity .15s,transform .15s;box-shadow:2px 2px 0 var(--ink);}
+.pool{position:absolute;left:50%;bottom:-10px;width:200px;height:52px;transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(255,210,120,.55),rgba(255,210,120,0) 70%);mix-blend-mode:screen;opacity:.5;transition:opacity .35s;}
+.exhibit.active .pool{opacity:1;}
+.shadow{position:absolute;left:50%;bottom:-6px;width:168px;height:24px;transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.6),rgba(0,0,0,0) 72%);}
+.case{position:relative;display:flex;align-items:flex-end;justify-content:center;padding:14px 16px 10px;
+  border:3px solid rgba(150,195,225,.14);border-bottom:3px solid rgba(150,195,225,.24);
+  background:linear-gradient(180deg,rgba(150,195,225,.05),rgba(150,195,225,.01));}
+.case::before{content:"";position:absolute;top:5px;left:9%;width:24%;height:68%;transform:skewX(-11deg);pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.08),transparent);}
+.fossil{position:relative;z-index:1;filter:drop-shadow(0 0 10px rgba(255,210,120,.25));transition:transform .2s;}
+.exhibit.active .fossil{transform:translateY(-5px);}
+.plinth{width:154px;height:36px;background:linear-gradient(180deg,#4b453b 0 30%,#2b261f 32%,#19150f 100%);
+  border:2px solid #000;box-shadow:0 3px 0 #000,inset 0 2px 0 rgba(255,255,255,.07);}
+.plaque{margin-top:9px;font-family:var(--pixel);font-size:9px;color:#2a1d08;
+  background:linear-gradient(180deg,#d6a03a,#9c6c1f);border:2px solid #000;padding:7px 9px;max-width:184px;line-height:1.5;
+  box-shadow:0 3px 0 #000;text-shadow:0 1px 0 rgba(255,255,255,.2);}
+.plaque small{display:block;color:#3e2a0c;font-size:7px;margin-top:5px;letter-spacing:1px;}
+.prompt{position:absolute;left:50%;top:-40px;transform:translateX(-50%);font-family:var(--pixel);font-size:8px;
+  color:var(--ink);background:var(--accent);border:2px solid var(--ink);padding:7px 9px;white-space:nowrap;z-index:3;
+  opacity:0;transition:opacity .18s;box-shadow:0 2px 0 var(--ink);}
 .exhibit.active .prompt{opacity:1;animation:pbob 1s ease-in-out infinite;}
 @keyframes pbob{50%{transform:translate(-50%,-4px);}}
 
-/* player */
-#player{position:absolute;bottom:8%;z-index:30;transform:translateX(-50%);will-change:left;}
+#player{position:absolute;bottom:22%;z-index:25;transform:translateX(-50%);will-change:left;display:flex;flex-direction:column;align-items:center;}
+#player .pshadow{width:40px;height:12px;margin-top:-6px;background:radial-gradient(ellipse at center,rgba(0,0,0,.55),rgba(0,0,0,0) 70%);}
 
-/* HUD */
-#hud{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;
-  align-items:flex-start;padding:16px 18px;pointer-events:none;}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:35;background:radial-gradient(ellipse 125% 95% at 50% 42%,transparent 50%,rgba(0,0,0,.6) 100%);}
+
+#hud{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:flex-start;padding:16px 18px;pointer-events:none;}
 .title{font-family:var(--pixel);font-size:15px;color:var(--cream);text-shadow:3px 3px 0 #000;line-height:1.5;}
 .title small{display:block;font-family:var(--pixel);font-size:7px;color:var(--accent);margin-top:7px;letter-spacing:1px;}
 .menu{display:flex;gap:9px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end;}
-.pbtn{font-family:var(--pixel);font-size:9px;padding:10px 11px;color:var(--cream);background:var(--panel);
-  border:4px solid var(--ink);box-shadow:inset -3px -3px 0 rgba(0,0,0,.4),4px 4px 0 var(--ink);}
+.pbtn{font-family:var(--pixel);font-size:9px;padding:10px 11px;color:var(--cream);background:rgba(40,30,55,.78);
+  border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
 .pbtn:hover{background:var(--panel-2);}
-.pbtn:active{transform:translate(2px,2px);box-shadow:inset -3px -3px 0 rgba(0,0,0,.4),2px 2px 0 var(--ink);}
+.pbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
 
 #progress{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:40;display:flex;gap:6px;pointer-events:none;}
-#progress i{width:9px;height:9px;background:rgba(255,255,255,.22);border:2px solid #000;}
+#progress i{width:8px;height:8px;background:rgba(255,255,255,.18);border:2px solid #000;}
 #progress i.on{background:var(--accent);}
 
-/* walk controls */
-.walkbtn{position:fixed;bottom:20px;z-index:45;width:66px;height:66px;font-family:var(--pixel);font-size:20px;
-  color:var(--ink);background:var(--accent);border:4px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
-  display:flex;align-items:center;justify-content:center;user-select:none;touch-action:none;}
+.walkbtn{position:fixed;bottom:22px;z-index:45;width:52px;height:52px;font-family:var(--pixel);font-size:15px;
+  color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;user-select:none;touch-action:none;opacity:.5;transition:opacity .2s,background .2s;}
 #left{left:16px;} #right{right:16px;}
-.walkbtn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink);}
+.walkbtn:hover{opacity:1;background:rgba(255,255,255,.12);}
+.walkbtn:active{transform:scale(.94);}
 
-#hint{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:40;font-family:var(--pixel);
-  font-size:9px;color:var(--cream);background:rgba(0,0,0,.72);padding:10px 14px;border:4px solid var(--accent);
-  text-shadow:2px 2px 0 #000;}
+#hint{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:40;font-family:var(--pixel);font-size:9px;
+  color:var(--cream);background:rgba(0,0,0,.6);padding:10px 14px;border:2px solid rgba(255,207,90,.6);text-shadow:2px 2px 0 #000;}
 #hint.hide{display:none;}
 
-/* MODAL */
-#overlay{position:fixed;inset:0;z-index:60;background:rgba(6,4,2,.86);display:none;align-items:center;justify-content:center;padding:18px;}
+#overlay{position:fixed;inset:0;z-index:60;background:rgba(6,4,8,.88);display:none;align-items:center;justify-content:center;padding:18px;}
 #overlay.open{display:flex;}
-.modal{width:min(560px,94vw);max-height:88vh;overflow:auto;background:var(--panel);border:5px solid var(--ink);
-  box-shadow:inset -6px -6px 0 rgba(0,0,0,.4),8px 8px 0 var(--ink);}
+.modal{width:min(560px,94vw);max-height:88vh;overflow:auto;background:var(--panel);border:5px solid var(--ink);box-shadow:8px 8px 0 var(--ink);}
 .modal-top{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--panel-2);border-bottom:5px solid var(--ink);}
 .modal-top .mt{flex:1;}
 .modal-top h2{font-family:var(--pixel);font-size:13px;color:var(--accent);line-height:1.5;}
 .modal-top .kind{font-family:var(--pixel);font-size:8px;color:var(--teal);margin-top:7px;letter-spacing:1px;}
-#closeBtn{font-family:var(--pixel);font-size:11px;color:var(--cream);padding:8px 11px;background:var(--accent-2);
-  border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
+#closeBtn{font-family:var(--pixel);font-size:11px;color:var(--cream);padding:8px 11px;background:var(--accent-2);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
 #closeBtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
 .modal-body{padding:18px;font-size:21px;line-height:1.4;}
 .modal-body p{margin-bottom:15px;}
 .mtags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
 .mtag{font-family:var(--pixel);font-size:8px;padding:7px 9px;background:var(--ink);color:var(--teal);}
 .mlinks{display:flex;flex-wrap:wrap;gap:12px;}
-.mlink{font-family:var(--pixel);font-size:10px;padding:12px 14px;color:var(--ink);background:var(--accent);
-  border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:inline-flex;gap:8px;}
+.mlink{font-family:var(--pixel);font-size:10px;padding:12px 14px;color:var(--ink);background:var(--accent);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:inline-flex;gap:8px;}
 .mlink.alt{background:var(--teal);} .mlink:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink);}
 .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;font-size:20px;}
 .skill-grid b{font-family:var(--pixel);font-size:9px;color:var(--accent);margin:9px 0 3px;grid-column:1/-1;}
-.credit{margin-top:18px;font-size:16px;color:#a99;line-height:1.4;}
-.credit a{color:var(--teal);}
+.credit{margin-top:18px;font-size:16px;color:#b7a9c4;line-height:1.4;} .credit a{color:var(--teal);}
 
 @media(max-width:720px){ .title{font-size:12px;} .menu .pbtn{font-size:8px;padding:8px 8px;} }
 @media(prefers-reduced-motion:reduce){ .exhibit.active .prompt{animation:none;} }
@@ -131,11 +124,11 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   <div id="hall">
     <div class="ceiling"></div>
     <div class="wall"></div>
-    <div class="rug"></div>
     <div class="floor"></div>
   </div>
-  <canvas id="player" width="0" height="0"></canvas>
+  <div id="player"><canvas id="pcanvas" width="0" height="0"></canvas><div class="pshadow"></div></div>
 </div>
+<div id="vignette"></div>
 
 <div id="hud">
   <div class="title">BENIEL IMMANUEL<small>FOSSIL HALL &middot; DATA SCIENCE</small></div>
@@ -146,7 +139,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   </div>
 </div>
 <div id="progress"></div>
-<div id="hint">&#9664; &#9654; WALK &nbsp; &middot; &nbsp; &#9650; / TAP VIEW</div>
+<div id="hint">&#9664; &#9654; WALK &nbsp;&middot;&nbsp; &#9650; / TAP VIEW</div>
 <button class="walkbtn" id="left" aria-label="Walk left">&#9664;</button>
 <button class="walkbtn" id="right" aria-label="Walk right">&#9654;</button>
 
@@ -195,55 +188,53 @@ function drawFossilBox(canvas,boxName,maxW,maxH,tint,flip){
 }
 function drawFossil(canvas,key,maxH){ var v=VAR[key]||VAR.trex; drawFossilBox(canvas,v.box,maxH*1.7,maxH,v.tint,v.flip); }
 
-/* ---------- stickman ---------- */
+/* ---------- pixel stickman (chunky, hard-edged) ---------- */
 function drawStick(canvas,frame){
-  var res=44; canvas.width=res; canvas.height=64;
-  canvas.style.width='46px'; canvas.style.height='66px';
-  var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height);
-  function fig(col,lw,hr){
-    ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=lw; ctx.lineCap='round'; ctx.lineJoin='round';
-    var cx=22;
-    ctx.beginPath(); ctx.arc(cx,14,hr,0,7); ctx.fill();                 /* head */
-    ctx.beginPath(); ctx.moveTo(cx,21); ctx.lineTo(cx,41); ctx.stroke();/* body */
-    var a=frame===1?4:(frame===2?-4:0);
-    ctx.beginPath(); ctx.moveTo(cx,26); ctx.lineTo(cx-10,35+a); ctx.moveTo(cx,26); ctx.lineTo(cx+10,35-a); ctx.stroke();
-    var l=frame===1?8:(frame===2?-8:5);
-    ctx.beginPath(); ctx.moveTo(cx,41); ctx.lineTo(cx-l,59); ctx.moveTo(cx,41); ctx.lineTo(cx+l,59); ctx.stroke();
-  }
-  fig('#140d06',8,9);    /* dark outline */
-  fig('#f6ecd2',3.5,6);  /* cream body */
+  var W=18,H=26,u=2.7;
+  canvas.width=W; canvas.height=H;
+  canvas.style.width=Math.round(W*u)+'px'; canvas.style.height=Math.round(H*u)+'px';
+  var c=canvas.getContext('2d'); c.imageSmoothingEnabled=false; c.clearRect(0,0,W,H);
+  var hat=[[6,1,6,2],[7,3,4,1]], head=[[7,4,4,4]], torso=[[8,8,2,8]];
+  var arms,legs;
+  if(frame===1){arms=[[6,9,2,5],[10,9,2,3]]; legs=[[7,16,2,6],[10,16,2,4]];}
+  else if(frame===2){arms=[[6,9,2,3],[10,9,2,5]]; legs=[[7,16,2,4],[10,16,2,6]];}
+  else {arms=[[6,9,2,5],[10,9,2,5]]; legs=[[7,16,2,6],[10,16,2,6]];}
+  var all=hat.concat(head,torso,arms,legs);
+  c.fillStyle='#0c0a07'; all.forEach(function(b){c.fillRect(b[0]-1,b[1]-1,b[2]+2,b[3]+2);});
+  c.fillStyle='#f2e7cd'; head.concat(torso,arms,legs).forEach(function(b){c.fillRect(b[0],b[1],b[2],b[3]);});
+  c.fillStyle='#c98a3a'; hat.forEach(function(b){c.fillRect(b[0],b[1],b[2],b[3]);});
 }
 
 /* ---------- content ---------- */
 var EX=[
- {fossil:'trex',   species:'TYRANNOSAURUS',  title:'AGENTIC BI DASHBOARD', kind:'DATA ENGINEERING',
+ {fossil:'trex',    species:'TYRANNOSAURUS', title:'AGENTIC BI DASHBOARD', kind:'DATA ENGINEERING',
   body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
   tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'], code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard', big:1},
- {fossil:'ptero', species:'PTERANODON',      title:'AVIAN CLIMATE INTEL', kind:'AGENTIC AI · BIRDS',
+ {fossil:'ptero',   species:'PTERANODON', title:'AVIAN CLIMATE INTEL', kind:'AGENTIC AI · BIRDS',
   body:"A serverless multi-agent system that answers plain-English questions about bird populations — routing each query to semantic search, text-to-SQL, forecasting, or a self-correcting chart engine, and rendering 20-year migration maps in WebGL.",
   tags:['LANGGRAPH','RAG','DUCKDB','GROQ','PYDECK'], code:'https://github.com/benDOESNOTcode/avian-climate-agent'},
- {fossil:'trilo',      species:'TRILOBITE',        title:'TOXIC WATERS', kind:'GEOSPATIAL · OCEANS',
+ {fossil:'trilo',   species:'TRILOBITE', title:'TOXIC WATERS', kind:'GEOSPATIAL · OCEANS',
   body:"A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.",
   tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'], code:'https://github.com/benDOESNOTcode/Marine'},
- {fossil:'skull',species:'DIRE SKULL',   title:'ATLAS QUERY', kind:'NL → SQL · MAPS',
+ {fossil:'skull',   species:'DIRE SKULL', title:'ATLAS QUERY', kind:'NL → SQL · MAPS',
   body:"Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.",
   tags:['FASTAPI','POSTGIS','REACT','D3.JS'], code:'https://github.com/benDOESNOTcode/Atlas-Query'},
- {fossil:'croc',  species:'DEINOSUCHUS',     title:'CHESS DATA PIPELINE', kind:'DATA ENGINEERING',
+ {fossil:'croc',    species:'DEINOSUCHUS', title:'CHESS DATA PIPELINE', kind:'DATA ENGINEERING',
   body:"Pulls games from the Chess.com API into a medallion-style warehouse — DuckDB, dbt transformations, and a Streamlit + Plotly dashboard tracking rating over time.",
   tags:['CHESS.COM API','DUCKDB','DBT','STREAMLIT'], code:'https://github.com/benDOESNOTcode/chess-data-pipeline'},
- {fossil:'trex_b',species:'ALBERTOSAURUS',  title:'HOTEL ANALYTICS ETL', kind:'DATA ENGINEERING',
+ {fossil:'trex_b',  species:'ALBERTOSAURUS', title:'HOTEL ANALYTICS ETL', kind:'DATA ENGINEERING',
   body:"An end-to-end PySpark ETL cleaning four years of hotel reservation data into a normalized PostgreSQL schema, served through a Flask API and dashboard. Built for UC Riverside's CS 236.",
   tags:['PYSPARK','POSTGRES','FLASK','DOCKER'], code:'https://github.com/benDOESNOTcode/End-to-End-ETL-and-Data-Pipeline-Hotel-Data-'},
- {fossil:'trilo_b',     species:'TRILOBITE',        title:'ORDER FLOW IMBALANCE', kind:'QUANT · SIGNALS',
+ {fossil:'trilo_b', species:'TRILOBITE', title:'ORDER FLOW IMBALANCE', kind:'QUANT · SIGNALS',
   body:"Computes OFI features from high-frequency limit-order-book data — quantifying short-term buying vs. selling pressure, a core signal in market-microstructure models.",
   tags:['PYTHON','NUMPY','MARKET DATA'], code:'https://github.com/benDOESNOTcode/Blockhouse_OFI'},
- {fossil:'skull_b',   species:'CAVE BEAST',        title:'INTRUSION DETECTION', kind:'MACHINE LEARNING',
+ {fossil:'skull_b', species:'CAVE BEAST', title:'INTRUSION DETECTION', kind:'MACHINE LEARNING',
   body:"A deep neural network that classifies network traffic on the ECU-IoHT healthcare dataset into five attack types — reproducing an IEEE Access paper and reaching ~99.9% accuracy across 111k packets.",
   tags:['TENSORFLOW','KERAS','DNN','99.9% ACC'], code:'https://github.com/benDOESNOTcode/Intrusion_detection_system'},
- {fossil:'croc_b',  species:'SARCOSUCHUS',       title:'DARWINIAN BLOBS', kind:'ML · SIMULATION',
+ {fossil:'croc_b',  species:'SARCOSUCHUS', title:'DARWINIAN BLOBS', kind:'ML · SIMULATION',
   body:"An evolutionary simulation where agents compete at iterated rock-paper-scissors using six strategies — from biased heuristics to Q-learning, an MLP, and an LSTM built in PyTorch.",
   tags:['PYTORCH','RL','LSTM','SIM'], code:'https://github.com/benDOESNOTcode/darwinian_blobs'},
- {fossil:'ptero_b',  species:'PTERODACTYL',     title:'BLACKJACK', kind:'FOR FUN',
+ {fossil:'ptero_b', species:'PTERODACTYL', title:'BLACKJACK', kind:'FOR FUN',
   body:"A complete command-line blackjack engine — shuffling, betting, correct Ace handling, and a dealer that hits to 17. Made for the fun of it (and yes, hitting on soft 17 works).",
   tags:['PYTHON','CARD GAME'], code:'https://github.com/benDOESNOTcode/blackjack'}
 ];
@@ -261,38 +252,39 @@ var PANELS={
 
 /* ---------- build hall ---------- */
 var hall=document.getElementById('hall');
-var GAP=440, PAD=360, FLOORY;
+var GAP=440, PAD=360;
 var worldW=PAD*2+(EX.length-1)*GAP;
 hall.style.width=worldW+'px';
-['ceiling','wall','rug','floor'].forEach(function(c){hall.querySelector('.'+c).style.width=worldW+'px';});
+['ceiling','wall','floor'].forEach(function(c){hall.querySelector('.'+c).style.width=worldW+'px';});
 
 EX.forEach(function(e,i){
   var x=PAD+i*GAP; e._x=x;
   var lamp=document.createElement('div'); lamp.className='lamp'; lamp.style.left=x+'px'; hall.appendChild(lamp);
-  var beam=document.createElement('div'); beam.className='beam';
   var ex=document.createElement('div'); ex.className='exhibit'; ex.style.left=x+'px'; ex.dataset.i=i;
-  var size=e.big?150:118;
+  var H=e.big?184:150;
+  var beam=document.createElement('div'); beam.className='beam';
+  var pool=document.createElement('div'); pool.className='pool';
+  var shadow=document.createElement('div'); shadow.className='shadow';
   var prompt=document.createElement('div'); prompt.className='prompt'; prompt.textContent='▲ VIEW';
-  var caseEl=document.createElement('div'); caseEl.className='case'; caseEl.style.height=(size+14)+'px';
-  var cv=document.createElement('canvas'); cv.className='fossil'; drawFossil(cv,e.fossil,size);
+  var caseEl=document.createElement('div'); caseEl.className='case'; caseEl.style.height=(H+16)+'px';
+  var cv=document.createElement('canvas'); cv.className='fossil'; drawFossil(cv,e.fossil,H);
   caseEl.appendChild(cv);
   var plinth=document.createElement('div'); plinth.className='plinth';
   var plaque=document.createElement('div'); plaque.className='plaque'; plaque.innerHTML=e.species+'<small>'+e.title+'</small>';
-  ex.appendChild(beam); ex.appendChild(prompt); ex.appendChild(caseEl); ex.appendChild(plinth); ex.appendChild(plaque);
+  ex.appendChild(beam); ex.appendChild(pool); ex.appendChild(shadow); ex.appendChild(prompt);
+  ex.appendChild(caseEl); ex.appendChild(plinth); ex.appendChild(plaque);
   ex.addEventListener('click',function(){openProject(i);});
-  hall.appendChild(ex);
-  e._el=ex;
+  hall.appendChild(ex); e._el=ex;
 });
 
-/* progress dots */
 var prog=document.getElementById('progress');
 EX.forEach(function(){var i=document.createElement('i');prog.appendChild(i);});
 
 /* ---------- player + camera ---------- */
-var player=document.getElementById('player');
+var player=document.getElementById('player'), pcanvas=document.getElementById('pcanvas');
 var pos=150, vw=window.innerWidth, dir=0, vel=0, face=1, frame=0, walkT=0, nearest=-1;
 addEventListener('resize',function(){vw=window.innerWidth;});
-drawStick(player,0);
+drawStick(pcanvas,0);
 
 function loop(){
   if(dir!==0) vel+=dir*0.85; else vel*=0.80;
@@ -304,10 +296,10 @@ function loop(){
     face=vel<0?-1:1;
     walkT+=Math.abs(vel);
     var f=(Math.floor(walkT/11)%2)?1:2;
-    if(f!==frame){frame=f; drawStick(player,frame);}
+    if(f!==frame){frame=f; drawStick(pcanvas,frame);}
     bob=Math.abs(Math.sin(walkT/11))*3;
-  } else if(frame!==0){frame=0; drawStick(player,0);}
-  player.style.transform='translateX(-50%) translateY('+(-bob)+'px) scaleX('+face+')';
+  } else if(frame!==0){frame=0; drawStick(pcanvas,0);}
+  pcanvas.style.transform='scaleX('+face+') translateY('+(-bob)+'px)';
   var cam=Math.max(0,Math.min(pos-vw/2,worldW-vw));
   hall.style.transform='translateX('+(-cam)+'px)';
   player.style.left=(pos-cam)+'px';
@@ -325,7 +317,6 @@ function loop(){
 requestAnimationFrame(loop);
 
 /* ---------- controls ---------- */
-var keys={};
 addEventListener('keydown',function(e){
   if(e.key==='ArrowLeft'||e.key==='a'){dir=-1;hideHint();}
   else if(e.key==='ArrowRight'||e.key==='d'){dir=1;hideHint();}
@@ -337,29 +328,26 @@ addEventListener('keyup',function(e){
   if((e.key==='ArrowRight'||e.key==='d')&&dir===1)dir=0;
 });
 function hold(btn,d){
-  var set=function(e){e.preventDefault();dir=d;hideHint();};
-  var clr=function(){if(dir===d)dir=0;};
+  var set=function(e){e.preventDefault();dir=d;hideHint();}, clr=function(){if(dir===d)dir=0;};
   btn.addEventListener('mousedown',set); btn.addEventListener('touchstart',set,{passive:false});
   addEventListener('mouseup',clr); btn.addEventListener('touchend',clr); btn.addEventListener('touchcancel',clr);
 }
-hold(document.getElementById('left'),-1);
-hold(document.getElementById('right'),1);
+hold(document.getElementById('left'),-1); hold(document.getElementById('right'),1);
 function hideHint(){var h=document.getElementById('hint');if(h)h.classList.add('hide');}
 
 /* ---------- modal ---------- */
-var overlay=document.getElementById('overlay'),mTitle=document.getElementById('mTitle'),
-    mKind=document.getElementById('mKind'),mBody=document.getElementById('mBody'),mSprite=document.getElementById('mSprite'),lastFocus=null;
+var overlay=document.getElementById('overlay'),mTitle=document.getElementById('mTitle'),mKind=document.getElementById('mKind'),
+    mBody=document.getElementById('mBody'),mSprite=document.getElementById('mSprite'),lastFocus=null;
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function openProject(i){
-  var e=EX[i]; mTitle.textContent=e.title; mKind.textContent=e.species+' · '+e.kind;
-  drawFossil(mSprite,e.fossil,64);
+  var e=EX[i]; mTitle.textContent=e.title; mKind.textContent=e.species+' · '+e.kind; drawFossil(mSprite,e.fossil,58);
   var h='<p>'+esc(e.body)+'</p><div class="mtags">';
   e.tags.forEach(function(t){h+='<span class="mtag">'+esc(t)+'</span>';});
   h+='</div><div class="mlinks"><a class="mlink" href="'+e.code+'" target="_blank" rel="noopener">&#9654; VIEW CODE</a></div>';
   mBody.innerHTML=h; show();
 }
 function openPanel(k){
-  var p=PANELS[k]; mTitle.textContent=p.title; mKind.textContent=p.kind; drawFossil(mSprite,p.fossil,64);
+  var p=PANELS[k]; mTitle.textContent=p.title; mKind.textContent=p.kind; drawFossil(mSprite,p.fossil,58);
   var h='';
   if(p.skills){h+='<div class="skill-grid">';for(var key in p.skills){h+='<b>'+esc(key)+'</b>';p.skills[key].forEach(function(s){h+='<span>'+esc(s)+'</span>';});}h+='</div>';}
   else h+='<p>'+esc(p.body)+'</p>';
