@@ -164,14 +164,19 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 <script src="fossils.js"></script>
 <script>
 /* ---------- fossil renderer (game-icons paths, pixelated bone) ---------- */
-function drawFossil(canvas,name,disp,color){
-  var res=80; canvas.width=res; canvas.height=res;
+function drawFossil(canvas,name,disp){
+  var res=104; canvas.width=res; canvas.height=res;
   canvas.style.width=disp+'px'; canvas.style.height=disp+'px';
   var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,res,res);
   var d=window.FOSSILS[name]; if(!d)return;
-  var p=new Path2D(d);
-  ctx.save(); ctx.scale(res/512,res/512);
-  ctx.fillStyle=color||'#ece0c4'; ctx.fill(p); ctx.restore();
+  var p=new Path2D(d), s=res/512;
+  function stamp(dx,dy,col){ctx.save();ctx.translate(dx,dy);ctx.scale(s,s);ctx.fillStyle=col;ctx.fill(p);ctx.restore();}
+  var o='#4a3720';
+  stamp(-3,0,o);stamp(3,0,o);stamp(0,-3,o);stamp(0,3,o);stamp(-3,-3,o);stamp(3,3,o);stamp(3,-3,o);stamp(-3,3,o);
+  stamp(3,4,'#b7a579');   /* relief shadow */
+  stamp(0,0,'#ece0c4');   /* bone */
+  stamp(-2,-3,'#f8f0da'); /* top-left highlight fringe */
+  stamp(0,0,'#ece0c4');   /* bone body over highlight core */
 }
 
 /* ---------- stickman ---------- */
@@ -269,20 +274,28 @@ EX.forEach(function(){var i=document.createElement('i');prog.appendChild(i);});
 
 /* ---------- player + camera ---------- */
 var player=document.getElementById('player');
-var pos=150, vw=window.innerWidth, dir=0, frame=0, frameT=0, walkT=0, nearest=-1;
+var pos=150, vw=window.innerWidth, dir=0, vel=0, face=1, frame=0, walkT=0, nearest=-1;
 addEventListener('resize',function(){vw=window.innerWidth;});
 drawStick(player,0);
 
-function loop(ts){
-  if(dir!==0){
-    pos+=dir*4.2; if(pos<80)pos=80; if(pos>worldW-80)pos=worldW-80;
-    walkT+=1; if(walkT>6){walkT=0; frame=frame===1?2:1; drawStick(player,frame); if(player._face!==dir){player.style.transform='translateX(-50%) scaleX('+(dir<0?-1:1)+')';player._face=dir;}}
+function loop(){
+  if(dir!==0) vel+=dir*0.85; else vel*=0.80;
+  if(vel>5.2)vel=5.2; else if(vel<-5.2)vel=-5.2;
+  if(Math.abs(vel)<0.08)vel=0;
+  if(vel!==0){ pos+=vel; if(pos<80){pos=80;vel=0;} else if(pos>worldW-80){pos=worldW-80;vel=0;} }
+  var moving=Math.abs(vel)>0.4, bob=0;
+  if(moving){
+    face=vel<0?-1:1;
+    walkT+=Math.abs(vel);
+    var f=(Math.floor(walkT/11)%2)?1:2;
+    if(f!==frame){frame=f; drawStick(player,frame);}
+    bob=Math.abs(Math.sin(walkT/11))*3;
   } else if(frame!==0){frame=0; drawStick(player,0);}
+  player.style.transform='translateX(-50%) translateY('+(-bob)+'px) scaleX('+face+')';
   var cam=Math.max(0,Math.min(pos-vw/2,worldW-vw));
   hall.style.transform='translateX('+(-cam)+'px)';
   player.style.left=(pos-cam)+'px';
-  /* nearest exhibit */
-  var best=-1,bd=170;
+  var best=-1,bd=175;
   for(var i=0;i<EX.length;i++){var dd=Math.abs(EX[i]._x-pos); if(dd<bd){bd=dd;best=i;}}
   if(best!==nearest){
     if(nearest>=0)EX[nearest]._el.classList.remove('active');
