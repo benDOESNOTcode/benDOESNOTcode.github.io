@@ -151,6 +151,22 @@ footer a:hover{color:#8fe0c0;}
 .reveal{opacity:0; transform:translateY(26px); transition:opacity .7s ease,transform .7s ease;}
 .reveal.in{opacity:1; transform:none;}
 
+/* DECORATIONS */
+.sprite{position:absolute; width:0; height:0; overflow:hidden;}
+.deco{position:absolute; display:block; pointer-events:none;}
+.divider-wrap{margin:0 0 40px;}
+.divider{display:flex; align-items:center; justify-content:center; gap:16px; max-width:340px; margin:0 auto;}
+.divider .ln{flex:1; height:1px; background:var(--line); max-width:120px;}
+.divider .motif{color:var(--teal); opacity:.7; display:block;}
+.divider .track{display:flex; align-items:flex-end; gap:9px; color:var(--muted); opacity:.8;}
+.divider .track svg{display:block;}
+.divider .track svg:nth-child(2){transform:translateY(-7px);}
+.feat-media .feat-art{position:absolute; color:#ffffff; pointer-events:none; z-index:1;}
+.feat-media .glyph{position:relative; z-index:2;}
+.footer-scene{display:flex; align-items:flex-end; justify-content:center; gap:15px; color:#8fe0c0; opacity:.5; margin:0 0 20px;}
+.footer-scene svg{display:block;}
+.footer-scene .fp:nth-child(even){transform:translateY(-9px);}
+
 @media(max-width:860px){
   .feat-grid{grid-template-columns:1fr;}
   .mini-grid{grid-template-columns:repeat(2,1fr);}
@@ -165,11 +181,70 @@ footer a:hover{color:#8fe0c0;}
   .skill-cols{grid-template-columns:1fr;}
   section{padding:66px 0;}
   .hero{padding:140px 0 90px;}
+  .dsm{display:none;}
 }
 </style>
 </head>
 <body>
 <a class="sr-only" href="#work">Skip to projects</a>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="m-sauropod" viewBox="0 0 360 180">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M107 44 C103 35 111 28 121 29 C131 30 136 36 134 45"/>
+      <path d="M134 43 C150 60 165 86 183 103 C202 112 224 113 244 115 C284 119 318 127 351 150"/>
+      <path d="M109 50 C112 70 127 94 151 109 C173 118 205 118 235 120 C281 124 317 132 349 155"/>
+      <path d="M167 116 L163 160 M191 118 L189 160 M217 118 L215 161 M239 120 L241 161"/>
+    </g>
+  </symbol>
+  <symbol id="m-stego" viewBox="0 0 240 150">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 116 C12 106 18 101 26 104 C34 96 48 86 70 80 C100 72 134 76 162 90 C176 97 190 104 204 110"/>
+      <path d="M30 116 C64 120 118 120 160 117"/>
+      <path d="M64 110 L62 142 M88 112 L86 142 M134 112 L132 142 M158 114 L156 142"/>
+      <path d="M204 110 C212 112 219 112 226 114 M200 104 L214 92 M208 110 L224 102"/>
+      <path d="M50 80 L60 58 L72 80 M74 78 L86 52 L100 78 M102 80 L116 56 L130 82 M132 86 L144 64 L156 88"/>
+    </g>
+  </symbol>
+  <symbol id="m-foot" viewBox="0 0 44 54">
+    <g fill="currentColor">
+      <ellipse cx="22" cy="40" rx="9" ry="11"/>
+      <ellipse cx="22" cy="15" rx="4.4" ry="12"/>
+      <ellipse cx="9.5" cy="24" rx="3.8" ry="10.5" transform="rotate(26 9.5 24)"/>
+      <ellipse cx="34.5" cy="24" rx="3.8" ry="10.5" transform="rotate(-26 34.5 24)"/>
+    </g>
+  </symbol>
+  <symbol id="m-ammonite" viewBox="0 0 60 60">
+    <g fill="none" stroke="currentColor" stroke-linecap="round">
+      <path stroke-width="2.4" d="M55 30 A25 25 0 0 1 7 30 A21 18 0 0 1 47 30 A16 16 0 0 1 15 30 A12 10 0 0 1 39 30 A8 8 0 0 1 24 30 A5 4 0 0 1 32 30"/>
+      <path stroke-width="1.3" d="M30 6 L30 15 M49 13 L43 20 M11 46 L18 39 M46 45 L39 39 M12 17 L19 23"/>
+    </g>
+  </symbol>
+  <symbol id="m-fern" viewBox="0 0 120 190">
+    <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+      <path d="M60 186 C57 140 62 92 80 44 C86 28 94 16 102 8"/>
+      <path d="M60 166 C49 161 41 151 37 141 M60 166 C70 159 76 151 80 142"/>
+      <path d="M61 146 C51 142 44 133 40 124 M61 146 C71 139 77 132 81 124"/>
+      <path d="M63 126 C54 123 47 115 43 107 M63 126 C73 119 79 113 83 105"/>
+      <path d="M67 105 C58 102 51 95 48 88 M67 105 C76 99 82 93 86 86"/>
+      <path d="M72 84 C64 82 58 76 55 70 M72 84 C80 79 85 74 89 68"/>
+      <path d="M79 63 C72 61 67 56 64 51 M79 63 C86 59 90 55 93 50"/>
+    </g>
+  </symbol>
+  <symbol id="m-bird" viewBox="0 0 120 56">
+    <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+      <path d="M8 38 C30 10 46 10 60 30 C74 10 90 10 112 38"/>
+    </g>
+  </symbol>
+  <symbol id="m-leaf" viewBox="0 0 50 84">
+    <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <path d="M25 82 C25 56 25 30 25 6"/>
+      <path d="M25 62 C14 56 10 46 9 36 M25 62 C36 56 40 46 41 36"/>
+      <path d="M25 46 C16 41 12 33 11 25 M25 46 C34 41 38 33 39 25"/>
+      <path d="M25 31 C18 27 14 21 13 15 M25 31 C32 27 36 21 37 15"/>
+    </g>
+  </symbol>
+</svg>
 
 <nav id="nav">
   <div class="nav-inner">
@@ -186,22 +261,14 @@ footer a:hover{color:#8fe0c0;}
 
 <header class="hero" id="top">
   <div class="hero-bg" aria-hidden="true">
-    <svg width="520" height="520" viewBox="0 0 520 520" style="right:-80px; top:-40px; opacity:.16;">
-      <g fill="none" stroke="#8fe0c0" stroke-width="2">
-        <path d="M260 40 C260 180 260 320 260 470"/>
-        <path d="M260 120 C210 95 170 100 150 70 C195 70 230 85 260 120 Z" fill="#8fe0c0" stroke="none" opacity=".6"/>
-        <path d="M260 120 C310 95 350 100 370 70 C325 70 290 85 260 120 Z" fill="#8fe0c0" stroke="none" opacity=".4"/>
-        <path d="M260 200 C205 172 160 178 138 144 C188 144 228 161 260 200 Z" fill="#8fe0c0" stroke="none" opacity=".6"/>
-        <path d="M260 200 C315 172 360 178 382 144 C332 144 292 161 260 200 Z" fill="#8fe0c0" stroke="none" opacity=".4"/>
-        <path d="M260 288 C200 258 150 265 126 228 C181 228 225 246 260 288 Z" fill="#8fe0c0" stroke="none" opacity=".55"/>
-        <path d="M260 288 C320 258 370 265 394 228 C339 228 295 246 260 288 Z" fill="#8fe0c0" stroke="none" opacity=".35"/>
-      </g>
-    </svg>
-    <svg width="220" height="150" viewBox="0 0 220 150" style="left:-10px; bottom:30px; opacity:.1;">
-      <path d="M10 90 Q60 20 110 70 Q130 90 150 60 Q140 95 110 100 Q70 110 40 100 Q20 96 10 90 Z" fill="#8fe0c0"/>
-      <path d="M150 60 Q180 40 210 46 Q185 58 162 72 Z" fill="#8fe0c0"/>
-      <circle cx="120" cy="66" r="3.5" fill="#15362a"/>
-    </svg>
+    <svg class="deco" width="470" height="235" viewBox="0 0 360 180" style="right:-40px; top:54px; color:#8fe0c0; opacity:.17;"><use href="#m-sauropod"/></svg>
+    <svg class="deco dsm" width="150" height="238" viewBox="0 0 120 190" style="left:-26px; bottom:-34px; color:#8fe0c0; opacity:.16;"><use href="#m-fern"/></svg>
+    <svg class="deco dsm" width="96" height="152" viewBox="0 0 120 190" style="left:118px; bottom:-20px; color:#8fe0c0; opacity:.11;"><use href="#m-fern"/></svg>
+    <svg class="deco" width="118" height="55" viewBox="0 0 120 56" style="right:140px; top:120px; color:#8fe0c0; opacity:.22;"><use href="#m-bird"/></svg>
+    <svg class="deco dsm" width="72" height="34" viewBox="0 0 120 56" style="right:230px; top:92px; color:#8fe0c0; opacity:.15;"><use href="#m-bird"/></svg>
+    <svg class="deco dsm" width="28" height="34" viewBox="0 0 44 54" style="left:43%; bottom:26px; color:#8fe0c0; opacity:.2;"><use href="#m-foot"/></svg>
+    <svg class="deco dsm" width="28" height="34" viewBox="0 0 44 54" style="left:47%; bottom:44px; color:#8fe0c0; opacity:.15;"><use href="#m-foot"/></svg>
+    <svg class="deco dsm" width="28" height="34" viewBox="0 0 44 54" style="left:51%; bottom:24px; color:#8fe0c0; opacity:.1;"><use href="#m-foot"/></svg>
   </div>
   <div class="wrap">
     <p class="eyebrow">Data science · ecology · applied AI</p>
@@ -218,6 +285,7 @@ footer a:hover{color:#8fe0c0;}
 <main>
 <section id="work">
   <div class="wrap">
+    <div class="divider-wrap reveal"><div class="divider"><span class="ln"></span><span class="track"><svg width="17" height="21" viewBox="0 0 44 54"><use href="#m-foot"/></svg><svg width="17" height="21" viewBox="0 0 44 54"><use href="#m-foot"/></svg><svg width="17" height="21" viewBox="0 0 44 54"><use href="#m-foot"/></svg></span><span class="ln"></span></div></div>
     <div class="sec-head reveal">
       <p class="eyebrow">Featured work</p>
       <h2>Four projects I'm proud of</h2>
@@ -228,6 +296,8 @@ footer a:hover{color:#8fe0c0;}
       <article class="feat-card reveal">
         <div class="feat-media teal">
           <span class="feat-tag">Agentic AI · birds</span>
+          <svg class="feat-art" width="150" height="238" viewBox="0 0 120 190" style="left:-20px; bottom:-54px; opacity:.16;"><use href="#m-fern"/></svg>
+          <svg class="feat-art" width="90" height="42" viewBox="0 0 120 56" style="right:16px; top:20px; opacity:.28;"><use href="#m-bird"/></svg>
           <span class="glyph"><i class="ti ti-feather" style="color:#eafaf3;"></i></span>
         </div>
         <div class="feat-body">
@@ -279,6 +349,8 @@ footer a:hover{color:#8fe0c0;}
       <article class="feat-card reveal">
         <div class="feat-media moss">
           <span class="feat-tag">NL → SQL · maps</span>
+          <svg class="feat-art" width="140" height="222" viewBox="0 0 120 190" style="right:-24px; bottom:-50px; opacity:.16;"><use href="#m-fern"/></svg>
+          <svg class="feat-art" width="30" height="37" viewBox="0 0 44 54" style="left:20px; bottom:16px; opacity:.3;"><use href="#m-foot"/></svg>
           <span class="glyph"><i class="ti ti-map-2" style="color:#f1f8e6;"></i></span>
         </div>
         <div class="feat-body">
@@ -298,6 +370,7 @@ footer a:hover{color:#8fe0c0;}
 
 <section id="more" class="band">
   <div class="wrap">
+    <div class="divider-wrap reveal"><div class="divider"><span class="ln"></span><svg class="motif" width="34" height="34" viewBox="0 0 60 60"><use href="#m-ammonite"/></svg><span class="ln"></span></div></div>
     <div class="sec-head reveal">
       <p class="eyebrow">More projects</p>
       <h2>The rest of the field notebook</h2>
@@ -356,6 +429,7 @@ footer a:hover{color:#8fe0c0;}
 
 <section id="about">
   <div class="wrap">
+    <div class="divider-wrap reveal"><div class="divider"><span class="ln"></span><svg class="motif" width="22" height="37" viewBox="0 0 50 84"><use href="#m-leaf"/></svg><span class="ln"></span></div></div>
     <div class="about-grid">
       <div class="about-photo reveal">
         <img src="images/ben.jpg" alt="Beniel Immanuel">
@@ -378,6 +452,7 @@ footer a:hover{color:#8fe0c0;}
 
 <section id="skills" class="band">
   <div class="wrap">
+    <div class="divider-wrap reveal"><div class="divider"><span class="ln"></span><span class="track"><svg width="17" height="21" viewBox="0 0 44 54"><use href="#m-foot"/></svg><svg width="17" height="21" viewBox="0 0 44 54"><use href="#m-foot"/></svg><svg width="17" height="21" viewBox="0 0 44 54"><use href="#m-foot"/></svg></span><span class="ln"></span></div></div>
     <div class="sec-head reveal">
       <p class="eyebrow">Toolkit</p>
       <h2>What I build with</h2>
@@ -405,11 +480,9 @@ footer a:hover{color:#8fe0c0;}
 
 <section id="contact" class="contact">
   <div class="hero-bg" aria-hidden="true">
-    <svg width="300" height="200" viewBox="0 0 300 200" style="right:4%; top:20px; opacity:.12;">
-      <path d="M20 120 Q90 30 150 95 Q180 128 210 85 Q196 135 150 142 Q90 154 50 140 Q28 132 20 120 Z" fill="#8fe0c0"/>
-      <path d="M210 85 Q250 58 290 66 Q258 82 226 100 Z" fill="#8fe0c0"/>
-      <circle cx="165" cy="90" r="4" fill="#15362a"/>
-    </svg>
+    <svg class="deco" width="430" height="215" viewBox="0 0 360 180" style="left:-50px; bottom:-26px; color:#8fe0c0; opacity:.12;"><use href="#m-sauropod"/></svg>
+    <svg class="deco" width="120" height="56" viewBox="0 0 120 56" style="right:9%; top:30px; color:#8fe0c0; opacity:.2;"><use href="#m-bird"/></svg>
+    <svg class="deco dsm" width="150" height="238" viewBox="0 0 120 190" style="right:-14px; bottom:-34px; color:#8fe0c0; opacity:.13;"><use href="#m-fern"/></svg>
   </div>
   <div class="wrap">
     <p class="eyebrow">Get in touch</p>
@@ -425,6 +498,13 @@ footer a:hover{color:#8fe0c0;}
 </main>
 
 <footer>
+  <div class="footer-scene" aria-hidden="true">
+    <svg class="fp" width="18" height="22" viewBox="0 0 44 54"><use href="#m-foot"/></svg>
+    <svg class="fp" width="18" height="22" viewBox="0 0 44 54"><use href="#m-foot"/></svg>
+    <svg class="fp" width="18" height="22" viewBox="0 0 44 54"><use href="#m-foot"/></svg>
+    <svg class="fp" width="18" height="22" viewBox="0 0 44 54"><use href="#m-foot"/></svg>
+    <svg class="stego" width="155" height="97" viewBox="0 0 240 150"><use href="#m-stego"/></svg>
+  </div>
   <p>© <span id="year"></span> Beniel Immanuel · built with curiosity &amp; caffeine · <a href="https://x.com/BootlegBenny27" target="_blank" rel="noopener">@BootlegBenny27</a></p>
 </footer>
 
