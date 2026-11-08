@@ -161,23 +161,39 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   </div>
 </div>
 
-<script src="fossils.js"></script>
 <script>
-/* ---------- fossil renderer (game-icons paths, pixelated bone) ---------- */
-function drawFossil(canvas,name,disp){
-  var res=104; canvas.width=res; canvas.height=res;
-  canvas.style.width=disp+'px'; canvas.style.height=disp+'px';
-  var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,res,res);
-  var d=window.FOSSILS[name]; if(!d)return;
-  var p=new Path2D(d), s=res/512;
-  function stamp(dx,dy,col){ctx.save();ctx.translate(dx,dy);ctx.scale(s,s);ctx.fillStyle=col;ctx.fill(p);ctx.restore();}
-  var o='#4a3720';
-  stamp(-3,0,o);stamp(3,0,o);stamp(0,-3,o);stamp(0,3,o);stamp(-3,-3,o);stamp(3,3,o);stamp(3,-3,o);stamp(-3,3,o);
-  stamp(3,4,'#b7a579');   /* relief shadow */
-  stamp(0,0,'#ece0c4');   /* bone */
-  stamp(-2,-3,'#f8f0da'); /* top-left highlight fringe */
-  stamp(0,0,'#ece0c4');   /* bone body over highlight core */
+/* ---------- fossil renderer (Redshrike CC-BY sprite sheet) ---------- */
+var FB={trex:[4,5,94,83],trilobite:[99,30,48,46],skull:[150,2,70,86],croc:[223,28,118,58],ptero:[350,1,92,87]};
+var VAR={
+  trex:{box:'trex'}, trex_b:{box:'trex',tint:[0.82,0.85,0.95],flip:1},
+  ptero:{box:'ptero'}, ptero_b:{box:'ptero',tint:[0.90,0.80,0.62],flip:1},
+  trilo:{box:'trilobite'}, trilo_b:{box:'trilobite',tint:[0.90,0.80,0.62]},
+  skull:{box:'skull'}, skull_b:{box:'skull',tint:[0.95,0.80,0.74]},
+  croc:{box:'croc'}, croc_b:{box:'croc',tint:[0.82,0.85,0.95],flip:1}
+};
+var sheet=new Image(), sheetReady=false, _pending=[];
+sheet.onload=function(){sheetReady=true;_pending.forEach(function(f){f();});_pending=[];};
+sheet.src='images/redshrike-fossils.png';
+function drawFossilBox(canvas,boxName,maxW,maxH,tint,flip){
+  if(!sheetReady){_pending.push(function(){drawFossilBox(canvas,boxName,maxW,maxH,tint,flip);});return;}
+  var b=FB[boxName]||FB.trex, w=b[2], h=b[3];
+  var off=document.createElement('canvas'); off.width=w; off.height=h;
+  var o=off.getContext('2d'); o.imageSmoothingEnabled=false;
+  o.drawImage(sheet,b[0],b[1],w,h,0,0,w,h);
+  var im=o.getImageData(0,0,w,h), d=im.data, br=d[0],bg=d[1],bb=d[2];
+  for(var i=0;i<d.length;i+=4){
+    var x=d[i]-br,y=d[i+1]-bg,z=d[i+2]-bb;
+    if(x*x+y*y+z*z<3600){ d[i+3]=0; }
+    else if(tint){ d[i]*=tint[0]; d[i+1]*=tint[1]; d[i+2]*=tint[2]; }
+  }
+  o.putImageData(im,0,0);
+  var sc=Math.min(maxW/w,maxH/h), dw=Math.round(w*sc), dh=Math.round(h*sc);
+  canvas.width=w; canvas.height=h; canvas.style.width=dw+'px'; canvas.style.height=dh+'px';
+  var c=canvas.getContext('2d'); c.imageSmoothingEnabled=false; c.clearRect(0,0,w,h);
+  if(flip){ c.translate(w,0); c.scale(-1,1); }
+  c.drawImage(off,0,0);
 }
+function drawFossil(canvas,key,maxH){ var v=VAR[key]||VAR.trex; drawFossilBox(canvas,v.box,maxH*1.7,maxH,v.tint,v.flip); }
 
 /* ---------- stickman ---------- */
 function drawStick(canvas,frame){
@@ -200,45 +216,45 @@ function drawStick(canvas,frame){
 
 /* ---------- content ---------- */
 var EX=[
- {fossil:'dinosaur-rex',   species:'TYRANNOSAURUS',  title:'AGENTIC BI DASHBOARD', kind:'DATA ENGINEERING',
+ {fossil:'trex',   species:'TYRANNOSAURUS',  title:'AGENTIC BI DASHBOARD', kind:'DATA ENGINEERING',
   body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
   tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'], code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard', big:1},
- {fossil:'pterodactylus', species:'PTERANODON',      title:'AVIAN CLIMATE INTEL', kind:'AGENTIC AI · BIRDS',
+ {fossil:'ptero', species:'PTERANODON',      title:'AVIAN CLIMATE INTEL', kind:'AGENTIC AI · BIRDS',
   body:"A serverless multi-agent system that answers plain-English questions about bird populations — routing each query to semantic search, text-to-SQL, forecasting, or a self-correcting chart engine, and rendering 20-year migration maps in WebGL.",
   tags:['LANGGRAPH','RAG','DUCKDB','GROQ','PYDECK'], code:'https://github.com/benDOESNOTcode/avian-climate-agent'},
- {fossil:'ammonite',      species:'AMMONITE',        title:'TOXIC WATERS', kind:'GEOSPATIAL · OCEANS',
+ {fossil:'trilo',      species:'TRILOBITE',        title:'TOXIC WATERS', kind:'GEOSPATIAL · OCEANS',
   body:"A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.",
   tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'], code:'https://github.com/benDOESNOTcode/Marine'},
- {fossil:'triceratops-head',species:'TRICERATOPS',   title:'ATLAS QUERY', kind:'NL → SQL · MAPS',
+ {fossil:'skull',species:'DIRE SKULL',   title:'ATLAS QUERY', kind:'NL → SQL · MAPS',
   body:"Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.",
   tags:['FASTAPI','POSTGIS','REACT','D3.JS'], code:'https://github.com/benDOESNOTcode/Atlas-Query'},
- {fossil:'velociraptor',  species:'VELOCIRAPTOR',     title:'CHESS DATA PIPELINE', kind:'DATA ENGINEERING',
+ {fossil:'croc',  species:'DEINOSUCHUS',     title:'CHESS DATA PIPELINE', kind:'DATA ENGINEERING',
   body:"Pulls games from the Chess.com API into a medallion-style warehouse — DuckDB, dbt transformations, and a Streamlit + Plotly dashboard tracking rating over time.",
   tags:['CHESS.COM API','DUCKDB','DBT','STREAMLIT'], code:'https://github.com/benDOESNOTcode/chess-data-pipeline'},
- {fossil:'stegosaurus-scales',species:'STEGOSAURUS',  title:'HOTEL ANALYTICS ETL', kind:'DATA ENGINEERING',
+ {fossil:'trex_b',species:'ALBERTOSAURUS',  title:'HOTEL ANALYTICS ETL', kind:'DATA ENGINEERING',
   body:"An end-to-end PySpark ETL cleaning four years of hotel reservation data into a normalized PostgreSQL schema, served through a Flask API and dashboard. Built for UC Riverside's CS 236.",
   tags:['PYSPARK','POSTGRES','FLASK','DOCKER'], code:'https://github.com/benDOESNOTcode/End-to-End-ETL-and-Data-Pipeline-Hotel-Data-'},
- {fossil:'trilobite',     species:'TRILOBITE',        title:'ORDER FLOW IMBALANCE', kind:'QUANT · SIGNALS',
+ {fossil:'trilo_b',     species:'TRILOBITE',        title:'ORDER FLOW IMBALANCE', kind:'QUANT · SIGNALS',
   body:"Computes OFI features from high-frequency limit-order-book data — quantifying short-term buying vs. selling pressure, a core signal in market-microstructure models.",
   tags:['PYTHON','NUMPY','MARKET DATA'], code:'https://github.com/benDOESNOTcode/Blockhouse_OFI'},
- {fossil:'t-rex-skull',   species:'REX SKULL',        title:'INTRUSION DETECTION', kind:'MACHINE LEARNING',
+ {fossil:'skull_b',   species:'CAVE BEAST',        title:'INTRUSION DETECTION', kind:'MACHINE LEARNING',
   body:"A deep neural network that classifies network traffic on the ECU-IoHT healthcare dataset into five attack types — reproducing an IEEE Access paper and reaching ~99.9% accuracy across 111k packets.",
   tags:['TENSORFLOW','KERAS','DNN','99.9% ACC'], code:'https://github.com/benDOESNOTcode/Intrusion_detection_system'},
- {fossil:'plesiosaurus',  species:'PLESIOSAUR',       title:'DARWINIAN BLOBS', kind:'ML · SIMULATION',
+ {fossil:'croc_b',  species:'SARCOSUCHUS',       title:'DARWINIAN BLOBS', kind:'ML · SIMULATION',
   body:"An evolutionary simulation where agents compete at iterated rock-paper-scissors using six strategies — from biased heuristics to Q-learning, an MLP, and an LSTM built in PyTorch.",
   tags:['PYTORCH','RL','LSTM','SIM'], code:'https://github.com/benDOESNOTcode/darwinian_blobs'},
- {fossil:'animal-skull',  species:'FOSSIL SKULL',     title:'BLACKJACK', kind:'FOR FUN',
+ {fossil:'ptero_b',  species:'PTERODACTYL',     title:'BLACKJACK', kind:'FOR FUN',
   body:"A complete command-line blackjack engine — shuffling, betting, correct Ace handling, and a dealer that hits to 17. Made for the fun of it (and yes, hitting on soft 17 works).",
   tags:['PYTHON','CARD GAME'], code:'https://github.com/benDOESNOTcode/blackjack'}
 ];
 var PANELS={
- about:{fossil:'ribcage',title:'ABOUT',kind:'CURATOR',
+ about:{fossil:'skull',title:'ABOUT',kind:'CURATOR',
   body:"I'm Beniel Immanuel, a graduate student in Computational Data Science at UC Riverside, drawn to problems where data meets the natural world. I work in Python, SQL and Java — building the pipelines, models and agents mounted in this hall. Before Riverside I earned a B.E. in Electrical Engineering from VIT Vellore, India. Off the clock: the gym and blackjack.",
   links:[['LINKEDIN','https://www.linkedin.com/in/beniel-immanuel/','alt']]},
- contact:{fossil:'spine-arrow',title:'CONTACT',kind:'SEND A SIGNAL',
+ contact:{fossil:'ptero',title:'CONTACT',kind:'SEND A SIGNAL',
   body:"Open to data science and ML roles, research collaborations, and good conversations about the living world.",
   links:[['EMAIL','mailto:beniels2713@gmail.com',''],['LINKEDIN','https://www.linkedin.com/in/beniel-immanuel/','alt'],['GITHUB','https://github.com/benDOESNOTcode','alt']]},
- skills:{fossil:'dinosaur-bones',title:'SKILLS',kind:'TOOL KIT',skills:{
+ skills:{fossil:'trex',title:'SKILLS',kind:'TOOL KIT',skills:{
   'LANGUAGES':['Python','SQL','Java','TypeScript'],'DATA ENG':['Spark','Airflow','dbt','DuckDB','PostGIS','Docker'],
   'ML & AI':['TensorFlow','PyTorch','LangGraph','RAG / Qdrant'],'VIZ':['Pandas','GeoPandas','Plotly','D3.js','Streamlit']}}
 };
@@ -348,7 +364,7 @@ function openPanel(k){
   if(p.skills){h+='<div class="skill-grid">';for(var key in p.skills){h+='<b>'+esc(key)+'</b>';p.skills[key].forEach(function(s){h+='<span>'+esc(s)+'</span>';});}h+='</div>';}
   else h+='<p>'+esc(p.body)+'</p>';
   if(p.links){h+='<div class="mlinks">';p.links.forEach(function(l){h+='<a class="mlink '+(l[2]||'')+'" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+'</a>';});h+='</div>';}
-  if(k==='about')h+='<p class="credit">Fossil icons from <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a> (Lorc, Delapouite) — CC BY 3.0.</p>';
+  if(k==='about')h+='<p class="credit">Fossil skeletons from <a href="https://opengameart.org" target="_blank" rel="noopener">OpenGameArt.org</a> (Redshrike) — CC BY 3.0.</p>';
   mBody.innerHTML=h; show();
 }
 function show(){lastFocus=document.activeElement;dir=0;overlay.classList.add('open');document.getElementById('closeBtn').focus();}
