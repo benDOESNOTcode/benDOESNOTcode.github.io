@@ -58,6 +58,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .mlink.alt{background:var(--teal);} .mlink:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink);}
 .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;font-size:20px;}
 .skill-grid b{font-family:var(--pixel);font-size:9px;color:var(--accent);margin:9px 0 3px;grid-column:1/-1;}
+.sec{font-family:var(--pixel);font-size:10px;color:var(--teal);margin:20px 0 12px;letter-spacing:1px;}
 .credit{margin-top:18px;font-size:16px;color:#b7a9c4;line-height:1.4;} .credit a{color:var(--teal);}
 @media(max-width:720px){.title{font-size:12px;}.menu .pbtn{font-size:8px;padding:8px;}}
 </style>
@@ -69,13 +70,8 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 
 <div id="hud">
   <div class="title">BENIEL IMMANUEL<small>FOSSIL MUSEUM &middot; DATA SCIENCE</small></div>
-  <div class="menu">
-    <button class="pbtn" data-open="about">ABOUT</button>
-    <button class="pbtn" data-open="skills">SKILLS</button>
-    <button class="pbtn" data-open="contact">CONTACT</button>
-  </div>
 </div>
-<div id="hint">CLICK THE FLOOR TO WALK &middot; CLICK AN EXHIBIT TO VIEW<br>OR USE ARROW KEYS + ENTER</div>
+<div id="hint">CLICK THE FLOOR TO WALK &middot; CLICK AN EXHIBIT TO VIEW<br>ABOUT + CONTACT: THE GLOWING MONOLITH AT THE BACK</div>
 <div id="loading">OPENING THE MUSEUM...<small>unpacking fossils</small></div>
 
 <div id="overlay" role="dialog" aria-modal="true" aria-labelledby="mTitle">
@@ -108,7 +104,32 @@ const EX=[
   tags:['LANGGRAPH','RAG','DUCKDB','GROQ','PYDECK'],code:'https://github.com/benDOESNOTcode/avian-climate-agent'},
  {x:5.6,z:3.0,type:'dig',species:'DIG SITE B',title:'TOXIC WATERS',kind:'GEOSPATIAL · OCEANS · EXCAVATION IN PROGRESS',
   body:"A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.",
-  tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'],code:'https://github.com/benDOESNOTcode/Marine'}
+  tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'],code:'https://github.com/benDOESNOTcode/Marine'},
+ {x:-14.6,z:-5.0,side:-1,type:'ped',file:'models/megalodon.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
+  species:'MEGALODON TOOTH',title:'INTRUSION DETECTION',kind:'MACHINE LEARNING',
+  body:"A deep neural network that classifies network traffic on the ECU-IoHT healthcare dataset into five attack types \u2014 reproducing an IEEE Access paper and reaching ~99.9% accuracy across 111k packets.",
+  tags:['TENSORFLOW','KERAS','DNN','99.9% ACC'],code:'https://github.com/benDOESNOTcode/Intrusion_detection_system'},
+ {x:-14.6,z:-0.2,side:-1,type:'ped',file:'models/allosaurus-jaw.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.5,bone:true,thick:0.01,
+  species:'ALLOSAURUS JAW',title:'CHESS DATA PIPELINE',kind:'DATA ENGINEERING',
+  body:"Pulls games from the Chess.com API into a medallion-style warehouse \u2014 DuckDB, dbt transformations, and a Streamlit + Plotly dashboard tracking rating over time.",
+  tags:['CHESS.COM API','DUCKDB','DBT','STREAMLIT'],code:'https://github.com/benDOESNOTcode/chess-data-pipeline'},
+ {x:-14.6,z:4.6,side:-1,type:'ped',file:'models/sabretooth.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
+  species:'SABRE-TOOTH FANG',title:'BLACKJACK',kind:'FOR FUN',
+  body:"A complete command-line blackjack engine \u2014 shuffling, betting, correct Ace handling, and a dealer that hits to 17. Made for the fun of it (and yes, hitting on soft 17 works).",
+  tags:['PYTHON','CARD GAME'],code:'https://github.com/benDOESNOTcode/blackjack'},
+ {x:14.6,z:-5.0,side:1,type:'ped',file:'models/whale.glb',fix:[0,0,0],tilt:0.5,yaw:0,len:3.3,bone:false,thick:0,
+  species:'FOSSIL WHALE',title:'HOTEL ANALYTICS ETL',kind:'DATA ENGINEERING',
+  body:"An end-to-end PySpark ETL cleaning four years of hotel reservation data into a normalized PostgreSQL schema, served through a Flask API and dashboard. Built for UC Riverside's CS 236.",
+  tags:['PYSPARK','POSTGRES','FLASK','DOCKER'],code:'https://github.com/benDOESNOTcode/End-to-End-ETL-and-Data-Pipeline-Hotel-Data-'},
+ {x:14.6,z:-0.2,side:1,type:'ped',file:'models/trilobite.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:false,thick:0,
+  species:'TRILOBITE',title:'ORDER FLOW IMBALANCE',kind:'QUANT \u00b7 SIGNALS',
+  body:"Computes OFI features from high-frequency limit-order-book data \u2014 quantifying short-term buying vs. selling pressure, a core signal in market-microstructure models.",
+  tags:['PYTHON','NUMPY','MARKET DATA'],code:'https://github.com/benDOESNOTcode/Blockhouse_OFI'},
+ {x:14.6,z:4.6,side:1,type:'ped',file:'models/dolphin.glb',fix:[0,0,0],tilt:0,yaw:1.25,len:2.8,bone:true,thick:0.01,
+  species:'FOSSIL DOLPHIN SKULL',title:'DARWINIAN BLOBS',kind:'ML \u00b7 SIMULATION',
+  body:"An evolutionary simulation where agents compete at iterated rock-paper-scissors using six strategies \u2014 from biased heuristics to Q-learning, an MLP, and an LSTM built in PyTorch.",
+  tags:['PYTORCH','RL','LSTM','SIM'],code:'https://github.com/benDOESNOTcode/darwinian_blobs'},
+ {x:0,z:-7.1,type:'mono',species:'MONOLITH',title:'ABOUT \u00b7 SKILLS \u00b7 CONTACT'}
 ];
 const PANELS={
  about:{title:'ABOUT',kind:'CURATOR',
@@ -131,11 +152,11 @@ renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.BasicShadowMap;
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0b0a0d);
 const camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200);
 const CAM_OFF=new THREE.Vector3(0,27,27), camTarget=new THREE.Vector3(0,0,0.6);
-const VIEW=8.4, LINE_PX=1.3; let HALFW=15, PXW=0.06;
+const LINE_PX=1.3; let VIEW=8.4, HALFW=15, PXW=0.06;
 function setOutline(px){ PXW=px; EX.forEach(e=>(e.tune||[]).forEach(t=>{t.uL.value=(e.thick+px*LINE_PX)/t.ws;})); }
 function resize(){
   const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(Math.ceil(w/PX),Math.ceil(h/PX),false);
-  const v=VIEW; HALFW=v*a; setOutline(2*v/(h/PX));
+  const v=VIEW=Math.min(9.6,Math.max(8.4,18.4/a)); HALFW=v*a; setOutline(2*v/(h/PX));
   camera.left=-v*a; camera.right=v*a; camera.top=v; camera.bottom=-v; camera.updateProjectionMatrix();
 }
 addEventListener('resize',resize); resize();
@@ -165,24 +186,24 @@ const box=(w,h,d,mat)=>new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
 function add(parent,mesh,x,y,z,o={}){mesh.position.set(x,y,z); if(o.cast!==false)mesh.castShadow=true; if(o.recv!==false)mesh.receiveShadow=true; parent.add(mesh); return mesh;}
 
 /* ---------------- room ---------------- */
-const ROOM={x0:-13,x1:13,z0:-8.6,z1:9};
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,30),M(0xffffff,{map:floorTex})); floor.rotation.x=-Math.PI/2; floor.position.set(0,0,4.6); floor.receiveShadow=true; scene.add(floor);
+const ROOM={x0:-17,x1:17,z0:-8.6,z1:9};
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(36,30),M(0xffffff,{map:floorTex})); floorTex.repeat.set(9,7.5); floor.rotation.x=-Math.PI/2; floor.position.set(0,0,4.6); floor.receiveShadow=true; scene.add(floor);
 const wallMat=M(0xffffff,{map:wallTex}), capMat=M(0x4b4a55), darkMat=M(0x1d1c22), stoneMat=M(0x55535f);
-add(scene,box(28,5,1,wallMat),0,2.5,-9.6); add(scene,box(28.4,0.4,1.4,capMat),0,5.2,-9.6);
+wallTex.repeat.set(13,2); add(scene,box(36,5,1,wallMat),0,2.5,-9.6); add(scene,box(36.4,0.4,1.4,capMat),0,5.2,-9.6);
 const sideTex=wallTex.clone(); sideTex.repeat.set(8,2); sideTex.needsUpdate=true;
 const sideMat=M(0xffffff,{map:sideTex});
-[-13.9,13.9].forEach(x=>{const w=box(1,5,20.6,sideMat); add(scene,w,x,2.5,0.4); add(scene,box(1.4,0.4,21,capMat),x,5.2,0.4);});
-for(let i=0;i<6;i++){const x=-11.5+i*4.6; add(scene,box(1.3,5.3,1.1,stoneMat),x,2.65,-8.9); add(scene,box(1.6,0.35,1.4,capMat),x,5.45,-8.9); add(scene,box(1.6,0.35,1.4,capMat),x,0.18,-8.9);}
+[-17.9,17.9].forEach(x=>{const w=box(1,5,20.6,sideMat); add(scene,w,x,2.5,0.4); add(scene,box(1.4,0.4,21,capMat),x,5.2,0.4);});
+for(let i=0;i<8;i++){const x=-16.1+i*4.6; add(scene,box(1.3,5.3,1.1,stoneMat),x,2.65,-8.9); add(scene,box(1.6,0.35,1.4,capMat),x,5.45,-8.9); add(scene,box(1.6,0.35,1.4,capMat),x,0.18,-8.9);}
 const torchMat=new THREE.MeshBasicMaterial({color:0x7fd0ff});
-for(let i=0;i<5;i++){const x=-9.2+i*4.6; add(scene,box(0.28,0.5,0.2,darkMat),x,2.9,-9.0); const f=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.34,0.16),torchMat); f.position.set(x,3.3,-8.98); scene.add(f);
+for(let i=0;i<7;i++){const x=-13.8+i*4.6; add(scene,box(0.28,0.5,0.2,darkMat),x,2.9,-9.0); const f=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.34,0.16),torchMat); f.position.set(x,3.3,-8.98); scene.add(f);
   if(i%2===0){const p=new THREE.PointLight(0x58b8ff,1.1,7,0); p.position.set(x,3.2,-8.2); scene.add(p);}}
-const carpet=new THREE.Mesh(new THREE.PlaneGeometry(3.2,21),M(0xffffff,{map:carpetTex})); carpetTex.repeat.set(1,6.5); carpet.rotation.x=-Math.PI/2; carpet.position.set(0,0.012,9.6); carpet.receiveShadow=true; scene.add(carpet);
+const carpet=new THREE.Mesh(new THREE.PlaneGeometry(3.2,25.6),M(0xffffff,{map:carpetTex})); carpetTex.repeat.set(1,8); carpet.rotation.x=-Math.PI/2; carpet.position.set(0,0.012,7.3); carpet.receiveShadow=true; scene.add(carpet);
 [-2.5,2.5].forEach(x=>{add(scene,box(1.1,1.9,1.1,stoneMat),x,0.95,9.6); add(scene,box(1.4,0.3,1.4,capMat),x,2.05,9.6); add(scene,box(0.12,0.5,0.12,darkMat),x,2.45,9.6); const l=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.38,0.34),new THREE.MeshBasicMaterial({color:0xffd98a})); l.position.set(x,2.85,9.6); scene.add(l); const pl=new THREE.PointLight(0xffc878,0.9,6,0); pl.position.set(x,2.9,9.1); scene.add(pl);});
-[-8.5,8.5].forEach(x=>{add(scene,box(10.6,1.3,0.8,wallMat),x,0.65,9.6); add(scene,box(10.9,0.25,1.1,capMat),x,1.42,9.6);});
+[-10.5,10.5].forEach(x=>{add(scene,box(14.6,1.3,0.8,wallMat),x,0.65,9.6); add(scene,box(14.9,0.25,1.1,capMat),x,1.42,9.6);});
 const doorLight=new THREE.PointLight(0xffc878,0.7,9,0); doorLight.position.set(0,3.4,9); scene.add(doorLight);
 
 scene.add(new THREE.HemisphereLight(0x7a7aa0,0x1c1612,1.25));
-[[-9.5,-1],[9.5,-1],[0,5]].forEach(p=>{const l=new THREE.PointLight(0xffe2b8,0.5,26,0); l.position.set(p[0],9,p[1]); scene.add(l);});
+[[-12,-1],[12,-1],[0,5],[0,-5]].forEach(p=>{const l=new THREE.PointLight(0xffe2b8,0.5,26,0); l.position.set(p[0],9,p[1]); scene.add(l);});
 const fill=new THREE.DirectionalLight(0x9aa0c0,0.45); fill.position.set(-8,12,10); scene.add(fill);
 
 /* ---------------- exhibits ---------------- */
@@ -227,35 +248,63 @@ function digSite(e,variant){
   add(g,box(2.2,0.07,0.07,ropeMat),-2.3,1.5,pz,{cast:false}); add(g,box(2.2,0.07,0.07,ropeMat),2.3,1.5,pz,{cast:false});
   const sign=new THREE.Mesh(new THREE.PlaneGeometry(1.5,0.75),new THREE.MeshBasicMaterial({map:signTex})); sign.position.set(0,1.42,pz+0.02); g.add(sign);
 }
-EX.forEach((e,i)=>{platform(e); if(e.type==='dig') digSite(e,i%2);});
+const PEDW=3.0, PEDD=2.4, PED_TOP=1.0;
+function pedestal(e){
+  const g=new THREE.Group(); g.position.set(e.x,0,e.z); scene.add(g); e.group=g;
+  add(g,box(PEDW+0.34,0.22,PEDD+0.34,frameMat),0,0.11,0); add(g,box(PEDW,0.7,PEDD,stoneMat),0,0.57,0); add(g,box(PEDW+0.18,0.1,PEDD+0.18,capMat),0,0.95,0);
+  add(g,box(0.8,0.28,0.06,goldMat),0,0.56,PEDD/2+0.04,{cast:false});
+  const glow=new THREE.Mesh(new THREE.PlaneGeometry(8.5,7.5),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.45}));
+  glow.rotation.x=-Math.PI/2; glow.position.set(0,0.02,0.2); g.add(glow); e.glow=glow;
+  const s=new THREE.SpotLight(0xffdca6,2.3,0,0.5,1,0); s.position.set(e.x-1.6,10,e.z+2.6); s.target.position.set(e.x,1.2,e.z); scene.add(s); scene.add(s.target); e.spot=s; e.lo=2.3; e.hi=3.4;
+  e.box=new THREE.Box3(new THREE.Vector3(e.x-PEDW/2-0.2,0,e.z-PEDD/2-0.2),new THREE.Vector3(e.x+PEDW/2+0.2,3.4,e.z+PEDD/2+0.2));
+  e.front=new THREE.Vector3(e.x-e.side*(PEDW/2+1.3),0,e.z); e.rect=[e.x-PEDW/2,e.x+PEDW/2,e.z-PEDD/2,e.z+PEDD/2]; e.labelY=3.6;
+}
+function monolith(e){
+  const g=new THREE.Group(); g.position.set(e.x,0,e.z); scene.add(g); e.group=g;
+  add(g,box(3.6,0.24,2.3,frameMat),0,0.12,0); add(g,box(2.7,0.24,1.6,stoneMat),0,0.36,0);
+  add(g,box(1.8,4.3,0.62,M(0x15141b,{roughness:.3,metalness:.35})),0,2.63,0);
+  const gm=new THREE.MeshBasicMaterial({color:0x5fe0b8}); e.glyphMat=gm;
+  [[0,4.25,0.5,0.1],[-0.25,3.85,0.7,0.1],[0.3,3.85,0.3,0.1],[0,3.45,1.1,0.1],[-0.35,3.05,0.45,0.1],[0.3,3.05,0.55,0.1],[0,2.65,0.8,0.1],[0,2.05,0.42,0.42],[-0.3,1.45,0.6,0.1],[0.35,1.45,0.3,0.1],[0,1.05,1.0,0.1]]
+    .forEach(q=>{const m=new THREE.Mesh(new THREE.BoxGeometry(q[2],q[3],0.04),gm); if(q[3]>0.3)m.rotation.z=Math.PI/4; m.position.set(q[0],q[1],0.33); g.add(m);});
+  const glow=new THREE.Mesh(new THREE.PlaneGeometry(9,7),new THREE.MeshBasicMaterial({map:glowTex,color:0x66ffd0,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5}));
+  glow.rotation.x=-Math.PI/2; glow.position.set(0,0.02,0.9); g.add(glow); e.glow=glow;
+  const l=new THREE.PointLight(0x5fe0b8,1.3,9,0); l.position.set(e.x,2.4,e.z+1.8); scene.add(l); e.spot=l; e.lo=1.3; e.hi=2.6;
+  e.box=new THREE.Box3(new THREE.Vector3(e.x-1.4,0,e.z-0.9),new THREE.Vector3(e.x+1.4,5,e.z+0.9));
+  e.front=new THREE.Vector3(e.x,0,e.z+2.2); e.rect=[e.x-1.8,e.x+1.8,e.z-1.15,e.z+1.15]; e.labelY=5.6;
+}
+EX.forEach((e,i)=>{ if(e.type==='ped')pedestal(e); else if(e.type==='mono')monolith(e); else {platform(e); e.lo=2.5; e.hi=3.6; if(e.type==='dig') digSite(e,i%2);} });
+const MONO=EX.find(e=>e.type==='mono');
 
 /* ---------------- fossil models ---------------- */
 const draco=new DRACOLoader(); draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltf=new GLTFLoader(); gltf.setDRACOLoader(draco);
-let pendingModels=EX.filter(e=>e.type==='model').length;
+let pendingModels=EX.filter(e=>e.file).length;
 function modelDone(){ if(--pendingModels<=0) ready(); }
 function mount(e,src){
   src.rotation.set(e.fix[0],e.fix[1],e.fix[2]);
-  const pitch=new THREE.Group(); pitch.rotation.z=e.pitch; pitch.add(src);
+  const ped=e.type==='ped', top=ped?PED_TOP:SAND_Y;
+  const pitch=new THREE.Group(); pitch.rotation.z=e.pitch||0; pitch.rotation.x=e.tilt||0; pitch.add(src);
   const yaw=new THREE.Group(); yaw.add(pitch);
   let b=new THREE.Box3().setFromObject(yaw), sz=b.getSize(new THREE.Vector3());
-  yaw.scale.setScalar(e.len/Math.max(sz.x,sz.z));
+  yaw.scale.setScalar(e.len/(ped?Math.max(sz.x,sz.y,sz.z):Math.max(sz.x,sz.z)));
   yaw.rotation.y=e.yaw;
   yaw.updateMatrixWorld(true); e.tune=[];
   src.traverse(o=>{ if(!o.isMesh||o.userData.outline)return;
     if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();
     const ws=o.matrixWorld.getMaxScaleOnAxis(), uT={value:e.thick/ws}, uL={value:(e.thick+PXW*LINE_PX)/ws};
-    o.material=inflated(new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW}),uT); o.castShadow=true; o.receiveShadow=false;
-    const shell=new THREE.Mesh(o.geometry,inflated(new THREE.MeshBasicMaterial({color:INK,side:THREE.BackSide}),uL)); shell.userData.outline=true; shell.renderOrder=1; o.renderOrder=2; o.add(shell);
+    const map=(e.bone===false&&o.material&&o.material.map)||null;
+    o.material=inflated(map?new THREE.MeshToonMaterial({map,gradientMap:grad,emissive:0x6a6258,emissiveMap:map}):new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW}),uT); o.castShadow=true; o.receiveShadow=false;
+    const shell=new THREE.Mesh(o.geometry,inflated(new THREE.MeshBasicMaterial({color:INK,side:THREE.BackSide}),uL)); shell.userData.outline=true; shell.renderOrder=1; o.renderOrder=2; if(map){shell.material.polygonOffset=true; shell.material.polygonOffsetFactor=6; shell.material.polygonOffsetUnits=60;} o.add(shell);
     e.tune.push({uT,uL,ws});
   });
   b=new THREE.Box3().setFromObject(yaw); const c=b.getCenter(new THREE.Vector3());
-  yaw.position.set(-c.x,SAND_Y-b.min.y-0.04,-c.z+(e.dz||0));
+  yaw.position.set(-c.x,top-b.min.y-(ped?0:0.04),-c.z+(e.dz||0));
   e.group.add(yaw); e.model=yaw; e.modelH=b.max.y-b.min.y;
+  if(ped){ e.labelY=top+e.modelH+1.2; const sh=new THREE.Mesh(new THREE.CircleGeometry(Math.min(1.1,e.len*0.42),14),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.35,depthWrite:false})); sh.rotation.x=-Math.PI/2; sh.position.y=top+0.012; e.group.add(sh); return; }
   const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,e.modelH*0.5,5),darkMat); add(e.group,rod,0,SAND_Y+e.modelH*0.25,e.dz||0);
   add(e.group,new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.34,0.1,8),darkMat),0,SAND_Y+0.05,e.dz||0);
 }
-EX.forEach(e=>{ if(e.type!=='model')return;
+EX.forEach(e=>{ if(!e.file)return;
   gltf.load(e.file,g=>{try{mount(e,g.scene);}catch(err){console.warn(err);} modelDone();},undefined,err=>{console.warn('model failed',e.file,err); modelDone();});
 });
 setTimeout(()=>ready(),15000);
@@ -273,11 +322,12 @@ const armL=limb(0.17,0.6,0.22,shirt,-0.42,1.38), armR=limb(0.17,0.6,0.22,shirt,0
 const blob=new THREE.Mesh(new THREE.CircleGeometry(0.55,12),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.38,depthWrite:false})); blob.rotation.x=-Math.PI/2; blob.position.y=0.025; visitor.add(blob);
 
 /* ---------------- walking + pathfinding ---------------- */
-const R=0.55, CELL=0.5, GX0=-13, GZ0=-8.5, GW=52, GH=44;
+const R=0.55, CELL=0.5, GX0=-17.5, GZ0=-8.5, GW=71, GH=44;
 function walkable(x,z){
   if(z>ROOM.z1-0.2){ if(Math.abs(x)>1.5||z>13) return false; }
   else if(x<ROOM.x0+R||x>ROOM.x1-R||z<ROOM.z0+R+0.6) return false;
-  for(const e of EX){ if(x>e.x-PW/2-R&&x<e.x+PW/2+R&&z>e.z-PD/2-R&&z<e.z+PD/2+R+0.75&&!(z>e.z+PD/2+R&&Math.abs(x-e.x)>0.9)) return false; }
+  for(const e of EX){ if(e.rect){ if(x>e.rect[0]-R&&x<e.rect[1]+R&&z>e.rect[2]-R&&z<e.rect[3]+R) return false; continue; }
+    if(x>e.x-PW/2-R&&x<e.x+PW/2+R&&z>e.z-PD/2-R&&z<e.z+PD/2+R+0.75&&!(z>e.z+PD/2+R&&Math.abs(x-e.x)>0.9)) return false; }
   return true;
 }
 const cellOf=(x,z)=>[Math.round((x-GX0)/CELL),Math.round((z-GZ0)/CELL)], posOf=(i,j)=>[GX0+i*CELL,GZ0+j*CELL];
@@ -337,10 +387,10 @@ function updateLabels(){
   near=-1; let best=2.4;
   EX.forEach((e,i)=>{const d=Math.hypot(visitor.position.x-e.front.x,visitor.position.z-e.front.z); if(d<best){best=d;near=i;}});
   EX.forEach((e,i)=>{
-    v3.set(e.x,(e.type==='model'?(e.modelH||3)+1.0:2.5),e.z).project(camera);
+    v3.set(e.x,e.labelY??(e.type==='model'?(e.modelH||3)+1.0:2.5),e.z).project(camera);
     e.tag.style.left=((v3.x+1)/2*innerWidth)+'px'; e.tag.style.top=((1-v3.y)/2*innerHeight)+'px';
     const on=(i===hover||i===near); e.tag.classList.toggle('on',on); e.tag.classList.toggle('near',i===near);
-    const tgt=on?3.6:2.5; e.spot.intensity+=(tgt-e.spot.intensity)*0.15; e.glow.material.opacity+=((on?0.85:0.5)-e.glow.material.opacity)*0.15;
+    const tgt=on?e.hi:e.lo; e.spot.intensity+=(tgt-e.spot.intensity)*0.15; e.glow.material.opacity+=((on?0.85:0.5)-e.glow.material.opacity)*0.15;
   });
 }
 const ray=new THREE.Raycaster(), ndc=new THREE.Vector2(), floorPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
@@ -362,29 +412,33 @@ function hideHint(){document.getElementById('hint').classList.add('hide');}
 const overlay=document.getElementById('overlay'),mTitle=document.getElementById('mTitle'),mKind=document.getElementById('mKind'),mBody=document.getElementById('mBody');
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function openProject(i){
+  if(EX[i].type==='mono'){openMonolith();return;}
   const e=EX[i]; mTitle.textContent=e.title; mKind.textContent=e.species+' · '+e.kind;
   let h='<p>'+esc(e.body)+'</p><div class="mtags">'; e.tags.forEach(t=>{h+='<span class="mtag">'+esc(t)+'</span>';});
   h+='</div><div class="mlinks"><a class="mlink" href="'+e.code+'" target="_blank" rel="noopener">&#9654; VIEW CODE</a></div>';
   mBody.innerHTML=h; showModal();
 }
-function openPanel(k){
-  const p=PANELS[k]; mTitle.textContent=p.title; mKind.textContent=p.kind; let h='';
-  if(p.skills){h+='<div class="skill-grid">'; for(const key in p.skills){h+='<b>'+esc(key)+'</b>'; p.skills[key].forEach(s=>{h+='<span>'+esc(s)+'</span>';});} h+='</div>';}
-  else h+='<p>'+esc(p.body)+'</p>';
-  if(p.links){h+='<div class="mlinks">'; p.links.forEach(l=>{h+='<a class="mlink '+(l[2]||'')+'" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+'</a>';}); h+='</div>';}
-  if(p.credit)h+='<p class="credit">'+p.credit+'</p>';
+function openMonolith(){
+  const a=PANELS.about, c=PANELS.contact, k=PANELS.skills;
+  mTitle.textContent='BENIEL IMMANUEL'; mKind.textContent='ABOUT \u00b7 SKILLS \u00b7 CONTACT';
+  let h='<p>'+esc(a.body)+'</p>';
+  h+='<div class="sec">CONTACT</div><p>'+esc(c.body)+'</p><div class="mlinks">'; c.links.forEach(l=>{h+='<a class="mlink '+(l[2]||'')+'" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+'</a>';}); h+='</div>';
+  h+='<div class="sec">SKILLS</div><div class="skill-grid">'; for(const key in k.skills){h+='<b>'+esc(key)+'</b>'; k.skills[key].forEach(s=>{h+='<span>'+esc(s)+'</span>';});} h+='</div>';
+  h+='<p class="credit">'+a.credit+'</p>';
   mBody.innerHTML=h; showModal();
 }
 function showModal(){for(const k in keys)keys[k]=false; overlay.classList.add('open'); document.getElementById('closeBtn').focus();}
 function closeModal(){overlay.classList.remove('open');}
 document.getElementById('closeBtn').addEventListener('click',closeModal);
 overlay.addEventListener('click',ev=>{if(ev.target===overlay)closeModal();});
-document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openPanel(b.getAttribute('data-open'))));
+
 
 /* ---------------- loop ---------------- */
+let clock=0;
 function frame(dt){
+  clock+=dt; if(MONO){const k=0.72+0.28*Math.sin(clock*2.2); MONO.glyphMat.color.setRGB(0.3*k,0.95*k,0.72*k);}
   if(!overlay.classList.contains('open')) updateVisitor(dt);
-  const limX=Math.max(0,14.8-HALFW), tx=limX>0?THREE.MathUtils.clamp(visitor.position.x,-limX,limX):visitor.position.x*0.12, tz=THREE.MathUtils.clamp(visitor.position.z*0.45-1.3,-2.9,0.6);
+  const limX=Math.max(0,18.6-HALFW), tx=limX>0?THREE.MathUtils.clamp(visitor.position.x,-limX,limX):visitor.position.x*0.12, tMin=(VIEW-10.47)/0.707, tMax=12.5-VIEW/0.707, tz=tMin>tMax?(tMin+tMax)/2:THREE.MathUtils.clamp(visitor.position.z*0.45-1.3,tMin,tMax);
   camTarget.x+=(tx-camTarget.x)*Math.min(1,dt*3); camTarget.z+=(tz-camTarget.z)*Math.min(1,dt*3);
   camera.position.copy(camTarget).add(CAM_OFF); camera.lookAt(camTarget);
   camera.updateMatrixWorld();
