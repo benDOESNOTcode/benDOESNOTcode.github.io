@@ -95,11 +95,11 @@ import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 
 /* ---------------- content ---------------- */
 const EX=[
- {x:-5.6,z:-4.8,type:'model',file:'models/triceratops.glb',fix:[0,0,Math.PI/2],pitch:0,yaw:-0.2,len:7.6,thick:0.02,line:0.05,
+ {x:-5.6,z:-4.8,type:'model',file:'models/triceratops.glb',fix:[0,0,Math.PI/2],pitch:0,yaw:-0.2,len:7.6,thick:0.02,dz:0.6,
   species:'TRICERATOPS',title:'ATLAS QUERY',kind:'NL → SQL · MAPS',
   body:"Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.",
   tags:['FASTAPI','POSTGIS','REACT','D3.JS'],code:'https://github.com/benDOESNOTcode/Atlas-Query'},
- {x:5.6,z:-4.8,type:'model',file:'models/mammoth.glb',fix:[-Math.PI/2,0,0],pitch:0,yaw:-1.2,len:6.4,thick:0.02,line:0.05,
+ {x:5.6,z:-4.8,type:'model',file:'models/mammoth.glb',fix:[-Math.PI/2,0,0],pitch:0,yaw:-1.2,len:6.4,thick:0.02,dz:0.6,
   species:'WOOLLY MAMMOTH',title:'AGENTIC BI DASHBOARD',kind:'DATA ENGINEERING',
   body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
   tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'],code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard'},
@@ -130,10 +130,12 @@ const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'
 renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.BasicShadowMap;
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0b0a0d);
 const camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200);
-const CAM_OFF=new THREE.Vector3(0,30,24), camTarget=new THREE.Vector3(0,0,0.5);
+const CAM_OFF=new THREE.Vector3(0,27,27), camTarget=new THREE.Vector3(0,0,0.6);
+const VIEW=8.4, LINE_PX=1.3; let HALFW=15, PXW=0.06;
+function setOutline(px){ PXW=px; EX.forEach(e=>(e.tune||[]).forEach(t=>{t.uL.value=(e.thick+px*LINE_PX)/t.ws;})); }
 function resize(){
   const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(Math.ceil(w/PX),Math.ceil(h/PX),false);
-  let v=10.4; if(v*a<15.5) v=15.5/a;
+  const v=VIEW; HALFW=v*a; setOutline(2*v/(h/PX));
   camera.left=-v*a; camera.right=v*a; camera.top=v; camera.bottom=-v; camera.updateProjectionMatrix();
 }
 addEventListener('resize',resize); resize();
@@ -146,8 +148,7 @@ function tex(w,h,draw,rx=1,ry=1){
   t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(rx,ry); t.colorSpace=THREE.SRGBColorSpace; return t;
 }
 const speck=(g,w,h,cols,n)=>{for(let i=0;i<n;i++){g.fillStyle=cols[(rnd()*cols.length)|0]; g.fillRect((rnd()*w)|0,(rnd()*h)|0,1,1);}};
-const floorTex=tex(32,32,(g,w,h)=>{g.fillStyle='#3b3742';g.fillRect(0,0,w,h);speck(g,w,h,['#423e4a','#35313b','#474350'],150);
-  g.fillStyle='#222027';g.fillRect(0,0,w,1);g.fillRect(0,0,1,h);g.fillStyle='#4a4653';g.fillRect(1,1,w-1,1);g.fillRect(1,1,1,h-1);},14,11);
+const floorTex=tex(64,64,(g,w,h)=>{for(let j=0;j<2;j++)for(let i=0;i<2;i++){const d=(i+j)%2; g.fillStyle=d?'#3e3a46':'#34303a'; g.fillRect(i*32,j*32,32,32); g.fillStyle='#201e25'; g.fillRect(i*32,j*32,32,1); g.fillRect(i*32,j*32,1,32); g.fillStyle=d?'#4c4855':'#423e49'; g.fillRect(i*32+1,j*32+1,31,1); g.fillRect(i*32+1,j*32+1,1,31);} speck(g,w,h,['#423e4a','#35313b','#474350','#2f2c35'],520);},7,7.5);
 const wallTex=tex(32,32,(g,w,h)=>{g.fillStyle='#2b2a31';g.fillRect(0,0,w,h);speck(g,w,h,['#313038','#26252b'],120);
   g.fillStyle='#18171c';for(let y=0;y<h;y+=8){g.fillRect(0,y,w,1);const o=(y/8)%2?0:8;for(let x=o;x<w;x+=16)g.fillRect(x,y,1,8);}},10,2);
 const sandTex=tex(32,32,(g,w,h)=>{g.fillStyle='#d2ad49';g.fillRect(0,0,w,h);speck(g,w,h,['#e0bf5c','#c59c3c','#dcb752','#b98f35'],330);},3,2);
@@ -165,7 +166,7 @@ function add(parent,mesh,x,y,z,o={}){mesh.position.set(x,y,z); if(o.cast!==false
 
 /* ---------------- room ---------------- */
 const ROOM={x0:-13,x1:13,z0:-8.6,z1:9};
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,22),M(0xffffff,{map:floorTex})); floor.rotation.x=-Math.PI/2; floor.position.set(0,0,0.6); floor.receiveShadow=true; scene.add(floor);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,30),M(0xffffff,{map:floorTex})); floor.rotation.x=-Math.PI/2; floor.position.set(0,0,4.6); floor.receiveShadow=true; scene.add(floor);
 const wallMat=M(0xffffff,{map:wallTex}), capMat=M(0x4b4a55), darkMat=M(0x1d1c22), stoneMat=M(0x55535f);
 add(scene,box(28,5,1,wallMat),0,2.5,-9.6); add(scene,box(28.4,0.4,1.4,capMat),0,5.2,-9.6);
 const sideTex=wallTex.clone(); sideTex.repeat.set(8,2); sideTex.needsUpdate=true;
@@ -175,18 +176,19 @@ for(let i=0;i<6;i++){const x=-11.5+i*4.6; add(scene,box(1.3,5.3,1.1,stoneMat),x,
 const torchMat=new THREE.MeshBasicMaterial({color:0x7fd0ff});
 for(let i=0;i<5;i++){const x=-9.2+i*4.6; add(scene,box(0.28,0.5,0.2,darkMat),x,2.9,-9.0); const f=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.34,0.16),torchMat); f.position.set(x,3.3,-8.98); scene.add(f);
   if(i%2===0){const p=new THREE.PointLight(0x58b8ff,1.1,7,0); p.position.set(x,3.2,-8.2); scene.add(p);}}
-const carpet=new THREE.Mesh(new THREE.PlaneGeometry(3.2,13),M(0xffffff,{map:carpetTex})); carpet.rotation.x=-Math.PI/2; carpet.position.set(0,0.012,5.6); carpet.receiveShadow=true; scene.add(carpet);
-[-2.5,2.5].forEach(x=>{add(scene,box(1.2,3.4,1.2,stoneMat),x,1.7,9.6); add(scene,box(1.5,0.35,1.5,capMat),x,3.55,9.6); const l=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.4,0.4),new THREE.MeshBasicMaterial({color:0xffd27a})); l.position.set(x,4.0,9.6); scene.add(l);});
+const carpet=new THREE.Mesh(new THREE.PlaneGeometry(3.2,21),M(0xffffff,{map:carpetTex})); carpetTex.repeat.set(1,6.5); carpet.rotation.x=-Math.PI/2; carpet.position.set(0,0.012,9.6); carpet.receiveShadow=true; scene.add(carpet);
+[-2.5,2.5].forEach(x=>{add(scene,box(1.1,1.9,1.1,stoneMat),x,0.95,9.6); add(scene,box(1.4,0.3,1.4,capMat),x,2.05,9.6); add(scene,box(0.12,0.5,0.12,darkMat),x,2.45,9.6); const l=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.38,0.34),new THREE.MeshBasicMaterial({color:0xffd98a})); l.position.set(x,2.85,9.6); scene.add(l); const pl=new THREE.PointLight(0xffc878,0.9,6,0); pl.position.set(x,2.9,9.1); scene.add(pl);});
 [-8.5,8.5].forEach(x=>{add(scene,box(10.6,1.3,0.8,wallMat),x,0.65,9.6); add(scene,box(10.9,0.25,1.1,capMat),x,1.42,9.6);});
-const doorLight=new THREE.PointLight(0xffc878,1.3,9,0); doorLight.position.set(0,3.4,9); scene.add(doorLight);
+const doorLight=new THREE.PointLight(0xffc878,0.7,9,0); doorLight.position.set(0,3.4,9); scene.add(doorLight);
 
-scene.add(new THREE.HemisphereLight(0x6f7096,0x17120e,0.95));
-const fill=new THREE.DirectionalLight(0x8f96b8,0.35); fill.position.set(-6,14,12); scene.add(fill);
+scene.add(new THREE.HemisphereLight(0x7a7aa0,0x1c1612,1.25));
+[[-9.5,-1],[9.5,-1],[0,5]].forEach(p=>{const l=new THREE.PointLight(0xffe2b8,0.5,26,0); l.position.set(p[0],9,p[1]); scene.add(l);});
+const fill=new THREE.DirectionalLight(0x9aa0c0,0.45); fill.position.set(-8,12,10); scene.add(fill);
 
 /* ---------------- exhibits ---------------- */
 const PW=7.2, PD=4.8, SAND_Y=0.62;
-const grad=new THREE.DataTexture(new Uint8Array([118,176,226,255]),4,1,THREE.RedFormat); grad.minFilter=grad.magFilter=THREE.NearestFilter; grad.needsUpdate=true;
-const BONE=0xf6ead0, BONE_GLOW=0x2a2318, INK=0x1a120c;
+const grad=new THREE.DataTexture(new Uint8Array([96,160,222,255]),4,1,THREE.RedFormat); grad.minFilter=grad.magFilter=THREE.NearestFilter; grad.needsUpdate=true;
+const BONE=0xf6ead0, BONE_GLOW=0x1e1911, INK=0x1a120c;
 const boneMat=new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW});
 /* push vertices out along their normals: thickens thin scanned bones, and makes the outline shell */
 function inflated(mat,u){ mat.onBeforeCompile=sh=>{ sh.uniforms.uInf=u; sh.vertexShader='uniform float uInf;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\n\ttransformed += normalize(normal) * uInf;'); }; return mat; }
@@ -200,7 +202,7 @@ function platform(e){
   const st=add(g,box(0.9,0.55,0.4,postMat),0,0.28,PD/2+0.55); const pl=add(g,box(0.74,0.3,0.06,goldMat),0,0.42,PD/2+0.78,{cast:false}); pl.rotation.x=-0.5;
   const glow=new THREE.Mesh(new THREE.PlaneGeometry(13,10.5),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5}));
   glow.rotation.x=-Math.PI/2; glow.position.set(0,0.02,0.3); g.add(glow); e.glow=glow;
-  const s=new THREE.SpotLight(0xffdca6,2.9,0,0.58,0.75,0); s.position.set(e.x-3.5,12,e.z+3.2); s.target.position.set(e.x,0.6,e.z); scene.add(s); scene.add(s.target);
+  const s=new THREE.SpotLight(0xffdca6,2.6,0,0.74,1,0); s.position.set(e.x-2.6,12,e.z+3.2); s.target.position.set(e.x,0.6,e.z); scene.add(s); scene.add(s.target);
   s.castShadow=true; s.shadow.mapSize.set(1024,1024); s.shadow.camera.near=3; s.shadow.camera.far=22; s.shadow.bias=-0.0015; e.spot=s; spots.push(s);
   e.box=new THREE.Box3(new THREE.Vector3(e.x-PW/2,0,e.z-PD/2),new THREE.Vector3(e.x+PW/2,3.6,e.z+PD/2));
   e.front=new THREE.Vector3(e.x,0,e.z+PD/2+1.5);
@@ -242,16 +244,16 @@ function mount(e,src){
   yaw.updateMatrixWorld(true); e.tune=[];
   src.traverse(o=>{ if(!o.isMesh||o.userData.outline)return;
     if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();
-    const ws=o.matrixWorld.getMaxScaleOnAxis(), uT={value:e.thick/ws}, uL={value:(e.thick+e.line)/ws};
+    const ws=o.matrixWorld.getMaxScaleOnAxis(), uT={value:e.thick/ws}, uL={value:(e.thick+PXW*LINE_PX)/ws};
     o.material=inflated(new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW}),uT); o.castShadow=true; o.receiveShadow=false;
-    const shell=new THREE.Mesh(o.geometry,inflated(new THREE.MeshBasicMaterial({color:INK,side:THREE.BackSide}),uL)); shell.userData.outline=true; o.add(shell);
+    const shell=new THREE.Mesh(o.geometry,inflated(new THREE.MeshBasicMaterial({color:INK,side:THREE.BackSide}),uL)); shell.userData.outline=true; shell.renderOrder=1; o.renderOrder=2; o.add(shell);
     e.tune.push({uT,uL,ws});
   });
   b=new THREE.Box3().setFromObject(yaw); const c=b.getCenter(new THREE.Vector3());
-  yaw.position.set(-c.x,SAND_Y-b.min.y-0.04,-c.z);
+  yaw.position.set(-c.x,SAND_Y-b.min.y-0.04,-c.z+(e.dz||0));
   e.group.add(yaw); e.model=yaw; e.modelH=b.max.y-b.min.y;
-  const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,e.modelH*0.5,5),darkMat); add(e.group,rod,0,SAND_Y+e.modelH*0.25,0);
-  add(e.group,new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.34,0.1,8),darkMat),0,SAND_Y+0.05,0);
+  const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,e.modelH*0.5,5),darkMat); add(e.group,rod,0,SAND_Y+e.modelH*0.25,e.dz||0);
+  add(e.group,new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.34,0.1,8),darkMat),0,SAND_Y+0.05,e.dz||0);
 }
 EX.forEach(e=>{ if(e.type!=='model')return;
   gltf.load(e.file,g=>{try{mount(e,g.scene);}catch(err){console.warn(err);} modelDone();},undefined,err=>{console.warn('model failed',e.file,err); modelDone();});
@@ -382,7 +384,7 @@ document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',(
 /* ---------------- loop ---------------- */
 function frame(dt){
   if(!overlay.classList.contains('open')) updateVisitor(dt);
-  const tx=THREE.MathUtils.clamp(visitor.position.x*0.3,-2.5,2.5), tz=THREE.MathUtils.clamp(visitor.position.z*0.25,-1,2.2)+0.4;
+  const limX=Math.max(0,14.8-HALFW), tx=limX>0?THREE.MathUtils.clamp(visitor.position.x,-limX,limX):visitor.position.x*0.12, tz=THREE.MathUtils.clamp(visitor.position.z*0.45-1.3,-2.9,0.6);
   camTarget.x+=(tx-camTarget.x)*Math.min(1,dt*3); camTarget.z+=(tz-camTarget.z)*Math.min(1,dt*3);
   camera.position.copy(camTarget).add(CAM_OFF); camera.lookAt(camTarget);
   camera.updateMatrixWorld();
@@ -392,7 +394,7 @@ function frame(dt){
 let last=performance.now();
 function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; frame(dt); requestAnimationFrame(loop); }
 requestAnimationFrame(loop);
-window.__m={renderer,scene,camera,visitor,EX,frame,step:(n=1,dt=1/30)=>{for(let i=0;i<n;i++)frame(dt);},goExhibit,walkTo,get ready(){return isReady;},get path(){return path;}};
+window.__m={setOutline,renderer,scene,camera,visitor,EX,frame,step:(n=1,dt=1/30)=>{for(let i=0;i<n;i++)frame(dt);},goExhibit,walkTo,get ready(){return isReady;},get path(){return path;}};
 </script>
 </body>
 </html>
