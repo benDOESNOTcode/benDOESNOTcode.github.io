@@ -95,11 +95,11 @@ import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 
 /* ---------------- content ---------------- */
 const EX=[
- {x:-5.6,z:-4.8,type:'model',file:'models/triceratops.glb',fix:[0,0,Math.PI/2],pitch:0,yaw:-0.6,len:6.5,
+ {x:-5.6,z:-4.8,type:'model',file:'models/triceratops.glb',fix:[0,0,Math.PI/2],pitch:0,yaw:-0.2,len:7.6,thick:0.02,line:0.05,
   species:'TRICERATOPS',title:'ATLAS QUERY',kind:'NL → SQL · MAPS',
   body:"Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.",
   tags:['FASTAPI','POSTGIS','REACT','D3.JS'],code:'https://github.com/benDOESNOTcode/Atlas-Query'},
- {x:5.6,z:-4.8,type:'model',file:'models/mammoth.glb',fix:[-Math.PI/2,0,0],pitch:0,yaw:-0.6,len:5.7,
+ {x:5.6,z:-4.8,type:'model',file:'models/mammoth.glb',fix:[-Math.PI/2,0,0],pitch:0,yaw:-1.2,len:6.4,thick:0.02,line:0.05,
   species:'WOOLLY MAMMOTH',title:'AGENTIC BI DASHBOARD',kind:'DATA ENGINEERING',
   body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
   tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'],code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard'},
@@ -185,7 +185,11 @@ const fill=new THREE.DirectionalLight(0x8f96b8,0.35); fill.position.set(-6,14,12
 
 /* ---------------- exhibits ---------------- */
 const PW=7.2, PD=4.8, SAND_Y=0.62;
-const boneMat=new THREE.MeshStandardMaterial({color:0xf3e7ca,roughness:.75,emissive:0x4a3f2c});
+const grad=new THREE.DataTexture(new Uint8Array([118,176,226,255]),4,1,THREE.RedFormat); grad.minFilter=grad.magFilter=THREE.NearestFilter; grad.needsUpdate=true;
+const BONE=0xf6ead0, BONE_GLOW=0x2a2318, INK=0x1a120c;
+const boneMat=new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW});
+/* push vertices out along their normals: thickens thin scanned bones, and makes the outline shell */
+function inflated(mat,u){ mat.onBeforeCompile=sh=>{ sh.uniforms.uInf=u; sh.vertexShader='uniform float uInf;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\n\ttransformed += normalize(normal) * uInf;'); }; return mat; }
 const frameMat=M(0x25232a), postMat=M(0x3a3842), goldMat=M(0xc9a03c,{roughness:.5});
 const spots=[];
 function platform(e){
@@ -196,7 +200,7 @@ function platform(e){
   const st=add(g,box(0.9,0.55,0.4,postMat),0,0.28,PD/2+0.55); const pl=add(g,box(0.74,0.3,0.06,goldMat),0,0.42,PD/2+0.78,{cast:false}); pl.rotation.x=-0.5;
   const glow=new THREE.Mesh(new THREE.PlaneGeometry(13,10.5),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5}));
   glow.rotation.x=-Math.PI/2; glow.position.set(0,0.02,0.3); g.add(glow); e.glow=glow;
-  const s=new THREE.SpotLight(0xffdca6,2.9,0,0.58,0.75,0); s.position.set(e.x,12,e.z+3.2); s.target.position.set(e.x,0.6,e.z); scene.add(s); scene.add(s.target);
+  const s=new THREE.SpotLight(0xffdca6,2.9,0,0.58,0.75,0); s.position.set(e.x-3.5,12,e.z+3.2); s.target.position.set(e.x,0.6,e.z); scene.add(s); scene.add(s.target);
   s.castShadow=true; s.shadow.mapSize.set(1024,1024); s.shadow.camera.near=3; s.shadow.camera.far=22; s.shadow.bias=-0.0015; e.spot=s; spots.push(s);
   e.box=new THREE.Box3(new THREE.Vector3(e.x-PW/2,0,e.z-PD/2),new THREE.Vector3(e.x+PW/2,3.6,e.z+PD/2));
   e.front=new THREE.Vector3(e.x,0,e.z+PD/2+1.5);
@@ -230,12 +234,19 @@ let pendingModels=EX.filter(e=>e.type==='model').length;
 function modelDone(){ if(--pendingModels<=0) ready(); }
 function mount(e,src){
   src.rotation.set(e.fix[0],e.fix[1],e.fix[2]);
-  src.traverse(o=>{if(o.isMesh){o.material=boneMat; o.castShadow=true; o.receiveShadow=true;}});
   const pitch=new THREE.Group(); pitch.rotation.z=e.pitch; pitch.add(src);
   const yaw=new THREE.Group(); yaw.add(pitch);
   let b=new THREE.Box3().setFromObject(yaw), sz=b.getSize(new THREE.Vector3());
   yaw.scale.setScalar(e.len/Math.max(sz.x,sz.z));
   yaw.rotation.y=e.yaw;
+  yaw.updateMatrixWorld(true); e.tune=[];
+  src.traverse(o=>{ if(!o.isMesh||o.userData.outline)return;
+    if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();
+    const ws=o.matrixWorld.getMaxScaleOnAxis(), uT={value:e.thick/ws}, uL={value:(e.thick+e.line)/ws};
+    o.material=inflated(new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW}),uT); o.castShadow=true; o.receiveShadow=false;
+    const shell=new THREE.Mesh(o.geometry,inflated(new THREE.MeshBasicMaterial({color:INK,side:THREE.BackSide}),uL)); shell.userData.outline=true; o.add(shell);
+    e.tune.push({uT,uL,ws});
+  });
   b=new THREE.Box3().setFromObject(yaw); const c=b.getCenter(new THREE.Vector3());
   yaw.position.set(-c.x,SAND_Y-b.min.y-0.04,-c.z);
   e.group.add(yaw); e.model=yaw; e.modelH=b.max.y-b.min.y;
