@@ -35,6 +35,8 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 #hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:40;font-family:var(--pixel);font-size:9px;line-height:1.7;text-align:center;
   color:var(--cream);background:rgba(0,0,0,.62);padding:10px 14px;border:2px solid rgba(255,207,90,.6);text-shadow:2px 2px 0 #000;transition:opacity .4s;}
 #hint.hide{opacity:0;pointer-events:none;}
+#fade{position:fixed;inset:0;z-index:55;background:#000;opacity:0;pointer-events:none;transition:opacity .3s;}
+#fade.on{opacity:1;}
 #loading{position:fixed;inset:0;z-index:70;background:#0b0a0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
   font-family:var(--pixel);font-size:11px;color:var(--accent);transition:opacity .5s;}
 #loading.done{opacity:0;pointer-events:none;}
@@ -71,7 +73,8 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 <div id="hud">
   <div class="title">BENIEL IMMANUEL<small>FOSSIL MUSEUM &middot; DATA SCIENCE</small></div>
 </div>
-<div id="hint">CLICK THE FLOOR TO WALK &middot; CLICK AN EXHIBIT TO VIEW<br>ABOUT + CONTACT: THE GLOWING MONOLITH AT THE BACK</div>
+<div id="hint">CLICK THE FLOOR TO WALK &middot; CLICK AN EXHIBIT TO VIEW<br>ABOUT + CONTACT: THE MONOLITH &middot; MORE PROJECTS: STAIRS ON THE RIGHT</div>
+<div id="fade"></div>
 <div id="loading">OPENING THE MUSEUM...<small>unpacking fossils</small></div>
 
 <div id="overlay" role="dialog" aria-modal="true" aria-labelledby="mTitle">
@@ -99,37 +102,39 @@ const EX=[
   species:'WOOLLY MAMMOTH',title:'AGENTIC BI DASHBOARD',kind:'DATA ENGINEERING',
   body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
   tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'],code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard'},
- {x:-5.6,z:3.0,type:'dig',species:'DIG SITE A',title:'AVIAN CLIMATE INTEL',kind:'AGENTIC AI · BIRDS · EXCAVATION IN PROGRESS',
+ {x:-5.6,z:3.0,type:'model',build:'sauropod',fix:[0,0,0],pitch:0,yaw:-0.25,len:7.0,thick:0,dz:0.5,species:'BRACHIOSAURUS',title:'AVIAN CLIMATE INTEL',kind:'AGENTIC AI \u00b7 BIRDS',
   body:"A serverless multi-agent system that answers plain-English questions about bird populations — routing each query to semantic search, text-to-SQL, forecasting, or a self-correcting chart engine, and rendering 20-year migration maps in WebGL.",
   tags:['LANGGRAPH','RAG','DUCKDB','GROQ','PYDECK'],code:'https://github.com/benDOESNOTcode/avian-climate-agent'},
- {x:5.6,z:3.0,type:'dig',species:'DIG SITE B',title:'TOXIC WATERS',kind:'GEOSPATIAL · OCEANS · EXCAVATION IN PROGRESS',
+ {x:5.6,z:3.0,type:'model',build:'spino',water:true,fix:[0,0,0],pitch:0,yaw:3.4,len:7.4,thick:0,dz:0.5,species:'SPINOSAURUS',title:'TOXIC WATERS',kind:'GEOSPATIAL \u00b7 OCEANS',
   body:"A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.",
   tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'],code:'https://github.com/benDOESNOTcode/Marine'},
- {x:-14.6,z:-5.0,side:-1,type:'ped',file:'models/megalodon.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
+ {x:-8,z:-4,f:1,type:'ped',file:'models/megalodon.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
   species:'MEGALODON TOOTH',title:'INTRUSION DETECTION',kind:'MACHINE LEARNING',
   body:"A deep neural network that classifies network traffic on the ECU-IoHT healthcare dataset into five attack types \u2014 reproducing an IEEE Access paper and reaching ~99.9% accuracy across 111k packets.",
   tags:['TENSORFLOW','KERAS','DNN','99.9% ACC'],code:'https://github.com/benDOESNOTcode/Intrusion_detection_system'},
- {x:-14.6,z:-0.2,side:-1,type:'ped',file:'models/allosaurus-jaw.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.5,bone:true,thick:0.01,
+ {x:0,z:-4,f:1,type:'ped',file:'models/allosaurus-jaw.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.5,bone:true,thick:0.01,
   species:'ALLOSAURUS JAW',title:'CHESS DATA PIPELINE',kind:'DATA ENGINEERING',
   body:"Pulls games from the Chess.com API into a medallion-style warehouse \u2014 DuckDB, dbt transformations, and a Streamlit + Plotly dashboard tracking rating over time.",
   tags:['CHESS.COM API','DUCKDB','DBT','STREAMLIT'],code:'https://github.com/benDOESNOTcode/chess-data-pipeline'},
- {x:-14.6,z:4.6,side:-1,type:'ped',file:'models/sabretooth.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
+ {x:8,z:-4,f:1,type:'ped',file:'models/sabretooth.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
   species:'SABRE-TOOTH FANG',title:'BLACKJACK',kind:'FOR FUN',
   body:"A complete command-line blackjack engine \u2014 shuffling, betting, correct Ace handling, and a dealer that hits to 17. Made for the fun of it (and yes, hitting on soft 17 works).",
   tags:['PYTHON','CARD GAME'],code:'https://github.com/benDOESNOTcode/blackjack'},
- {x:14.6,z:-5.0,side:1,type:'ped',file:'models/whale.glb',fix:[0,0,0],tilt:0.5,yaw:0,len:3.3,bone:false,thick:0,
+ {x:-8,z:2.6,f:1,type:'ped',file:'models/whale.glb',fix:[0,0,0],tilt:0.5,yaw:0,len:3.3,bone:false,thick:0,
   species:'FOSSIL WHALE',title:'HOTEL ANALYTICS ETL',kind:'DATA ENGINEERING',
   body:"An end-to-end PySpark ETL cleaning four years of hotel reservation data into a normalized PostgreSQL schema, served through a Flask API and dashboard. Built for UC Riverside's CS 236.",
   tags:['PYSPARK','POSTGRES','FLASK','DOCKER'],code:'https://github.com/benDOESNOTcode/End-to-End-ETL-and-Data-Pipeline-Hotel-Data-'},
- {x:14.6,z:-0.2,side:1,type:'ped',file:'models/trilobite.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:false,thick:0,
+ {x:0,z:2.6,f:1,type:'ped',file:'models/trilobite.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:false,thick:0,
   species:'TRILOBITE',title:'ORDER FLOW IMBALANCE',kind:'QUANT \u00b7 SIGNALS',
   body:"Computes OFI features from high-frequency limit-order-book data \u2014 quantifying short-term buying vs. selling pressure, a core signal in market-microstructure models.",
   tags:['PYTHON','NUMPY','MARKET DATA'],code:'https://github.com/benDOESNOTcode/Blockhouse_OFI'},
- {x:14.6,z:4.6,side:1,type:'ped',file:'models/dolphin.glb',fix:[0,0,0],tilt:0,yaw:1.25,len:2.8,bone:true,thick:0.01,
+ {x:8,z:2.6,f:1,type:'ped',file:'models/dolphin.glb',fix:[0,0,0],tilt:0,yaw:1.25,len:2.8,bone:true,thick:0.01,
   species:'FOSSIL DOLPHIN SKULL',title:'DARWINIAN BLOBS',kind:'ML \u00b7 SIMULATION',
   body:"An evolutionary simulation where agents compete at iterated rock-paper-scissors using six strategies \u2014 from biased heuristics to Q-learning, an MLP, and an LSTM built in PyTorch.",
   tags:['PYTORCH','RL','LSTM','SIM'],code:'https://github.com/benDOESNOTcode/darwinian_blobs'},
- {x:0,z:-7.1,type:'mono',species:'MONOLITH',title:'ABOUT \u00b7 SKILLS \u00b7 CONTACT'}
+ {x:0,z:-7.1,type:'mono',species:'MONOLITH',title:'ABOUT \u00b7 SKILLS \u00b7 CONTACT'},
+ {x:11.6,z:-4.2,f:0,type:'stairs',species:'STAIRS UP',title:'GALLERY II \u00b7 6 MORE PROJECTS'},
+ {x:11.6,z:-4.2,f:1,type:'stairs',species:'STAIRS DOWN',title:'BACK TO THE MAIN HALL'}
 ];
 const PANELS={
  about:{title:'ABOUT',kind:'CURATOR',
@@ -156,7 +161,7 @@ const LINE_PX=1.3; let VIEW=8.4, HALFW=15, PXW=0.06;
 function setOutline(px){ PXW=px; EX.forEach(e=>(e.tune||[]).forEach(t=>{t.uL.value=(e.thick+px*LINE_PX)/t.ws;})); }
 function resize(){
   const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(Math.ceil(w/PX),Math.ceil(h/PX),false);
-  const v=VIEW=Math.min(9.6,Math.max(8.4,18.4/a)); HALFW=v*a; setOutline(2*v/(h/PX));
+  const v=VIEW=Math.min(9.6,Math.max(8.4,14.9/a)); HALFW=v*a; setOutline(2*v/(h/PX));
   camera.left=-v*a; camera.right=v*a; camera.top=v; camera.bottom=-v; camera.updateProjectionMatrix();
 }
 addEventListener('resize',resize); resize();
@@ -173,6 +178,7 @@ const floorTex=tex(64,64,(g,w,h)=>{for(let j=0;j<2;j++)for(let i=0;i<2;i++){cons
 const wallTex=tex(32,32,(g,w,h)=>{g.fillStyle='#2b2a31';g.fillRect(0,0,w,h);speck(g,w,h,['#313038','#26252b'],120);
   g.fillStyle='#18171c';for(let y=0;y<h;y+=8){g.fillRect(0,y,w,1);const o=(y/8)%2?0:8;for(let x=o;x<w;x+=16)g.fillRect(x,y,1,8);}},10,2);
 const sandTex=tex(32,32,(g,w,h)=>{g.fillStyle='#d2ad49';g.fillRect(0,0,w,h);speck(g,w,h,['#e0bf5c','#c59c3c','#dcb752','#b98f35'],330);},3,2);
+const waterTex=tex(32,32,(g,w,h)=>{g.fillStyle='#2c6a98';g.fillRect(0,0,w,h);speck(g,w,h,['#2f74a6','#285f8a','#3680b4'],260);g.strokeStyle='#7fb6d8';g.lineWidth=1;g.beginPath();g.moveTo(0,9);g.lineTo(10,13);g.lineTo(18,6);g.lineTo(32,11);g.moveTo(10,13);g.lineTo(13,26);g.lineTo(0,30);g.moveTo(13,26);g.lineTo(25,22);g.lineTo(32,29);g.moveTo(25,22);g.lineTo(18,6);g.stroke();},3,2);
 const carpetTex=tex(16,32,(g,w,h)=>{g.fillStyle='#6e1f24';g.fillRect(0,0,w,h);speck(g,w,h,['#7a262b','#63191e'],90);
   g.fillStyle='#c79a3a';g.fillRect(1,0,1,h);g.fillRect(w-2,0,1,h);},1,4);
 const glowTex=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');
@@ -185,25 +191,39 @@ const M=(color,opt={})=>new THREE.MeshStandardMaterial(Object.assign({color,roug
 const box=(w,h,d,mat)=>new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
 function add(parent,mesh,x,y,z,o={}){mesh.position.set(x,y,z); if(o.cast!==false)mesh.castShadow=true; if(o.recv!==false)mesh.receiveShadow=true; parent.add(mesh); return mesh;}
 
-/* ---------------- room ---------------- */
-const ROOM={x0:-17,x1:17,z0:-8.6,z1:9};
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(36,30),M(0xffffff,{map:floorTex})); floorTex.repeat.set(9,7.5); floor.rotation.x=-Math.PI/2; floor.position.set(0,0,4.6); floor.receiveShadow=true; scene.add(floor);
+/* ---------------- rooms (two floors) ---------------- */
+const ROOM={x0:-13,x1:13,z0:-8.6,z1:9}, OZ=-70, STAIR_X=11.6;
+EX.forEach(e=>{ if(e.f) e.z+=OZ; });
 const wallMat=M(0xffffff,{map:wallTex}), capMat=M(0x4b4a55), darkMat=M(0x1d1c22), stoneMat=M(0x55535f);
-wallTex.repeat.set(13,2); add(scene,box(36,5,1,wallMat),0,2.5,-9.6); add(scene,box(36.4,0.4,1.4,capMat),0,5.2,-9.6);
-const sideTex=wallTex.clone(); sideTex.repeat.set(8,2); sideTex.needsUpdate=true;
-const sideMat=M(0xffffff,{map:sideTex});
-[-17.9,17.9].forEach(x=>{const w=box(1,5,20.6,sideMat); add(scene,w,x,2.5,0.4); add(scene,box(1.4,0.4,21,capMat),x,5.2,0.4);});
-for(let i=0;i<8;i++){const x=-16.1+i*4.6; add(scene,box(1.3,5.3,1.1,stoneMat),x,2.65,-8.9); add(scene,box(1.6,0.35,1.4,capMat),x,5.45,-8.9); add(scene,box(1.6,0.35,1.4,capMat),x,0.18,-8.9);}
+const sideTex=wallTex.clone(); sideTex.repeat.set(8,2); sideTex.needsUpdate=true; const sideMat=M(0xffffff,{map:sideTex});
 const torchMat=new THREE.MeshBasicMaterial({color:0x7fd0ff});
-for(let i=0;i<7;i++){const x=-13.8+i*4.6; add(scene,box(0.28,0.5,0.2,darkMat),x,2.9,-9.0); const f=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.34,0.16),torchMat); f.position.set(x,3.3,-8.98); scene.add(f);
-  if(i%2===0){const p=new THREE.PointLight(0x58b8ff,1.1,7,0); p.position.set(x,3.2,-8.2); scene.add(p);}}
-const carpet=new THREE.Mesh(new THREE.PlaneGeometry(3.2,25.6),M(0xffffff,{map:carpetTex})); carpetTex.repeat.set(1,8); carpet.rotation.x=-Math.PI/2; carpet.position.set(0,0.012,7.3); carpet.receiveShadow=true; scene.add(carpet);
-[-2.5,2.5].forEach(x=>{add(scene,box(1.1,1.9,1.1,stoneMat),x,0.95,9.6); add(scene,box(1.4,0.3,1.4,capMat),x,2.05,9.6); add(scene,box(0.12,0.5,0.12,darkMat),x,2.45,9.6); const l=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.38,0.34),new THREE.MeshBasicMaterial({color:0xffd98a})); l.position.set(x,2.85,9.6); scene.add(l); const pl=new THREE.PointLight(0xffc878,0.9,6,0); pl.position.set(x,2.9,9.1); scene.add(pl);});
-[-10.5,10.5].forEach(x=>{add(scene,box(14.6,1.3,0.8,wallMat),x,0.65,9.6); add(scene,box(14.9,0.25,1.1,capMat),x,1.42,9.6);});
-const doorLight=new THREE.PointLight(0xffc878,0.7,9,0); doorLight.position.set(0,3.4,9); scene.add(doorLight);
-
+floorTex.repeat.set(7,7.5); wallTex.repeat.set(10,2); carpetTex.repeat.set(1,8);
+function buildRoom(oz,upper){
+  const P=new THREE.Group(); P.position.z=oz; scene.add(P);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(28,upper?20.6:30),M(0xffffff,{map:floorTex})); floor.rotation.x=-Math.PI/2; floor.position.set(0,0,upper?0.1:4.6); floor.receiveShadow=true; P.add(floor);
+  add(P,box(28,5,1,wallMat),0,2.5,-9.6); add(P,box(28.4,0.4,1.4,capMat),0,5.2,-9.6);
+  [-13.9,13.9].forEach(x=>{add(P,box(1,5,20.6,sideMat),x,2.5,0.4); add(P,box(1.4,0.4,21,capMat),x,5.2,0.4);});
+  for(let i=0;i<5;i++){const x=-11.5+i*4.6; add(P,box(1.3,5.3,1.1,stoneMat),x,2.65,-8.9); add(P,box(1.6,0.35,1.4,capMat),x,5.45,-8.9); add(P,box(1.6,0.35,1.4,capMat),x,0.18,-8.9);}
+  for(let i=0;i<4;i++){const x=-9.2+i*4.6; add(P,box(0.28,0.5,0.2,darkMat),x,2.9,-9.0); const fl=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.34,0.16),torchMat); fl.position.set(x,3.3,-8.98); P.add(fl);
+    if(i%2===0){const p=new THREE.PointLight(0x58b8ff,1.1,7,0); p.position.set(x,3.2,-8.2); P.add(p);}}
+  if(!upper){
+    const carpet=new THREE.Mesh(new THREE.PlaneGeometry(3.2,25.6),M(0xffffff,{map:carpetTex})); carpet.rotation.x=-Math.PI/2; carpet.position.set(0,0.012,7.3); carpet.receiveShadow=true; P.add(carpet);
+    [-2.5,2.5].forEach(x=>{add(P,box(1.1,1.9,1.1,stoneMat),x,0.95,9.6); add(P,box(1.4,0.3,1.4,capMat),x,2.05,9.6); add(P,box(0.12,0.5,0.12,darkMat),x,2.45,9.6); const l=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.38,0.34),new THREE.MeshBasicMaterial({color:0xffd98a})); l.position.set(x,2.85,9.6); P.add(l); const pl=new THREE.PointLight(0xffc878,0.9,6,0); pl.position.set(x,2.9,9.1); P.add(pl);});
+    [-8.5,8.5].forEach(x=>{add(P,box(10.6,1.3,0.8,wallMat),x,0.65,9.6); add(P,box(10.9,0.25,1.1,capMat),x,1.42,9.6);});
+    const doorLight=new THREE.PointLight(0xffc878,0.7,9,0); doorLight.position.set(0,3.4,9); P.add(doorLight);
+  } else {
+    add(P,box(28,1.3,0.8,wallMat),0,0.65,9.6); add(P,box(28.3,0.25,1.1,capMat),0,1.42,9.6);
+    const runner=new THREE.Mesh(new THREE.PlaneGeometry(22,2.2),M(0xffffff,{map:carpetTex})); runner.rotation.x=-Math.PI/2; runner.position.set(0,0.012,-0.7); runner.receiveShadow=true;
+  }
+  [[-9.5,-1],[9.5,-1],[0,5],[0,-5]].forEach(p=>{const l=new THREE.PointLight(0xffe2b8,0.5,26,0); l.position.set(p[0],9,p[1]); P.add(l);});
+  /* staircase in the back-right corner, rising into a doorway in the back wall */
+  for(let i=0;i<6;i++){const zz=-5.8-i*0.52, hh=0.32*(i+1); add(P,box(2.6,hh,0.52,stoneMat),STAIR_X,hh/2,zz); add(P,box(2.7,0.07,0.56,capMat),STAIR_X,hh+0.035,zz);}
+  [-1.45,1.45].forEach(dx=>{add(P,box(0.16,1.5,0.16,darkMat),STAIR_X+dx,0.75,-5.5); add(P,box(0.24,0.12,0.24,M(0xc9a03c,{roughness:.5})),STAIR_X+dx,1.56,-5.5);});
+  const door=new THREE.Mesh(new THREE.PlaneGeometry(2.5,2.9),new THREE.MeshBasicMaterial({color:upper?0x07080c:0x3a2710})); door.position.set(STAIR_X,3.35,-9.07); P.add(door);
+  add(P,box(0.3,3.1,0.3,capMat),STAIR_X-1.4,3.35,-9.0); add(P,box(0.3,3.1,0.3,capMat),STAIR_X+1.4,3.35,-9.0); add(P,box(3.1,0.3,0.3,capMat),STAIR_X,5.0,-9.0);
+}
+buildRoom(0,false); buildRoom(OZ,true);
 scene.add(new THREE.HemisphereLight(0x7a7aa0,0x1c1612,1.25));
-[[-12,-1],[12,-1],[0,5],[0,-5]].forEach(p=>{const l=new THREE.PointLight(0xffe2b8,0.5,26,0); l.position.set(p[0],9,p[1]); scene.add(l);});
 const fill=new THREE.DirectionalLight(0x9aa0c0,0.45); fill.position.set(-8,12,10); scene.add(fill);
 
 /* ---------------- exhibits ---------------- */
@@ -218,7 +238,7 @@ const spots=[];
 function platform(e){
   const g=new THREE.Group(); g.position.set(e.x,0,e.z); scene.add(g); e.group=g;
   add(g,box(PW,0.5,PD,frameMat),0,0.25,0);
-  add(g,box(PW-0.6,0.12,PD-0.6,M(0xffffff,{map:sandTex})),0,0.56,0,{cast:false});
+  add(g,box(PW-0.6,0.12,PD-0.6,M(0xffffff,{map:e.water?waterTex:sandTex})),0,0.56,0,{cast:false});
   [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(c=>{add(g,box(0.36,0.85,0.36,postMat),c[0]*(PW/2-0.2),0.42,c[1]*(PD/2-0.2)); add(g,box(0.46,0.14,0.46,capMat),c[0]*(PW/2-0.2),0.9,c[1]*(PD/2-0.2));});
   const st=add(g,box(0.9,0.55,0.4,postMat),0,0.28,PD/2+0.55); const pl=add(g,box(0.74,0.3,0.06,goldMat),0,0.42,PD/2+0.78,{cast:false}); pl.rotation.x=-0.5;
   const glow=new THREE.Mesh(new THREE.PlaneGeometry(13,10.5),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5}));
@@ -257,7 +277,7 @@ function pedestal(e){
   glow.rotation.x=-Math.PI/2; glow.position.set(0,0.02,0.2); g.add(glow); e.glow=glow;
   const s=new THREE.SpotLight(0xffdca6,2.3,0,0.5,1,0); s.position.set(e.x-1.6,10,e.z+2.6); s.target.position.set(e.x,1.2,e.z); scene.add(s); scene.add(s.target); e.spot=s; e.lo=2.3; e.hi=3.4;
   e.box=new THREE.Box3(new THREE.Vector3(e.x-PEDW/2-0.2,0,e.z-PEDD/2-0.2),new THREE.Vector3(e.x+PEDW/2+0.2,3.4,e.z+PEDD/2+0.2));
-  e.front=new THREE.Vector3(e.x-e.side*(PEDW/2+1.3),0,e.z); e.rect=[e.x-PEDW/2,e.x+PEDW/2,e.z-PEDD/2,e.z+PEDD/2]; e.labelY=3.6;
+  e.front=new THREE.Vector3(e.x,0,e.z+PEDD/2+1.4); e.rect=[e.x-PEDW/2,e.x+PEDW/2,e.z-PEDD/2,e.z+PEDD/2]; e.labelY=3.6;
 }
 function monolith(e){
   const g=new THREE.Group(); g.position.set(e.x,0,e.z); scene.add(g); e.group=g;
@@ -272,7 +292,15 @@ function monolith(e){
   e.box=new THREE.Box3(new THREE.Vector3(e.x-1.4,0,e.z-0.9),new THREE.Vector3(e.x+1.4,5,e.z+0.9));
   e.front=new THREE.Vector3(e.x,0,e.z+2.2); e.rect=[e.x-1.8,e.x+1.8,e.z-1.15,e.z+1.15]; e.labelY=5.6;
 }
-EX.forEach((e,i)=>{ if(e.type==='ped')pedestal(e); else if(e.type==='mono')monolith(e); else {platform(e); e.lo=2.5; e.hi=3.6; if(e.type==='dig') digSite(e,i%2);} });
+function stairsEx(e){
+  const g=new THREE.Group(); g.position.set(e.x,0,e.z); scene.add(g); e.group=g;
+  const glow=new THREE.Mesh(new THREE.PlaneGeometry(7,7),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5}));
+  glow.rotation.x=-Math.PI/2; glow.position.set(0,0.02,-0.6); g.add(glow); e.glow=glow;
+  const l=new THREE.PointLight(0xffc878,1.1,8,0); l.position.set(e.x,3.4,e.z-3.4); scene.add(l); e.spot=l; e.lo=1.1; e.hi=2.4;
+  e.box=new THREE.Box3(new THREE.Vector3(e.x-1.4,0,e.z-4.9),new THREE.Vector3(e.x+1.4,3,e.z-1.2));
+  e.front=new THREE.Vector3(e.x,0,e.z); e.rect=[e.x-1.4,e.x+1.4,e.z-4.8,e.z-1.25]; e.labelY=4.2;
+}
+EX.forEach((e,i)=>{ if(e.type==='ped')pedestal(e); else if(e.type==='mono')monolith(e); else if(e.type==='stairs')stairsEx(e); else {platform(e); e.lo=2.5; e.hi=3.6; if(e.type==='dig') digSite(e,i%2);} });
 const MONO=EX.find(e=>e.type==='mono');
 
 /* ---------------- fossil models ---------------- */
@@ -304,6 +332,38 @@ function mount(e,src){
   const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,e.modelH*0.5,5),darkMat); add(e.group,rod,0,SAND_Y+e.modelH*0.25,e.dz||0);
   add(e.group,new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.34,0.1,8),darkMat),0,SAND_Y+0.05,e.dz||0);
 }
+const V=(x,y,z=0)=>new THREE.Vector3(x,y,z), UPV=new THREE.Vector3(0,1,0);
+function seg(g,a,b,r1,r2){const d=b.clone().sub(a),m=new THREE.Mesh(new THREE.CylinderGeometry(r2,r1,d.length(),6)); m.position.copy(a).addScaledVector(d,.5); m.quaternion.setFromUnitVectors(UPV,d.clone().normalize()); g.add(m);}
+function ball(g,p,r,sx=1,sy=1,sz=1){const m=new THREE.Mesh(new THREE.SphereGeometry(r,7,5)); m.position.copy(p); m.scale.set(sx,sy,sz); g.add(m);}
+function blk(g,p,w,h,d,rz=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d)); m.position.copy(p); m.rotation.z=rz; g.add(m);}
+function chain(g,pts,r0,r1){const k=pts.length-1; for(let i=0;i<k;i++){const a=r0+(r1-r0)*i/k,b=r0+(r1-r0)*(i+1)/k; seg(g,pts[i],pts[i+1],a,b); ball(g,pts[i+1],b*1.4);}}
+function ribcage(g,x0,x1,nn,y,rFn){for(let i=0;i<nn;i++){const t=i/(nn-1),r=rFn(t),m=new THREE.Mesh(new THREE.TorusGeometry(r,0.085,5,9,Math.PI)); m.rotation.y=Math.PI/2; m.scale.y=1.35; m.position.set(x0+(x1-x0)*t,y-r*1.35,0); g.add(m);}}
+function leg(g,x,z,hy,kx,ky,fx,r){seg(g,V(x,hy,z),V(x+kx,ky,z),r,r*.8); ball(g,V(x+kx,ky,z),r*1.3); seg(g,V(x+kx,ky,z),V(x+fx,0.3,z),r*.8,r*.65); blk(g,V(x+fx+0.2,0.14,z),0.7,0.28,0.5);}
+const BUILD={
+  sauropod(){ const g=new THREE.Group();
+    chain(g,[V(-6.1,3.7),V(-6.5,3.1),V(-6.1,2.4),V(-5.0,2.2),V(-3.6,2.6),V(-2.2,3.1)],0.07,0.24);
+    chain(g,[V(-2.2,3.1),V(-0.8,3.35),V(0.6,3.35),V(1.8,3.2)],0.26,0.26);
+    chain(g,[V(1.8,3.2),V(2.6,3.8),V(3.3,4.7),V(3.9,5.7),V(4.4,6.6)],0.25,0.17);
+    ball(g,V(4.85,6.85),0.5,1.25,0.85,0.8); blk(g,V(5.45,6.62),0.62,0.4,0.55,-0.15);
+    for(let x=-2;x<=1.6;x+=0.45) blk(g,V(x,3.68),0.14,0.42,0.14);
+    ribcage(g,-1.3,1.5,7,3.3,t=>0.75+0.25*Math.sin(Math.PI*t));
+    ball(g,V(-2.0,3.0),0.6,1.1,0.8,1.5); ball(g,V(1.7,2.9),0.5,0.9,1.0,1.5);
+    [-0.8,0.8].forEach(z=>{leg(g,-2.0,z,2.9,0.35,1.55,0.0,0.2); leg(g,1.7,z,2.8,-0.2,1.5,0.05,0.18);});
+    return g; },
+  spino(){ const g=new THREE.Group();
+    chain(g,[V(-6.2,2.0),V(-4.8,2.15),V(-3.4,2.4),V(-2.0,2.65)],0.07,0.22);
+    chain(g,[V(-2.0,2.65),V(-0.6,2.8),V(0.8,2.75),V(1.9,2.6)],0.24,0.24);
+    chain(g,[V(1.9,2.6),V(2.6,2.8),V(3.2,3.0)],0.2,0.17);
+    ball(g,V(3.5,3.05),0.38,1.2,0.9,0.85); seg(g,V(3.6,3.05),V(5.8,2.5),0.26,0.1); seg(g,V(3.5,2.7),V(5.6,2.3),0.13,0.06);
+    for(let i=0;i<12;i++){const t=i/11,h=0.5+2.9*Math.pow(Math.sin(Math.PI*t),0.8); blk(g,V(-2.3+t*4.2,2.8+h/2),0.13,h,0.1,(0.5-t)*0.25);}
+    for(let x=-5.6;x<=-2.8;x+=0.4) blk(g,V(x,2.0+(x+6.2)*0.155+0.3),0.08,0.45,0.08);
+    ribcage(g,-1.2,1.6,7,2.75,t=>0.65+0.2*Math.sin(Math.PI*t));
+    ball(g,V(-1.7,2.5),0.55,1.1,0.8,1.4);
+    [-0.7,0.7].forEach(z=>{leg(g,-1.7,z,2.4,0.55,1.35,-0.1,0.2);});
+    [-0.6,0.6].forEach(z=>{seg(g,V(1.7,2.3,z),V(2.0,1.6,z),0.1,0.08); seg(g,V(2.0,1.6,z),V(2.5,1.2,z),0.08,0.06);});
+    return g; }
+};
+EX.forEach(e=>{ if(e.build){ try{ mount(e,BUILD[e.build]()); }catch(err){ console.warn(err); } } });
 EX.forEach(e=>{ if(!e.file)return;
   gltf.load(e.file,g=>{try{mount(e,g.scene);}catch(err){console.warn(err);} modelDone();},undefined,err=>{console.warn('model failed',e.file,err); modelDone();});
 });
@@ -323,14 +383,16 @@ const blob=new THREE.Mesh(new THREE.CircleGeometry(0.55,12),new THREE.MeshBasicM
 
 /* ---------------- walking + pathfinding ---------------- */
 const R=0.55, CELL=0.5, GX0=-17.5, GZ0=-8.5, GW=71, GH=44;
+let FZ=0;
 function walkable(x,z){
-  if(z>ROOM.z1-0.2){ if(Math.abs(x)>1.5||z>13) return false; }
-  else if(x<ROOM.x0+R||x>ROOM.x1-R||z<ROOM.z0+R+0.6) return false;
+  const up=z<OZ/2, zl=up?z-OZ:z;
+  if(zl>ROOM.z1-0.2){ if(up||Math.abs(x)>1.5||zl>13) return false; }
+  else if(x<ROOM.x0+R||x>ROOM.x1-R||zl<ROOM.z0+R+0.6) return false;
   for(const e of EX){ if(e.rect){ if(x>e.rect[0]-R&&x<e.rect[1]+R&&z>e.rect[2]-R&&z<e.rect[3]+R) return false; continue; }
     if(x>e.x-PW/2-R&&x<e.x+PW/2+R&&z>e.z-PD/2-R&&z<e.z+PD/2+R+0.75&&!(z>e.z+PD/2+R&&Math.abs(x-e.x)>0.9)) return false; }
   return true;
 }
-const cellOf=(x,z)=>[Math.round((x-GX0)/CELL),Math.round((z-GZ0)/CELL)], posOf=(i,j)=>[GX0+i*CELL,GZ0+j*CELL];
+const cellOf=(x,z)=>[Math.round((x-GX0)/CELL),Math.round((z-FZ-GZ0)/CELL)], posOf=(i,j)=>[GX0+i*CELL,FZ+GZ0+j*CELL];
 const okCell=(i,j)=>i>=0&&j>=0&&i<GW&&j<GH&&walkable(...posOf(i,j));
 function nearestOk(i,j){ if(okCell(i,j))return[i,j]; for(let r=1;r<14;r++)for(let a=-r;a<=r;a++)for(let b=-r;b<=r;b++){if(Math.max(Math.abs(a),Math.abs(b))!==r)continue; if(okCell(i+a,j+b))return[i+a,j+b];} return null; }
 function findPath(sx,sz,tx,tz){
@@ -357,6 +419,8 @@ let path=[], pendingOpen=-1, heading=Math.PI, walkT=0, moving=false;
 const keys={};
 function walkTo(x,z,openIdx=-1){ path=findPath(visitor.position.x,visitor.position.z,x,z); pendingOpen=openIdx; }
 function goExhibit(i){ const e=EX[i]; hideHint(); if(visitor.position.distanceTo(e.front)<0.7){openProject(i);return;} walkTo(e.front.x,e.front.z,i); }
+function setFloor(up){ FZ=up?OZ:0; const st=EX.find(e=>e.type==='stairs'&&!!e.f===!!up); visitor.position.set(st.front.x,0,st.front.z+0.7); path=[]; pendingOpen=-1; heading=0; camTarget.z=FZ-1.5; }
+function useStairs(e){ const fade=document.getElementById('fade'); fade.classList.add('on'); setTimeout(()=>{ setFloor(!e.f); setTimeout(()=>fade.classList.remove('on'),160); },320); }
 const SPEED=4.4;
 function updateVisitor(dt){
   let dx=0,dz=0;
@@ -413,6 +477,7 @@ const overlay=document.getElementById('overlay'),mTitle=document.getElementById(
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function openProject(i){
   if(EX[i].type==='mono'){openMonolith();return;}
+  if(EX[i].type==='stairs'){useStairs(EX[i]);return;}
   const e=EX[i]; mTitle.textContent=e.title; mKind.textContent=e.species+' · '+e.kind;
   let h='<p>'+esc(e.body)+'</p><div class="mtags">'; e.tags.forEach(t=>{h+='<span class="mtag">'+esc(t)+'</span>';});
   h+='</div><div class="mlinks"><a class="mlink" href="'+e.code+'" target="_blank" rel="noopener">&#9654; VIEW CODE</a></div>';
@@ -438,7 +503,7 @@ let clock=0;
 function frame(dt){
   clock+=dt; if(MONO){const k=0.72+0.28*Math.sin(clock*2.2); MONO.glyphMat.color.setRGB(0.3*k,0.95*k,0.72*k);}
   if(!overlay.classList.contains('open')) updateVisitor(dt);
-  const limX=Math.max(0,18.6-HALFW), tx=limX>0?THREE.MathUtils.clamp(visitor.position.x,-limX,limX):visitor.position.x*0.12, tMin=(VIEW-10.47)/0.707, tMax=12.5-VIEW/0.707, tz=tMin>tMax?(tMin+tMax)/2:THREE.MathUtils.clamp(visitor.position.z*0.45-1.3,tMin,tMax);
+  const limX=Math.max(0,14.8-HALFW), tx=limX>0?THREE.MathUtils.clamp(visitor.position.x,-limX,limX):visitor.position.x*0.12, tMin=(VIEW-10.47)/0.707, tMax=12.5-VIEW/0.707, tz=FZ+(tMin>tMax?(tMin+tMax)/2:THREE.MathUtils.clamp((visitor.position.z-FZ)*0.45-1.3,tMin,tMax));
   camTarget.x+=(tx-camTarget.x)*Math.min(1,dt*3); camTarget.z+=(tz-camTarget.z)*Math.min(1,dt*3);
   camera.position.copy(camTarget).add(CAM_OFF); camera.lookAt(camTarget);
   camera.updateMatrixWorld();
@@ -448,7 +513,7 @@ function frame(dt){
 let last=performance.now();
 function loop(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; frame(dt); requestAnimationFrame(loop); }
 requestAnimationFrame(loop);
-window.__m={setOutline,renderer,scene,camera,visitor,EX,frame,step:(n=1,dt=1/30)=>{for(let i=0;i<n;i++)frame(dt);},goExhibit,walkTo,get ready(){return isReady;},get path(){return path;}};
+window.__m={setFloor,get FZ(){return FZ;},setOutline,renderer,scene,camera,visitor,EX,frame,step:(n=1,dt=1/30)=>{for(let i=0;i<n;i++)frame(dt);},goExhibit,walkTo,get ready(){return isReady;},get path(){return path;}};
 </script>
 </body>
 </html>
