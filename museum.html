@@ -20,6 +20,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .tag{position:absolute;transform:translate(-50%,-100%);text-align:center;font-family:var(--pixel);font-size:8px;line-height:1.5;
   color:#2a1d08;background:linear-gradient(180deg,#b9933c,#7d5c1f);border:2px solid #000;padding:6px 8px;white-space:nowrap;
   box-shadow:0 3px 0 #000;opacity:.82;transition:opacity .2s,background .2s;}
+.tag.pl{transform:translate(-50%,0);}
 .tag small{display:block;font-size:7px;color:#3a280c;margin-top:4px;letter-spacing:1px;}
 .tag .go{display:none;margin-top:6px;color:#000;background:var(--accent);border:2px solid #000;padding:3px 5px;font-size:7px;}
 .tag.on{opacity:1;background:linear-gradient(180deg,#e3b64c,#a87a26);}
@@ -94,18 +95,18 @@ import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 
 /* ---------------- content ---------------- */
 const EX=[
- {x:-5.6,z:-4.8,type:'model',file:'models/triceratops.glb',fix:[0,0,Math.PI/2],pitch:0,yaw:-0.2,len:7.6,thick:0.02,dz:0.6,
+ {x:-5.6,z:-4.8,type:'model',file:'models/triceratops.glb',fix:[0,0,Math.PI/2],pitch:0,yaw:-0.2,len:6.4,thick:0.012,dz:1.0,
   species:'TRICERATOPS',title:'ATLAS QUERY',kind:'NL → SQL · MAPS',
   body:"Ask US county geographic data in plain English and watch the answer draw itself on an interactive map. A PostGIS-backed engine converts natural language to spatial SQL; a React + D3 frontend renders results as live GeoJSON.",
   tags:['FASTAPI','POSTGIS','REACT','D3.JS'],code:'https://github.com/benDOESNOTcode/Atlas-Query'},
- {x:5.6,z:-4.8,type:'model',file:'models/mammoth.glb',fix:[-Math.PI/2,0,0],pitch:0,yaw:-1.2,len:6.4,thick:0.02,dz:0.6,
+ {x:5.6,z:-4.8,type:'model',file:'models/mammoth.glb',fix:[-Math.PI/2,0,0],pitch:0,yaw:-1.2,len:5.8,thick:0.012,dz:0.9,
   species:'WOOLLY MAMMOTH',title:'AGENTIC BI DASHBOARD',kind:'DATA ENGINEERING',
   body:"A fully containerized e-commerce analytics stack — Airflow orchestrating a PySpark ETL into a PostgreSQL star schema, surfaced through a React dashboard with a FastAPI + local-LLM layer that turns plain questions into SQL.",
   tags:['AIRFLOW','PYSPARK','POSTGRES','DOCKER','FASTAPI'],code:'https://github.com/benDOESNOTcode/Agentic-BI-Dashboard'},
- {x:-5.6,z:3.0,type:'model',build:'sauropod',fix:[0,0,0],pitch:0,yaw:-0.25,len:7.0,thick:0,dz:0.5,species:'BRACHIOSAURUS',title:'AVIAN CLIMATE INTEL',kind:'AGENTIC AI \u00b7 BIRDS',
+ {x:-5.6,z:3.0,type:'model',build:'sauropod',fix:[0,0,0],pitch:0,yaw:-0.22,len:6.9,thick:0,dz:0.6,species:'BRACHIOSAURUS',title:'AVIAN CLIMATE INTEL',kind:'AGENTIC AI \u00b7 BIRDS',
   body:"A serverless multi-agent system that answers plain-English questions about bird populations — routing each query to semantic search, text-to-SQL, forecasting, or a self-correcting chart engine, and rendering 20-year migration maps in WebGL.",
   tags:['LANGGRAPH','RAG','DUCKDB','GROQ','PYDECK'],code:'https://github.com/benDOESNOTcode/avian-climate-agent'},
- {x:5.6,z:3.0,type:'model',build:'spino',water:true,fix:[0,0,0],pitch:0,yaw:3.4,len:7.4,thick:0,dz:0.5,species:'SPINOSAURUS',title:'TOXIC WATERS',kind:'GEOSPATIAL \u00b7 OCEANS',
+ {x:5.6,z:3.0,type:'model',build:'spino',water:true,fix:[0,0,0],pitch:0,yaw:3.36,len:7.0,thick:0,dz:0.6,species:'SPINOSAURUS',title:'TOXIC WATERS',kind:'GEOSPATIAL \u00b7 OCEANS',
   body:"A multi-decade study of how microplastic pollution and commercial fishing reshape ocean phytoplankton — the microbes behind half of Earth's oxygen. Integrates three global datasets into a 56-million-row spatiotemporal pipeline.",
   tags:['GEOPANDAS','PANDAS','56M ROWS','NCEI'],code:'https://github.com/benDOESNOTcode/Marine'},
  {x:-8,z:-4,f:1,type:'ped',file:'models/megalodon.glb',fix:[0,0,0],tilt:-0.45,yaw:0,len:2.1,bone:true,thick:0.01,
@@ -150,14 +151,14 @@ const PANELS={
 };
 
 /* ---------------- renderer / camera ---------------- */
-const PX=3;
+const PX=2;
 const canvas=document.getElementById('c');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
 renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.BasicShadowMap;
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0b0a0d);
 const camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200);
 const CAM_OFF=new THREE.Vector3(0,27,27), camTarget=new THREE.Vector3(0,0,0.6);
-const LINE_PX=1.3; let VIEW=8.4, HALFW=15, PXW=0.06;
+const LINE_PX=1.7; let VIEW=8.4, HALFW=15, PXW=0.06;
 function setOutline(px){ PXW=px; EX.forEach(e=>(e.tune||[]).forEach(t=>{t.uL.value=(e.thick+px*LINE_PX)/t.ws;})); }
 function resize(){
   const w=innerWidth,h=innerHeight,a=w/h; renderer.setSize(Math.ceil(w/PX),Math.ceil(h/PX),false);
@@ -230,6 +231,7 @@ const fill=new THREE.DirectionalLight(0x9aa0c0,0.45); fill.position.set(-8,12,10
 const PW=7.2, PD=4.8, SAND_Y=0.62;
 const grad=new THREE.DataTexture(new Uint8Array([96,160,222,255]),4,1,THREE.RedFormat); grad.minFilter=grad.magFilter=THREE.NearestFilter; grad.needsUpdate=true;
 const BONE=0xf6ead0, BONE_GLOW=0x1e1911, INK=0x1a120c;
+const inkMat=new THREE.MeshBasicMaterial({color:INK});
 const boneMat=new THREE.MeshToonMaterial({color:BONE,gradientMap:grad,emissive:BONE_GLOW});
 /* push vertices out along their normals: thickens thin scanned bones, and makes the outline shell */
 function inflated(mat,u){ mat.onBeforeCompile=sh=>{ sh.uniforms.uInf=u; sh.vertexShader='uniform float uInf;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\n\ttransformed += normalize(normal) * uInf;'); }; return mat; }
@@ -318,6 +320,7 @@ function mount(e,src){
   yaw.rotation.y=e.yaw;
   yaw.updateMatrixWorld(true); e.tune=[];
   src.traverse(o=>{ if(!o.isMesh||o.userData.outline)return;
+    if(o.userData.dark){ o.material=inkMat; o.renderOrder=3; return; }
     if(!o.geometry.attributes.normal)o.geometry.computeVertexNormals();
     const ws=o.matrixWorld.getMaxScaleOnAxis(), uT={value:e.thick/ws}, uL={value:(e.thick+PXW*LINE_PX)/ws};
     const map=(e.bone===false&&o.material&&o.material.map)||null;
@@ -329,8 +332,9 @@ function mount(e,src){
   yaw.position.set(-c.x,top-b.min.y-(ped?0:0.04),-c.z+(e.dz||0));
   e.group.add(yaw); e.model=yaw; e.modelH=b.max.y-b.min.y;
   if(ped){ e.labelY=top+e.modelH+1.2; const sh=new THREE.Mesh(new THREE.CircleGeometry(Math.min(1.1,e.len*0.42),14),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.35,depthWrite:false})); sh.rotation.x=-Math.PI/2; sh.position.y=top+0.012; e.group.add(sh); return; }
+  if(e.build)return;
   const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,e.modelH*0.5,5),darkMat); add(e.group,rod,0,SAND_Y+e.modelH*0.25,e.dz||0);
-  add(e.group,new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.34,0.1,8),darkMat),0,SAND_Y+0.05,e.dz||0);
+  add(e.group,new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.2,0.08,8),darkMat),0,SAND_Y+0.05,e.dz||0);
 }
 const V=(x,y,z=0)=>new THREE.Vector3(x,y,z), UPV=new THREE.Vector3(0,1,0);
 function seg(g,a,b,r1,r2){const d=b.clone().sub(a),m=new THREE.Mesh(new THREE.CylinderGeometry(r2,r1,d.length(),6)); m.position.copy(a).addScaledVector(d,.5); m.quaternion.setFromUnitVectors(UPV,d.clone().normalize()); g.add(m);}
@@ -339,28 +343,51 @@ function blk(g,p,w,h,d,rz=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d)
 function chain(g,pts,r0,r1){const k=pts.length-1; for(let i=0;i<k;i++){const a=r0+(r1-r0)*i/k,b=r0+(r1-r0)*(i+1)/k; seg(g,pts[i],pts[i+1],a,b); ball(g,pts[i+1],b*1.4);}}
 function ribcage(g,x0,x1,nn,y,rFn){for(let i=0;i<nn;i++){const t=i/(nn-1),r=rFn(t),m=new THREE.Mesh(new THREE.TorusGeometry(r,0.085,5,9,Math.PI)); m.rotation.y=Math.PI/2; m.scale.y=1.35; m.position.set(x0+(x1-x0)*t,y-r*1.35,0); g.add(m);}}
 function leg(g,x,z,hy,kx,ky,fx,r){seg(g,V(x,hy,z),V(x+kx,ky,z),r,r*.8); ball(g,V(x+kx,ky,z),r*1.3); seg(g,V(x+kx,ky,z),V(x+fx,0.3,z),r*.8,r*.65); blk(g,V(x+fx+0.2,0.14,z),0.7,0.28,0.5);}
+function hole(g,p,r,d){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,d,8)); m.rotation.x=Math.PI/2; m.position.copy(p); m.userData.dark=true; g.add(m);}
+/* vertebral column along a curve: centra, neural spines (up), chevrons (dn), side processes (lat) */
+function column(g,pts,n,r0,r1,up,dn,lat,sw){ const c=new THREE.CatmullRomCurve3(pts); let prev=null,rp=r0;
+  for(let i=0;i<=n;i++){ const t=i/n,p=c.getPoint(t),tg=c.getTangent(t),r=r0+(r1-r0)*t,nx=-tg.y,ny=tg.x,rz=Math.atan2(tg.y,tg.x);
+    if(prev)seg(g,prev,p,rp*.62,r*.62); ball(g,p,r);
+    const u=up?up(t):0; if(u>0.03)blk(g,V(p.x+nx*(r*.6+u/2),p.y+ny*(r*.6+u/2)),sw||Math.max(.1,r*.6),u,.1,rz);
+    const d=dn?dn(t):0; if(d>0.03)blk(g,V(p.x-nx*(r*.6+d/2),p.y-ny*(r*.6+d/2)),Math.max(.08,r*.45),d,.08,rz+0.35);
+    const l=lat?lat(t):0; if(l>0.03)blk(g,p,Math.max(.1,r*.6),.1,l*2,rz);
+    prev=p; rp=r; } }
+function ribs(g,x0,x1,nn,y,rFn,tube=0.06,arc=1.3,lean=0.12){ for(let i=0;i<nn;i++){ const t=i/(nn-1),r=rFn(t),geo=new THREE.TorusGeometry(r,tube,5,12,Math.PI*arc); geo.rotateZ(-Math.PI*(arc-1)/2);
+    const m=new THREE.Mesh(geo); m.rotation.order='ZYX'; m.rotation.y=Math.PI/2; m.rotation.z=lean; m.scale.y=1.4; m.position.set(x0+(x1-x0)*t,y-r*1.4,0); g.add(m);} }
+function boneLimb(g,h,k,a,z,r,toes=3){ const H=V(h[0],h[1],z),K=V(k[0],k[1],z),A=V(a[0],a[1],z);
+  ball(g,H,r*1.3); seg(g,H,K,r,r*.8); ball(g,K,r*1.25); seg(g,K,A,r*.62,r*.52); seg(g,V(k[0]-r*1.2,k[1],z),V(a[0]-r*1.1,a[1],z),r*.36,r*.3); ball(g,A,r*.95);
+  for(let j=0;j<toes;j++){ const d=(j-(toes-1)/2)*r*1.25; seg(g,V(a[0],a[1]-r*.2,z+d*.5),V(a[0]+r*2.6,r*.5,z+d),r*.42,r*.3); ball(g,V(a[0]+r*2.9,r*.45,z+d),r*.34); } }
 const BUILD={
-  sauropod(){ const g=new THREE.Group();
-    chain(g,[V(-6.1,3.7),V(-6.5,3.1),V(-6.1,2.4),V(-5.0,2.2),V(-3.6,2.6),V(-2.2,3.1)],0.07,0.24);
-    chain(g,[V(-2.2,3.1),V(-0.8,3.35),V(0.6,3.35),V(1.8,3.2)],0.26,0.26);
-    chain(g,[V(1.8,3.2),V(2.6,3.8),V(3.3,4.7),V(3.9,5.7),V(4.4,6.6)],0.25,0.17);
-    ball(g,V(4.85,6.85),0.5,1.25,0.85,0.8); blk(g,V(5.45,6.62),0.62,0.4,0.55,-0.15);
-    for(let x=-2;x<=1.6;x+=0.45) blk(g,V(x,3.68),0.14,0.42,0.14);
-    ribcage(g,-1.3,1.5,7,3.3,t=>0.75+0.25*Math.sin(Math.PI*t));
-    ball(g,V(-2.0,3.0),0.6,1.1,0.8,1.5); ball(g,V(1.7,2.9),0.5,0.9,1.0,1.5);
-    [-0.8,0.8].forEach(z=>{leg(g,-2.0,z,2.9,0.35,1.55,0.0,0.2); leg(g,1.7,z,2.8,-0.2,1.5,0.05,0.18);});
+  sauropod(){ const g=new THREE.Group(), S=Math.sin, P=Math.PI;
+    column(g,[V(-5.3,0.7),V(-4.7,1.15),V(-3.7,1.95),V(-2.7,2.7),V(-1.9,3.1)],15,0.06,0.23,t=>0.08+0.4*t,t=>0.06+0.42*t,null);
+    column(g,[V(-1.9,3.1),V(-0.6,3.42),V(0.7,3.42),V(1.8,3.15)],9,0.25,0.25,t=>0.46+0.16*S(P*t),null,t=>0.34);
+    column(g,[V(1.8,3.15),V(2.5,3.7),V(3.1,4.6),V(3.6,5.6),V(4.0,6.5)],11,0.24,0.15,t=>0.24,t=>0.34-0.1*t,null);
+    ball(g,V(4.38,6.78),0.42,1.2,0.92,0.82); ball(g,V(4.5,7.12),0.2,1.3,0.9,0.7);
+    blk(g,V(4.98,6.6),0.72,0.34,0.5,-0.2); seg(g,V(4.2,6.38),V(5.25,6.22),0.09,0.07);
+    for(let k=0;k<5;k++) blk(g,V(4.72+k*0.14,6.36-k*0.02),0.06,0.15,0.36);
+    hole(g,V(4.36,6.84),0.15,0.76); hole(g,V(4.82,6.9),0.09,0.62);
+    ribs(g,-1.2,1.5,8,3.3,t=>0.72+0.3*S(P*t));
+    ball(g,V(-1.7,3.02),0.55,1.3,0.62,1.5);
+    [-0.8,0.8].forEach(z=>{ seg(g,V(-1.5,2.8,z),V(-0.95,1.95,z),0.13,0.09); seg(g,V(-1.9,2.8,z),V(-2.45,2.1,z),0.12,0.08);
+      boneLimb(g,[-1.7,2.85],[-1.5,1.55],[-1.65,0.34],z,0.2,4);
+      seg(g,V(1.65,2.25,z),V(0.9,3.2,z),0.2,0.11); ball(g,V(1.7,2.2,z),0.24);
+      boneLimb(g,[1.7,2.2],[1.85,1.25],[1.72,0.32],z,0.17,4); });
     return g; },
-  spino(){ const g=new THREE.Group();
-    chain(g,[V(-6.2,2.0),V(-4.8,2.15),V(-3.4,2.4),V(-2.0,2.65)],0.07,0.22);
-    chain(g,[V(-2.0,2.65),V(-0.6,2.8),V(0.8,2.75),V(1.9,2.6)],0.24,0.24);
-    chain(g,[V(1.9,2.6),V(2.6,2.8),V(3.2,3.0)],0.2,0.17);
-    ball(g,V(3.5,3.05),0.38,1.2,0.9,0.85); seg(g,V(3.6,3.05),V(5.8,2.5),0.26,0.1); seg(g,V(3.5,2.7),V(5.6,2.3),0.13,0.06);
-    for(let i=0;i<12;i++){const t=i/11,h=0.5+2.9*Math.pow(Math.sin(Math.PI*t),0.8); blk(g,V(-2.3+t*4.2,2.8+h/2),0.13,h,0.1,(0.5-t)*0.25);}
-    for(let x=-5.6;x<=-2.8;x+=0.4) blk(g,V(x,2.0+(x+6.2)*0.155+0.3),0.08,0.45,0.08);
-    ribcage(g,-1.2,1.6,7,2.75,t=>0.65+0.2*Math.sin(Math.PI*t));
-    ball(g,V(-1.7,2.5),0.55,1.1,0.8,1.4);
-    [-0.7,0.7].forEach(z=>{leg(g,-1.7,z,2.4,0.55,1.35,-0.1,0.2);});
-    [-0.6,0.6].forEach(z=>{seg(g,V(1.7,2.3,z),V(2.0,1.6,z),0.1,0.08); seg(g,V(2.0,1.6,z),V(2.5,1.2,z),0.08,0.06);});
+  spino(){ const g=new THREE.Group(), S=Math.sin, P=Math.PI;
+    column(g,[V(-5.7,1.7),V(-4.5,1.9),V(-3.2,2.15),V(-2.0,2.45)],14,0.06,0.2,t=>0.3+0.55*S(P*t*0.92),t=>0.2+0.35*S(P*t),null,0.1);
+    column(g,[V(-2.0,2.45),V(-0.6,2.66),V(0.8,2.62),V(1.9,2.45)],13,0.21,0.21,t=>0.5+2.9*Math.pow(S(P*t),0.75),null,null,0.12);
+    column(g,[V(1.9,2.45),V(2.5,2.75),V(3.0,3.1),V(3.4,3.3)],6,0.2,0.16,t=>0.22,t=>0.2,null);
+    ball(g,V(3.7,3.3),0.34,1.2,0.92,0.82); blk(g,V(4.0,3.58),0.34,0.16,0.12,-0.25);
+    seg(g,V(3.9,3.26),V(5.7,2.76),0.24,0.11); ball(g,V(5.76,2.72),0.16);
+    seg(g,V(3.55,2.98),V(5.6,2.48),0.12,0.07);
+    for(let k=0;k<8;k++){ const x=4.1+k*0.21,q=(x-3.9)/1.8; blk(g,V(x,3.26-q*0.5-(0.24-q*0.13)-0.05),0.07,0.17,0.3); }
+    hole(g,V(3.74,3.36),0.12,0.7); hole(g,V(4.55,3.14),0.07,0.5);
+    ribs(g,-1.1,1.6,8,2.55,t=>0.6+0.22*S(P*t));
+    ball(g,V(-1.7,2.42),0.5,1.25,0.6,1.35);
+    [-0.68,0.68].forEach(z=>{ seg(g,V(-1.5,2.3,z),V(-0.9,1.6,z),0.11,0.08); seg(g,V(-1.9,2.3,z),V(-2.5,1.75,z),0.1,0.07);
+      boneLimb(g,[-1.7,2.3],[-1.15,1.3],[-1.5,0.32],z,0.19,3);
+      seg(g,V(1.6,1.9,z),V(0.95,2.5,z),0.15,0.09);
+      boneLimb(g,[1.6,1.9],[1.95,1.15],[2.3,0.3],z,0.12,3); });
     return g; }
 };
 EX.forEach(e=>{ if(e.build){ try{ mount(e,BUILD[e.build]()); }catch(err){ console.warn(err); } } });
@@ -445,13 +472,13 @@ function updateVisitor(dt){
 
 /* ---------------- labels / hover ---------------- */
 const labels=document.getElementById('labels');
-EX.forEach((e,i)=>{const d=document.createElement('div'); d.className='tag'; d.innerHTML=e.species+'<small>'+e.title+'</small><span class="go">▶ ENTER TO VIEW</span>'; labels.appendChild(d); e.tag=d;});
+EX.forEach((e,i)=>{const d=document.createElement('div'); d.className='tag'+(e.type==='model'?' pl':''); d.innerHTML=e.species+'<small>'+e.title+'</small><span class="go">▶ ENTER TO VIEW</span>'; labels.appendChild(d); e.tag=d;});
 let hover=-1, near=-1; const v3=new THREE.Vector3();
 function updateLabels(){
   near=-1; let best=2.4;
   EX.forEach((e,i)=>{const d=Math.hypot(visitor.position.x-e.front.x,visitor.position.z-e.front.z); if(d<best){best=d;near=i;}});
   EX.forEach((e,i)=>{
-    v3.set(e.x,e.labelY??(e.type==='model'?(e.modelH||3)+1.0:2.5),e.z).project(camera);
+    if(e.type==='model')v3.set(e.x-2.2,0,e.z+PD/2+0.25).project(camera); else v3.set(e.x,e.labelY??2.5,e.z).project(camera);
     e.tag.style.left=((v3.x+1)/2*innerWidth)+'px'; e.tag.style.top=((1-v3.y)/2*innerHeight)+'px';
     const on=(i===hover||i===near); e.tag.classList.toggle('on',on); e.tag.classList.toggle('near',i===near);
     const tgt=on?e.hi:e.lo; e.spot.intensity+=(tgt-e.spot.intensity)*0.15; e.glow.material.opacity+=((on?0.85:0.5)-e.glow.material.opacity)*0.15;
